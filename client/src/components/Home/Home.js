@@ -14,7 +14,7 @@ export default function Home() {
       <p className={classes.description}>
         Explore, plan, track and share all within your control
       </p>
-      <button>Sign Up Now</button>
+      <button className={classes.button}>Sign Up Now</button>
     </div>
   );
 }
