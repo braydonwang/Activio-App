@@ -5,8 +5,8 @@ import classes from "./Navbar.module.css";
 export default function Navbar() {
   return (
     <div className={classes.navContainer}>
-      <h3>Activio</h3>
-      <ul>
+      <h3 className={classes.logo}>Activio</h3>
+      <ul className={classes.optionContainer}>
         <li>
           <Link to="/explore">Explore</Link>
         </li>
@@ -16,7 +16,11 @@ export default function Navbar() {
         <li>
           <Link to="/tracker">Tracker</Link>
         </li>
+        <li>
+          <Link to="/community">Community</Link>
+        </li>
       </ul>
+      <button>Log In</button>
     </div>
   );
 }
