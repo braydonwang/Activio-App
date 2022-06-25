@@ -11,8 +11,9 @@ export default function Home() {
       <h1 className={classes.heading}>
         The <span className={classes.ultimateWord}>Ultimate</span> Workout App
       </h1>
+      <h1 className={classes.backgroundText}>ACTIVIO</h1>
       <p className={classes.description}>
-        Explore, plan, track and share all within your control
+        Let us help you keep track and reach your full potential in life
       </p>
       <button className={classes.button}>Sign Up Now</button>
     </div>

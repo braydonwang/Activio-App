@@ -45,9 +45,17 @@ body {
   }
 }
 
+.backgroundText {
+  position: absolute;
+  color: grey;
+  opacity: 0.03;
+  font-size: 14vw;
+  z-index: -1;
+}
+
 .description {
-  opacity: 0.9;
-  font-size: 1.5vw;
+  opacity: 0.8;
+  font-size: 1.2vw;
   line-height: 1.5;
   font-family: "Roboto", sans-serif;
   margin-bottom: 40px;

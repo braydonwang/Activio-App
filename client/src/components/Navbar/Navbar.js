@@ -1,26 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ButtonBase from "@mui/material/ButtonBase";
+import logoImg from "../../images/logo.png";
 
 import classes from "./Navbar.module.css";
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
   return (
     <div className={classes.navContainer}>
-      <h3 className={classes.logo}>Activio</h3>
+      <ButtonBase
+        style={{ position: "absolute", left: "7%" }}
+        onClick={() => navigate("/")}
+      >
+        <img className={classes.logo} src={logoImg} alt="Logo" />
+      </ButtonBase>
       <ul className={classes.optionContainer}>
         <li>
-          <Link to="/explore">Explore</Link>
+          <Link className={classes.option} to="/explore">
+            Explore
+          </Link>
         </li>
         <li>
-          <Link to="/planner">Planner</Link>
+          <Link className={classes.option} to="/planner">
+            Planner
+          </Link>
         </li>
         <li>
-          <Link to="/tracker">Tracker</Link>
+          <Link className={classes.option} to="/tracker">
+            Tracker
+          </Link>
         </li>
         <li>
-          <Link to="/community">Community</Link>
+          <Link className={classes.option} to="/community">
+            Community
+          </Link>
         </li>
       </ul>
-      <button>Log In</button>
+      <button className={classes.button}>Log In</button>
     </div>
   );
 }
