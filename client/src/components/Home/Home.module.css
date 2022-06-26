@@ -81,3 +81,30 @@ body {
 .button:active {
   border-style: outset;
 }
+
+.statOptions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 7%;
+  opacity: 0.8;
+  width: 60%;
+  justify-content: space-between;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.number {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 20px 0 0 0;
+}
+
+.text {
+  font-size: 1.1rem;
+  margin-top: 15px;
+}

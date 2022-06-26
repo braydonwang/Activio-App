@@ -2,6 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./components/Home/Home";
 import Auth from "./components/Auth/Auth";
+import Exercises from "./components/Exercises/Exercises";
+import Planner from "./components/Planner/Planner";
+import Tracker from "./components/Tracker/Tracker";
+import Explore from "./components/Explore/Explore";
 
 export default function App() {
   return (
@@ -9,6 +13,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/exercises" element={<Exercises />} />
+        <Route path="/planner" element={<Planner />} />
+        <Route path="/tracker" element={<Tracker />} />
+        <Route path="/explore" element={<Explore />} />
       </Routes>
     </Router>
   );

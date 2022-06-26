@@ -17,8 +17,8 @@ export default function Navbar() {
       </ButtonBase>
       <ul className={classes.optionContainer}>
         <li>
-          <Link className={classes.option} to="/explore">
-            Explore
+          <Link className={classes.option} to="/exercises">
+            Exercises
           </Link>
         </li>
         <li>
@@ -32,8 +32,8 @@ export default function Navbar() {
           </Link>
         </li>
         <li>
-          <Link className={classes.option} to="/community">
-            Community
+          <Link className={classes.option} to="/explore">
+            Explore
           </Link>
         </li>
       </ul>

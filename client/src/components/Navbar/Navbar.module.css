@@ -24,16 +24,16 @@ a {
   transition: 0.3s;
 }
 
+a:hover {
+  padding: 10px 15px;
+  background-color: rgb(105, 102, 102, 0.3);
+}
+
 .logo {
   position: absolute;
   left: 7%;
   margin: 0;
   font-size: 2.5rem;
-}
-
-a:hover {
-  padding: 10px 15px;
-  background-color: rgb(105, 102, 102, 0.3);
 }
 
 .button {

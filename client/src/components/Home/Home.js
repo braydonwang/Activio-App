@@ -1,8 +1,11 @@
 import Navbar from "../Navbar/Navbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
+import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
+import { faUtensils } from "@fortawesome/free-solid-svg-icons";
 
 import classes from "./Home.module.css";
-
-// test
 
 export default function Home() {
   return (
@@ -16,6 +19,28 @@ export default function Home() {
         Let us help you keep track and reach your full potential in life
       </p>
       <button className={classes.button}>Sign Up Now</button>
+      <div className={classes.statOptions}>
+        <div className={classes.stats}>
+          <FontAwesomeIcon icon={faDumbbell} color="white" size="6x" />
+          <h3 className={classes.number}>500+</h3>
+          <p className={classes.text}>Exercises</p>
+        </div>
+        <div className={classes.stats}>
+          <FontAwesomeIcon icon={faUsers} color="white" size="6x" />
+          <h3 className={classes.number}>10</h3>
+          <p className={classes.text}>Active Users</p>
+        </div>
+        <div className={classes.stats}>
+          <FontAwesomeIcon icon={faPersonRunning} color="white" size="6x" />
+          <h3 className={classes.number}>3</h3>
+          <p className={classes.text}>Workout Plans Shared</p>
+        </div>
+        <div className={classes.stats}>
+          <FontAwesomeIcon icon={faUtensils} color="white" size="6x" />
+          <h3 className={classes.number}>100,000+</h3>
+          <p className={classes.text}>Calories Tracked</p>
+        </div>
+      </div>
     </div>
   );
 }
