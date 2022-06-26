@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
-const Plan = require("../models/WorkoutPlan");
+const Plan = require("../models/Plan");
 const bcrypt = require("bcrypt");
 
 //UPDATE
