@@ -6,13 +6,14 @@ import Exercises from "./components/Exercises/Exercises";
 import Planner from "./components/Planner/Planner";
 import Tracker from "./components/Tracker/Tracker";
 import Explore from "./components/Explore/Explore";
+import Login from "./components/Login/Login";
 
 export default function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Auth />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/exercises" element={<Exercises />} />
         <Route path="/planner" element={<Planner />} />
         <Route path="/tracker" element={<Tracker />} />
