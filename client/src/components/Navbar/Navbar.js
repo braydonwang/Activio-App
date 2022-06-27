@@ -37,7 +37,9 @@ export default function Navbar() {
           </Link>
         </li>
       </ul>
-      <button className={classes.button}>Log In</button>
+      <button className={classes.button} onClick={() => navigate("/login")}>
+        Log In
+      </button>
     </div>
   );
 }

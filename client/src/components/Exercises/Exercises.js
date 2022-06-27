@@ -7,12 +7,13 @@ import exercises from "./ExerciseData";
 
 export default function Exercises() {
   return (
-    <>
+    <div className={classes.container}>
       <Navbar />
-      <Box sx={{ mt: { lg: "110px" } }} mt="50px" p="20px">
+      <h1 className={classes.heading}>Exercises</h1>
+      <Box sx={{ mt: { lg: "30px" } }} mt="30px" p="20px">
         <Stack
           direction="row"
-          sx={{ gap: { lg: "110px", xs: "50px" } }}
+          sx={{ gap: { lg: "60px", xs: "40px" } }}
           flexWrap="wrap"
           justifyContent="center"
         >
@@ -21,6 +22,6 @@ export default function Exercises() {
           ))}
         </Stack>
       </Box>
-    </>
+    </div>
   );
 }

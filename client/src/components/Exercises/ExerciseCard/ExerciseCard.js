@@ -1,13 +1,19 @@
 import { Link } from "react-router-dom";
-import { Chip, Stack, Typography } from "@mui/material";
+import { Chip, Stack } from "@mui/material";
 import classes from "./ExerciseCard.module.css";
 
 export default function ExerciseCard({ exercise }) {
   return (
     <Link className={classes.cardContainer} to={`/exercise/${exercise.id}`}>
-      <img src={exercise.gifUrl} alt={exercise.name} loading="lazy" />
+      <img
+        className={classes.image}
+        src={exercise.gifUrl}
+        alt={exercise.name}
+        loading="lazy"
+      />
       <Stack direction="row">
         <Chip
+          className={classes.chip}
           sx={{
             ml: "21px",
             color: "#fff",
@@ -19,6 +25,7 @@ export default function ExerciseCard({ exercise }) {
           label={exercise.bodyPart}
         />
         <Chip
+          className={classes.chip}
           sx={{
             ml: "21px",
             color: "#fff",
@@ -30,6 +37,7 @@ export default function ExerciseCard({ exercise }) {
           label={exercise.target}
         />
       </Stack>
+      <h2 className={classes.name}>{exercise.name}</h2>
     </Link>
   );
 }

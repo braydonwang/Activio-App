@@ -3,10 +3,14 @@ import { useNavigate } from "react-router-dom";
 import ButtonBase from "@mui/material/ButtonBase";
 import logoImg from "../../images/logo.png";
 
-import classes from "./Login.module.css";
+import classes from "./SignUp.module.css";
 
-export default function Login() {
-  const [loginData, setLoginData] = useState({ username: "", password: "" });
+export default function SignUp() {
+  const [loginData, setLoginData] = useState({
+    username: "",
+    password: "",
+    password2: "",
+  });
   const navigate = useNavigate();
 
   return (
@@ -19,7 +23,7 @@ export default function Login() {
       </ButtonBase>
       <main>
         <div className={classes.login}>
-          <span className={classes.loginTitle}>LOGIN</span>
+          <span className={classes.loginTitle}>SIGN UP</span>
           <form className={classes.loginForm} onSubmit={() => {}}>
             <label>Username</label>
             <input
@@ -41,14 +45,23 @@ export default function Login() {
                 setLoginData({ ...loginData, password: e.target.value })
               }
             />
+            <input
+              type="password"
+              className={classes.loginInput}
+              placeholder="Confirm Password"
+              value={loginData.password2}
+              onChange={(e) =>
+                setLoginData({ ...loginData, password2: e.target.value })
+              }
+            />
             <button className={classes.loginButton} type="submit">
-              Log In
+              Sign Up
             </button>
             <button
               className={classes.signUpButton}
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/login")}
             >
-              Don't have an account? Sign up
+              Already have an account? Log In
             </button>
           </form>
         </div>

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +9,8 @@ import { faUtensils } from "@fortawesome/free-solid-svg-icons";
 import classes from "./Home.module.css";
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className={classes.mainContainer}>
       <Navbar />
@@ -18,7 +21,9 @@ export default function Home() {
       <p className={classes.description}>
         Let us help you keep track and reach your full potential in life
       </p>
-      <button className={classes.button}>Sign Up Now</button>
+      <button className={classes.button} onClick={() => navigate("/signup")}>
+        Sign Up Now
+      </button>
       <div className={classes.statOptions}>
         <div className={classes.stats}>
           <FontAwesomeIcon icon={faDumbbell} color="white" size="6x" />
