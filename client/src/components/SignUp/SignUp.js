@@ -6,7 +6,9 @@ import logoImg from "../../images/logo.png";
 import classes from "./SignUp.module.css";
 
 export default function SignUp() {
-  const [loginData, setLoginData] = useState({
+  const [signUpData, setSignUpData] = useState({
+    firstName: "",
+    lastName: "",
     username: "",
     password: "",
     password2: "",
@@ -25,14 +27,35 @@ export default function SignUp() {
         <div className={classes.login}>
           <span className={classes.loginTitle}>SIGN UP</span>
           <form className={classes.loginForm} onSubmit={() => {}}>
+            <label>Name</label>
+            <span>
+              <input
+                type="text"
+                className={classes.loginInput}
+                placeholder="First Name"
+                value={signUpData.firstName}
+                onChange={(e) =>
+                  setSignUpData({ ...signUpData, firstName: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                className={classes.loginInput}
+                placeholder="Last Name"
+                value={signUpData.lastName}
+                onChange={(e) =>
+                  setSignUpData({ ...signUpData, lastName: e.target.value })
+                }
+              />
+            </span>
             <label>Username</label>
             <input
               type="text"
               className={classes.loginInput}
               placeholder="Enter your username"
-              value={loginData.username}
+              value={signUpData.username}
               onChange={(e) =>
-                setLoginData({ ...loginData, username: e.target.value })
+                setSignUpData({ ...signUpData, username: e.target.value })
               }
             />
             <label>Password</label>
@@ -40,18 +63,18 @@ export default function SignUp() {
               type="password"
               className={classes.loginInput}
               placeholder="Enter your password"
-              value={loginData.password}
+              value={signUpData.password}
               onChange={(e) =>
-                setLoginData({ ...loginData, password: e.target.value })
+                setSignUpData({ ...signUpData, password: e.target.value })
               }
             />
             <input
               type="password"
               className={classes.loginInput}
               placeholder="Confirm Password"
-              value={loginData.password2}
+              value={signUpData.password2}
               onChange={(e) =>
-                setLoginData({ ...loginData, password2: e.target.value })
+                setSignUpData({ ...signUpData, password2: e.target.value })
               }
             />
             <button className={classes.loginButton} type="submit">
