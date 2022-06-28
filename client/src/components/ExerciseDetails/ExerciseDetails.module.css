@@ -1,0 +1,48 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.detailContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(104, 43, 150, 0.3);
+  width: 70%;
+  padding: 30px 0;
+  margin-top: 60px;
+  border-radius: 15px;
+}
+
+.exerciseContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+}
+
+.image {
+  width: 600px;
+  height: auto;
+  margin-right: 20px;
+  opacity: 0.9;
+  border-radius: 15px;
+}
+
+.text {
+  width: 50%;
+}
+
+.heading {
+  font-size: 64px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.button {
+  color: white;
+}
