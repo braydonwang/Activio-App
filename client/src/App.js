@@ -7,6 +7,7 @@ import Tracker from "./components/Tracker/Tracker";
 import Explore from "./components/Explore/Explore";
 import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
+import ExerciseDetails from "./components/ExerciseDetails/ExerciseDetails";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/exercises" element={<Exercises />} />
+        <Route path="/exercise/:id" element={<ExerciseDetails />} />
         <Route path="/planner" element={<Planner />} />
         <Route path="/tracker" element={<Tracker />} />
         <Route path="/explore" element={<Explore />} />
