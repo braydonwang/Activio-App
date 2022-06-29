@@ -8,7 +8,7 @@
 .detailContainer {
   width: 80vw;
   background-color: rgba(104, 43, 150, 0.3);
-  padding: 30px 0 60px 0;
+  padding: 30px 0 40px 0;
   margin-top: 60px;
   margin-bottom: 30px;
   border-radius: 15px;
@@ -58,7 +58,7 @@
 .items {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
 }
 
 .addButton {
@@ -74,10 +74,10 @@
   border-color: #bf5af2;
   padding: 10px 20px;
   border-radius: 5px;
-  margin-top: 30px;
+  margin-top: 51px;
   min-width: 243px;
   cursor: pointer;
-  margin-right: 30px;
+  margin-right: 50px;
   transition: 0.3s;
 }
 
@@ -102,7 +102,7 @@
   border-color: #5e5ce6;
   padding: 10px 20px;
   border-radius: 5px;
-  margin-top: 30px;
+  margin-top: 50px;
   cursor: pointer;
   transition: 0.3s;
 }
