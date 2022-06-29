@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { Stack, Typography, Button } from "@mui/material";
 import Navbar from "../Navbar/Navbar";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import classes from "./ExerciseDetails.module.css";
 
 import exercises from "../Exercises/ExerciseData";
@@ -21,10 +23,10 @@ export default function ExerciseDetails() {
   ];
 
   return (
-    <div className={classes.mainContainer}>
+    <main className={classes.mainContainer}>
       <Navbar />
-      <div className={classes.detailContainer}>
-        <div className={classes.exerciseContainer}>
+      <main className={classes.detailContainer}>
+        <main className={classes.exerciseContainer}>
           <img
             src={gifUrl}
             alt={name}
@@ -33,11 +35,7 @@ export default function ExerciseDetails() {
           />
           <div className={classes.text}>
             <h1 className={classes.heading}>{name}</h1>
-            <Typography
-              sx={{ fontSize: { lg: "24px", xs: "18px" } }}
-              color="white"
-              marginBottom="30px"
-            >
+            <h3 className={classes.description}>
               Exercising is an essential aspect of life that not only keeps you
               healthy, but also improves your mood and mental well-being.{" "}
               <span style={{ textTransform: "capitalize", fontWeight: "700" }}>
@@ -47,21 +45,16 @@ export default function ExerciseDetails() {
               <span style={{ fontWeight: "700" }}>{equipment}</span> exercises
               to target your <span style={{ fontWeight: "700" }}>{target}</span>
               .
-            </Typography>
+            </h3>
             {extraDetail?.map((item) => (
-              <Stack
-                key={item.name}
-                direction="row"
-                gap="24px"
-                alignItems="center"
-              >
+              <div className={classes.items}>
                 <Button
                   sx={{
                     background: "rgb(78, 6, 137)",
                     borderRadius: "50%",
                     width: "100px",
                     height: "100px",
-                    marginBottom: "20px",
+                    margin: "10px 0",
                   }}
                 >
                   <img
@@ -70,21 +63,21 @@ export default function ExerciseDetails() {
                     style={{ width: "50px", height: "50px" }}
                   />
                 </Button>
-                <Typography
-                  textTransform="capitalize"
-                  sx={{ fontSize: { lg: "30px", xs: "20px" } }}
-                >
-                  {item.name}
-                </Typography>
-              </Stack>
+                <h2 className={classes.itemName}>{item.name}</h2>
+              </div>
             ))}
           </div>
-        </div>
+        </main>
         <span className={classes.button}>
-          <button>Add to Workout Plan</button>
-          <button>Remove from Workout Plan</button>
+          <button className={classes.addButton}>
+            <AddCircleIcon style={{ marginRight: "10px" }} /> Add to Plan
+          </button>
+          <button className={classes.removeButton}>
+            <RemoveCircleIcon style={{ marginRight: "10px" }} />
+            Remove from Plan
+          </button>
         </span>
-      </div>
-    </div>
+      </main>
+    </main>
   );
 }

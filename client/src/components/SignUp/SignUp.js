@@ -23,7 +23,7 @@ export default function SignUp() {
       >
         <img className={classes.logo} src={logoImg} alt="Logo" />
       </ButtonBase>
-      <main>
+      <main className={classes.main}>
         <div className={classes.login}>
           <span className={classes.loginTitle}>SIGN UP</span>
           <form className={classes.loginForm} onSubmit={() => {}}>

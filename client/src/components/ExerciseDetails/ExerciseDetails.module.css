@@ -6,43 +6,111 @@
 }
 
 .detailContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 80vw;
   background-color: rgba(104, 43, 150, 0.3);
-  width: 70%;
-  padding: 30px 0;
+  padding: 30px 0 60px 0;
   margin-top: 60px;
+  margin-bottom: 30px;
   border-radius: 15px;
 }
 
 .exerciseContainer {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 60px;
+  gap: 80px;
 }
 
 .image {
-  width: 600px;
-  height: auto;
-  margin-right: 20px;
+  width: 25vw;
   opacity: 0.9;
   border-radius: 15px;
 }
 
 .text {
-  width: 50%;
+  width: 35%;
 }
 
 .heading {
-  font-size: 64px;
+  font-size: 2.25vw;
   font-weight: 700;
   text-transform: capitalize;
 }
 
+.description {
+  font-size: 1vw;
+  font-weight: 400;
+}
+
 .button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   color: white;
+}
+
+.itemName {
+  text-transform: capitalize;
+}
+
+.items {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.addButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #bf5af2;
+  background-color: transparent;
+  border-color: #bf5af2;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 30px;
+  min-width: 243px;
+  cursor: pointer;
+  margin-right: 30px;
+  transition: 0.3s;
+}
+
+.addButton:hover {
+  background-color: #36074e;
+}
+
+.addButton:active {
+  border-style: outset;
+}
+
+.removeButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #5e5ce6;
+  background-color: transparent;
+  border-color: #5e5ce6;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.removeButton:hover {
+  background-color: #36074e;
+}
+
+.removeButton:active {
+  border-style: outset;
 }
