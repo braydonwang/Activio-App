@@ -4,7 +4,6 @@ const WorkoutPlanSchema = new mongoose.Schema(
     title:{
         type:String,
         required:true,
-        unique:true
     },
     desc:{
         type:String,
@@ -19,7 +18,7 @@ const WorkoutPlanSchema = new mongoose.Schema(
         required:true
     },
     categories:{
-        type:Array,
+        type:String,
         required:true
     },
     likeCount:{
@@ -31,7 +30,7 @@ const WorkoutPlanSchema = new mongoose.Schema(
         rquired:true
     },
     exercises:{
-        type:[Object],
+        type:[Number],
         required:true
     }
   },

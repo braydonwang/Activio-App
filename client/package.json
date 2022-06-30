@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -43,7 +44,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
+  }, "proxy":"http://localhost:5000/api/",
   "devDependencies": {
     "@babel/core": "^7.18.5",
     "@babel/preset-env": "^7.18.2",
