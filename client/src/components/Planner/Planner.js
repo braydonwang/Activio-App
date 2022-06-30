@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import IconButton from "@mui/material/IconButton";
 import TimerIcon from "@mui/icons-material/Timer";
@@ -9,6 +10,7 @@ import classes from "./Planner.module.css";
 import classnames from "classnames";
 
 export default function Planner() {
+  const navigate = useNavigate();
   const plan = [
     { id: "0001", time: "1", sets: "4", reps: "8" },
     { id: "0002", time: "5", sets: "3", reps: "10" },
@@ -17,17 +19,29 @@ export default function Planner() {
     { id: "3293", time: "60", sets: "7", reps: "12" },
   ];
 
+  const handleRemove = (e, id) => {
+    e.stopPropagation();
+  };
+
+  const handleEdit = (e, id) => {
+    e.stopPropagation();
+  };
+
   return (
     <>
       <Navbar />
       <div className={classes.mainContainer}>
         <h1 className={classes.heading}>First Last's Workout Plan</h1>
-        {plan.map((planObj) => {
-          const { gifUrl, name } = exercises.find(
+        {plan.map((planObj, ind) => {
+          const { gifUrl, name, id } = exercises.find(
             (exercise) => exercise.id === planObj.id
           );
           return (
-            <div className={classes.exerciseContainer}>
+            <div
+              className={classes.exerciseContainer}
+              onClick={() => navigate(`/exercise/${id}`)}
+              key={ind}
+            >
               <img
                 className={classes.image}
                 src={gifUrl}
@@ -44,10 +58,20 @@ export default function Planner() {
                 <p className={classes.sets}>{planObj.reps} REPS</p>
               </div>
               <h3 className={classes.name}>{name}</h3>
-              <IconButton color="inherit" aria-label="remove">
+              <IconButton
+                style={{ position: "absolute", right: "60px", top: "10px" }}
+                color="inherit"
+                aria-label="remove"
+                onClick={(e) => handleRemove(e, id)}
+              >
                 <RemoveCircleIcon fontSize="large" />
               </IconButton>
-              <IconButton color="inherit" aria-label="remove">
+              <IconButton
+                style={{ position: "absolute", right: "15px", top: "10px" }}
+                color="inherit"
+                aria-label="remove"
+                onClick={(e) => handleEdit(e, id)}
+              >
                 <MoreHorizIcon fontSize="large" />
               </IconButton>
             </div>
@@ -55,7 +79,10 @@ export default function Planner() {
         })}
       </div>
       <div className={classes.buttonContainer}>
-        <button className={classnames(classes.button, classes.addButton)}>
+        <button
+          className={classnames(classes.button, classes.addButton)}
+          onClick={() => navigate("/exercises")}
+        >
           Add More Exercises
         </button>
         <button className={classnames(classes.button, classes.startButton)}>
