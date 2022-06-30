@@ -1,11 +1,20 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Stack } from "@mui/material";
 import ExerciseCard from "./ExerciseCard/ExerciseCard";
 import Navbar from "../Navbar/Navbar";
 
 import classes from "./Exercises.module.css";
-import exercises from "./ExerciseData";
+import { getExercises } from "../../features/exercises/exerciseSlice";
 
 export default function Exercises() {
+  const dispatch = useDispatch();
+  const { exercises } = useSelector((state) => state.exercises);
+
+  useEffect(() => {
+    dispatch(getExercises(1));
+  }, []);
+
   return (
     <div className={classes.container}>
       <Navbar />
