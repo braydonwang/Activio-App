@@ -42,7 +42,7 @@ export const exerciseSlice = createSlice({
       .addCase(getExercises.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.posts = action.payload.data;
+        state.exercises = action.payload.data;
         state.currentPage = action.payload.currentPage;
         state.numberOfPages = action.payload.numberOfPages;
       })

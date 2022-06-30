@@ -4,7 +4,7 @@ import classes from "./ExerciseCard.module.css";
 
 export default function ExerciseCard({ exercise }) {
   return (
-    <Link className={classes.cardContainer} to={`/exercise/${exercise.id}`}>
+    <Link className={classes.cardContainer} to={`/exercise/${exercise._id}`}>
       <img
         className={classes.image}
         src={exercise.gifUrl}

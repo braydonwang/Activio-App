@@ -16,6 +16,11 @@
 
 a {
   text-decoration: none;
+  color: inherit;
+}
+
+.option {
+  text-decoration: none;
   margin: 0 25px;
   color: white;
   font-size: 20px;
@@ -24,7 +29,7 @@ a {
   transition: 0.3s;
 }
 
-a:hover {
+.option:hover {
   padding: 10px 15px;
   background-color: rgb(105, 102, 102, 0.3);
 }

@@ -17,23 +17,23 @@ export default function Navbar() {
       </ButtonBase>
       <ul className={classes.optionContainer}>
         <li>
-          <Link className={classes.option} to="/exercises">
-            Exercises
+          <Link to="/exercises">
+            <span className={classes.option}>Exercises</span>
           </Link>
         </li>
         <li>
-          <Link className={classes.option} to="/planner">
-            Planner
+          <Link to="/planner">
+            <span className={classes.option}>Planner</span>
           </Link>
         </li>
         <li>
-          <Link className={classes.option} to="/tracker">
-            Tracker
+          <Link to="/tracker">
+            <span className={classes.option}>Tracker</span>
           </Link>
         </li>
         <li>
-          <Link className={classes.option} to="/explore">
-            Explore
+          <Link to="/explore">
+            <span className={classes.option}>Explore</span>
           </Link>
         </li>
       </ul>

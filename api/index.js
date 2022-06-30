@@ -38,8 +38,6 @@ app.use("/api/users", userRoute);
 app.use("/api/plans", planRoute);
 app.use("/api/exercises", exerciseRoute);
 
-
-
 app.listen("5000", () => {
   console.log("Backend is running.");
 });
