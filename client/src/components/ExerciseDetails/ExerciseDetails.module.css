@@ -5,6 +5,13 @@
   justify-content: center;
 }
 
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .detailContainer {
   width: 80vw;
   background-color: rgba(104, 43, 150, 0.3);

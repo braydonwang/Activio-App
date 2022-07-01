@@ -22,4 +22,15 @@ router.get("/", async (req, res) => {
   }
 });
 
+//GET EXERCISE
+router.get("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const exercise = await Exercise.findById(id);
+    res.status(200).json({ data: exercise });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

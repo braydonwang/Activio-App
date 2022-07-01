@@ -1,20 +1,40 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Stack, Typography, Button } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "@mui/material";
 import Navbar from "../Navbar/Navbar";
+import { CircularProgress } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import classes from "./ExerciseDetails.module.css";
+import { getExercise } from "../../features/exercises/exerciseSlice";
 
-import exercises from "../Exercises/ExerciseData";
 import bodyPartImg from "../../images/body-part.png";
 import equipmentImg from "../../images/equipment.png";
 import targetImg from "../../images/target.png";
 
 export default function ExerciseDetails() {
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const { bodyPart, gifUrl, name, target, equipment } = exercises.find(
-    (exercise) => exercise.id === id
-  );
+  const { exercise, isLoading } = useSelector((state) => state.exercises);
+
+  useEffect(() => {
+    dispatch(getExercise(id));
+  }, [id]);
+
+  if (!exercise) {
+    return null;
+  }
+
+  if (isLoading) {
+    return (
+      <div className={classes.loadingContainer}>
+        <CircularProgress size="7em" />
+      </div>
+    );
+  }
+
+  const { bodyPart, gifUrl, name, target, equipment } = exercise;
 
   const extraDetail = [
     { icon: bodyPartImg, name: bodyPart },

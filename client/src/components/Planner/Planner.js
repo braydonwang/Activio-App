@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../Navbar/Navbar";
 import IconButton from "@mui/material/IconButton";
 import TimerIcon from "@mui/icons-material/Timer";
@@ -8,11 +9,14 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import classes from "./Planner.module.css";
 import classnames from "classnames";
+import { getExercise } from "../../features/exercises/exerciseSlice";
+import axios from "axios";
 
 export default function Planner() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const plan = [
-    { id: "0001", time: "1", sets: "4", reps: "8" },
+    { id: "62bd02d0465663d38d386353", time: "1", sets: "4", reps: "8" },
     { id: "0002", time: "5", sets: "3", reps: "10" },
     { id: "1512", time: "1", sets: "4", reps: "8" },
     { id: "1368", time: "10", sets: "5", reps: "9" },
@@ -32,7 +36,7 @@ export default function Planner() {
       <Navbar />
       <div className={classes.mainContainer}>
         <h1 className={classes.heading}>First Last's Workout Plan</h1>
-        {plan.map((planObj, ind) => {
+        {plan.map(async (planObj, ind) => {
           const { gifUrl, name, id } = exercises.find(
             (exercise) => exercise.id === planObj.id
           );

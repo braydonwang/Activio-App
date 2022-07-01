@@ -3,6 +3,7 @@ import exerciseService from "./exerciseService";
 
 const initialState = {
   exercises: [],
+  exercise: null,
   currentPage: 1,
   numberOfPages: 1,
   isError: false,
@@ -16,6 +17,23 @@ export const getExercises = createAsyncThunk(
   async (page, thunkAPI) => {
     try {
       return await exerciseService.getExercises(page);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getExercise = createAsyncThunk(
+  "exercises/getExercise",
+  async (id, thunkAPI) => {
+    try {
+      return await exerciseService.getExercise(id);
     } catch (error) {
       const message =
         (error.response &&
@@ -47,6 +65,19 @@ export const exerciseSlice = createSlice({
         state.numberOfPages = action.payload.numberOfPages;
       })
       .addCase(getExercises.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getExercise.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getExercise.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.exercise = action.payload.data;
+      })
+      .addCase(getExercise.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
