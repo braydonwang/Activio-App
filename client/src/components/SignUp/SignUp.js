@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ButtonBase from "@mui/material/ButtonBase";
 import logoImg from "../../images/logo.png";
+import { signup } from "../../features/auth/authSlice";
 
 import classes from "./SignUp.module.css";
 
@@ -9,11 +11,18 @@ export default function SignUp() {
   const [signUpData, setSignUpData] = useState({
     firstName: "",
     lastName: "",
+    email: "",
     username: "",
     password: "",
-    password2: "",
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(signup({ formData: signUpData, navigate }));
+  };
 
   return (
     <>
@@ -26,7 +35,7 @@ export default function SignUp() {
       <main className={classes.main}>
         <div className={classes.login}>
           <span className={classes.loginTitle}>SIGN UP</span>
-          <form className={classes.loginForm} onSubmit={() => {}}>
+          <form className={classes.loginForm} onSubmit={handleSubmit}>
             <label>Name</label>
             <span>
               <input
@@ -48,6 +57,16 @@ export default function SignUp() {
                 }
               />
             </span>
+            <label>Email</label>
+            <input
+              type="email"
+              className={classes.loginInput}
+              placeholder="Enter your email"
+              value={signUpData.email}
+              onChange={(e) =>
+                setSignUpData({ ...signUpData, email: e.target.value })
+              }
+            />
             <label>Username</label>
             <input
               type="text"
@@ -66,15 +85,6 @@ export default function SignUp() {
               value={signUpData.password}
               onChange={(e) =>
                 setSignUpData({ ...signUpData, password: e.target.value })
-              }
-            />
-            <input
-              type="password"
-              className={classes.loginInput}
-              placeholder="Confirm Password"
-              value={signUpData.password2}
-              onChange={(e) =>
-                setSignUpData({ ...signUpData, password2: e.target.value })
               }
             />
             <button className={classes.loginButton} type="submit">

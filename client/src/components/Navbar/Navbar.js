@@ -1,11 +1,20 @@
 import { Link, useNavigate } from "react-router-dom";
-import ButtonBase from "@mui/material/ButtonBase";
+import { useDispatch } from "react-redux";
+import { Avatar, ButtonBase } from "@mui/material";
 import logoImg from "../../images/logo.png";
+import { logout } from "../../features/auth/authSlice";
 
 import classes from "./Navbar.module.css";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
 
   return (
     <div className={classes.navContainer}>
@@ -37,9 +46,20 @@ export default function Navbar() {
           </Link>
         </li>
       </ul>
-      <button className={classes.button} onClick={() => navigate("/login")}>
-        Log In
-      </button>
+      {!user ? (
+        <button className={classes.login} onClick={() => navigate("/login")}>
+          Log In
+        </button>
+      ) : (
+        <div className={classes.rightNav}>
+          <Avatar style={{ backgroundColor: "purple" }}>
+            {user.user.name.charAt(0)}
+          </Avatar>
+          <button className={classes.logout} onClick={handleLogout}>
+            Log Out
+          </button>
+        </div>
+      )}
     </div>
   );
 }

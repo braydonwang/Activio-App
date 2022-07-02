@@ -1,13 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import ButtonBase from "@mui/material/ButtonBase";
 import logoImg from "../../images/logo.png";
+import { login } from "../../features/auth/authSlice";
 
 import classes from "./Login.module.css";
 
 export default function Login() {
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(login({ formData: loginData, navigate }));
+  };
 
   return (
     <>
@@ -20,7 +29,7 @@ export default function Login() {
       <main className={classes.main}>
         <div className={classes.login}>
           <span className={classes.loginTitle}>LOGIN</span>
-          <form className={classes.loginForm} onSubmit={() => {}}>
+          <form className={classes.loginForm} onSubmit={handleSubmit}>
             <label>Username</label>
             <input
               type="text"
