@@ -74,28 +74,28 @@ export default function Explore() {
                 </div>
                 <div
                   className={classes.dropDownOptions}
-                  onClick={() => handleChooseCat("life")}
+                  onClick={() => handleChooseCat("aerobic")}
                 >
-                  Life
+                  Aerobic
                 </div>
                 <div
                   className={classes.dropDownOptions}
-                  onClick={() => handleChooseCat("music")}
+                  onClick={() => handleChooseCat("strength")}
                 >
-                  Music
+                  Strength
                 </div>
                 <div
                   className={classes.dropDownOptions}
-                  onClick={() => handleChooseCat("food")}
+                  onClick={() => handleChooseCat("flexibility")}
                 >
-                  Food
+                  Flexibility
                 </div>
                 <div
                   className={classes.dropDownOptions}
-                  onClick={() => handleChooseCat("sport")}
+                  onClick={() => handleChooseCat("balance")}
                   style={{ borderRadius: "0px 0px 10px 10px", borderBottom: "groove" }}
                 >
-                  Sport
+                  Balance
                 </div>
               </div>
             )}
@@ -118,9 +118,15 @@ export default function Explore() {
               <div className={classes.dropDownOptionList}>
                 <div
                   className={classes.dropDownOptions}
-                  onClick={() => handleChooseSort("recent")}
+                  onClick={() => handleChooseSort("newest")}
                 >
-                  Recent
+                  Newest
+                </div>
+                <div
+                  className={classes.dropDownOptions}
+                  onClick={() => handleChooseSort("oldest")}
+                >
+                  Oldest
                 </div>
                 <div
                   className={classes.dropDownOptions}
@@ -142,11 +148,11 @@ export default function Explore() {
             <Link
               to={
                 category && sort
-                  ? `/?cat=${category}sort=${sort}`
+                  ? `/explore/?cat=${category}&sort=${sort}`
                   : category
-                  ? `/?cat=${category}`
+                  ? `/explore/?cat=${category}`
                   : sort
-                  ? `/?sort=${sort}`
+                  ? `/explore/?sort=${sort}`
                   : ""
               }
               className={classes.exploreSearchLink}
