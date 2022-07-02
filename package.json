@@ -1,0 +1,27 @@
+{
+  "name": "activio-app",
+  "version": "1.0.0",
+  "description": "All-in-one Fitness App",
+  "main": "index.js",
+  "scripts": {
+    "server": "npm run start --prefix api",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/braydonwang/Activio-App.git"
+  },
+  "keywords": [
+    "Fitness"
+  ],
+  "author": "Braydon Wang, Dylan Wang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/braydonwang/Activio-App/issues"
+  },
+  "homepage": "https://github.com/braydonwang/Activio-App#readme",
+  "dependencies": {
+    "concurrently": "^7.2.2"
+  }
+}
