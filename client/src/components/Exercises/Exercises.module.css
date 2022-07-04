@@ -1,3 +1,16 @@
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #091524;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(78, 6, 137);
+  border-radius: 20px;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -93,10 +106,24 @@
 }
 
 .dropDownOptionList {
+  z-index: 100;
   width: 100%;
   position: absolute;
   max-height: 200px;
   overflow-y: auto;
+}
+
+.dropDownOptionList::-webkit-scrollbar {
+  width: 12px;
+}
+
+.dropDownOptionList::-webkit-scrollbar-track {
+  background: #091524;
+}
+
+.dropDownOptionList::-webkit-scrollbar-thumb {
+  background-color: #9c27b0;
+  border-radius: 20px;
 }
 
 .dropDownOptions {
@@ -140,7 +167,7 @@
 
   height: 50px;
   width: 300px;
-  background-color: rgb(252, 166, 180);
+  background-color: #bf5af2;
   border-radius: 10px 10px 10px 10px;
   color: white;
   list-style: none;
@@ -153,6 +180,6 @@
 }
 
 .searchButton:hover {
-  background-color: pink;
+  background-color: #8639ac;
   transition: all ease-in-out 0.3s;
 }
