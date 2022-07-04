@@ -58,6 +58,16 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+//GET NUMBER OF PLANS
+router.get("/numPlans", async (req, res) => {
+  try {
+    const total = await Plan.countDocuments({});
+    res.status(200).json(total);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //GET PLAN
 router.get("/:id", async (req, res) => {
   try {
@@ -148,28 +158,24 @@ router.get("/", async (req, res) => {
             title
           });
           */
-          
+
           console.log("hi");
 
           plans = await db.collection("workoutPlans").find({
-            $text:{
+            $text: {
               $search: {
-                index: 'indexSearch',
+                index: "indexSearch",
                 text: {
                   query: title,
                   path: {
-                    wildcard: '*'
-                  }
-                }
-              }
-            }
-          })
-          
+                    wildcard: "*",
+                  },
+                },
+              },
+            },
+          });
 
           console.log(plans);
-          
-
-
         }
       }
     } else {

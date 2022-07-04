@@ -1,20 +1,38 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Avatar, ButtonBase } from "@mui/material";
 import logoImg from "../../images/logo.png";
 import { logout } from "../../features/auth/authSlice";
+import decode from "jwt-decode";
 
 import classes from "./Navbar.module.css";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/");
+    setUser(null);
   };
+
+  useEffect(() => {
+    const token = user?.token;
+
+    if (token) {
+      const decodedToken = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        dispatch(logout());
+        navigate("/");
+        setUser(null);
+      }
+    }
+  }, [location]);
 
   return (
     <div className={classes.navContainer}>
