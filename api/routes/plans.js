@@ -153,11 +153,9 @@ router.get("/", async (req, res) => {
             }).sort({ likeCount: -1 });
           }
         } else {
-          /*
           plans = await Plan.find({
-            title
+            title,
           });
-          */
 
           console.log("hi");
 
