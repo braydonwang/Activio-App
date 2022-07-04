@@ -35,7 +35,6 @@ export default function Explore() {
   useEffect(() => {
     const fetchPlans = async () => {
       const res = await axios.get("/plans" + search);
-      console.log(res.data);
       setPlans(res.data);
     };
     fetchPlans();

@@ -5,6 +5,14 @@
   align-items: center;
 }
 
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .heading {
   text-shadow: -5px 5px 10px rgb(120, 33, 192);
   transition: 0.3s;

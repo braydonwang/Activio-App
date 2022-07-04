@@ -46,6 +46,23 @@ export const getExercise = createAsyncThunk(
   }
 );
 
+export const getExercisesBySearch = createAsyncThunk(
+  "exercises/getExercisesBySearch",
+  async (searchData, thunkAPI) => {
+    try {
+      return await exerciseService.getExercisesBySearch(searchData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const exerciseSlice = createSlice({
   name: "exercise",
   initialState,
@@ -78,6 +95,19 @@ export const exerciseSlice = createSlice({
         state.exercise = action.payload.data;
       })
       .addCase(getExercise.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getExercisesBySearch.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getExercisesBySearch.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.exercises = action.payload.data;
+      })
+      .addCase(getExercisesBySearch.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

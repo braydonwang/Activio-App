@@ -66,8 +66,8 @@ export default function ExerciseDetails() {
               to target your <span style={{ fontWeight: "700" }}>{target}</span>
               .
             </h3>
-            {extraDetail?.map((item) => (
-              <div className={classes.items}>
+            {extraDetail?.map((item, ind) => (
+              <div className={classes.items} key={ind}>
                 <Button
                   sx={{
                     background: "rgb(78, 6, 137)",
