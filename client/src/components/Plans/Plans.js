@@ -5,7 +5,7 @@ export default function Plans({ plans }) {
   return (
     <div className={classes.plans}>
       {plans.map((p) => (
-        <Plan plan={p} />
+        <Plan plan={p} key={p._id}/>
       ))}
     </div>
   );

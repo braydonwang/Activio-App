@@ -143,33 +143,10 @@ router.get("/", async (req, res) => {
             }).sort({ likeCount: -1 });
           }
         } else {
-          /*
           plans = await Plan.find({
             title
           });
-          */
           
-          console.log("hi");
-
-          plans = await db.collection("workoutPlans").find({
-            $text:{
-              $search: {
-                index: 'indexSearch',
-                text: {
-                  query: title,
-                  path: {
-                    wildcard: '*'
-                  }
-                }
-              }
-            }
-          })
-          
-
-          console.log(plans);
-          
-
-
         }
       }
     } else {

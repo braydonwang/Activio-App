@@ -24,9 +24,7 @@ export default function Plan({ plan }) {
             ></i>
             {plan.likeCount}
           </div>
-          <Link to={`/plan/${plan._id}`} className={classes.planLink}>
-            <span className={classes.planTitle}>{plan.title}</span>
-          </Link>
+          <span className={classes.planTitle}>{plan.title}</span>
           <div className={classes.planTemp}></div>
         </div>
         <span className={classes.planDate}>
