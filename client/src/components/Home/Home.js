@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import Navbar from "../Navbar/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
@@ -7,9 +8,20 @@ import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import { faUtensils } from "@fortawesome/free-solid-svg-icons";
 
 import classes from "./Home.module.css";
+import { useEffect } from "react";
+import { numberOfUsers } from "../../features/users/userSlice";
+import { numberOfPlans } from "../../features/plans/planSlice";
 
 export default function Home() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { numUsers } = useSelector((state) => state.users);
+  const { numPlans } = useSelector((state) => state.plans);
+
+  useEffect(() => {
+    dispatch(numberOfUsers());
+    dispatch(numberOfPlans());
+  }, []);
 
   return (
     <div className={classes.mainContainer}>
@@ -32,12 +44,12 @@ export default function Home() {
         </div>
         <div className={classes.stats}>
           <FontAwesomeIcon icon={faUsers} color="white" size="6x" />
-          <h3 className={classes.number}>10</h3>
+          <h3 className={classes.number}>{numUsers}</h3>
           <p className={classes.text}>Active Users</p>
         </div>
         <div className={classes.stats}>
           <FontAwesomeIcon icon={faPersonRunning} color="white" size="6x" />
-          <h3 className={classes.number}>3</h3>
+          <h3 className={classes.number}>{numPlans}</h3>
           <p className={classes.text}>Workout Plans Shared</p>
         </div>
         <div className={classes.stats}>

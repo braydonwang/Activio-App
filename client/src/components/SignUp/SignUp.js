@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ButtonBase from "@mui/material/ButtonBase";
 import logoImg from "../../images/logo.png";
 import { signup } from "../../features/auth/authSlice";
+import { numberOfUsers } from "../../features/users/userSlice";
 
 import classes from "./SignUp.module.css";
 
@@ -21,6 +22,7 @@ export default function SignUp() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    dispatch(numberOfUsers());
     dispatch(signup({ formData: signUpData, navigate }));
   };
 

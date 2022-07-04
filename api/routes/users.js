@@ -47,6 +47,17 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+//GET NUMBER OF USERS
+router.get("/numUsers", async (req, res) => {
+  try {
+    const total = await User.countDocuments({});
+
+    res.status(200).json(total);
+  } catch (error) {
+    res.status(500).json(err);
+  }
+});
+
 //GET USER
 router.get("/:id", async (req, res) => {
   try {
