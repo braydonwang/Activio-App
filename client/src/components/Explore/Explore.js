@@ -34,7 +34,6 @@ export default function Explore() {
   useEffect(() => {
     const fetchPlans = async () => {
       const res = await axios.get("/plans" + search);
-      console.log(res.data);
       setPlans(res.data);
     };
     fetchPlans();
@@ -93,7 +92,10 @@ export default function Explore() {
                 <div
                   className={classes.dropDownOptions}
                   onClick={() => handleChooseCat("balance")}
-                  style={{ borderRadius: "0px 0px 10px 10px", borderBottom: "groove" }}
+                  style={{
+                    borderRadius: "0px 0px 10px 10px",
+                    borderBottom: "groove",
+                  }}
                 >
                   Balance
                 </div>
@@ -137,7 +139,10 @@ export default function Explore() {
                 <div
                   className={classes.dropDownOptions}
                   onClick={() => handleChooseSort("alphabetical")}
-                  style={{ borderRadius: "0px 0px 10px 10px", borderBottom: "groove" }}
+                  style={{
+                    borderRadius: "0px 0px 10px 10px",
+                    borderBottom: "groove",
+                  }}
                 >
                   Alphabetical
                 </div>

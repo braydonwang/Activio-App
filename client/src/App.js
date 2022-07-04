@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 import Home from "./components/Home/Home";
 import Exercises from "./components/Exercises/Exercises";
@@ -8,8 +13,11 @@ import Explore from "./components/Explore/Explore";
 import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
 import ExerciseDetails from "./components/ExerciseDetails/ExerciseDetails";
+import { useSelector } from "react-redux";
 
 export default function App() {
+  const { authData } = useSelector((state) => state.auth);
+
   return (
     <Router>
       <Routes>
@@ -17,9 +25,16 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/exercises" element={<Exercises />} />
+        <Route path="/exercises/search" element={<Exercises />} />
         <Route path="/exercise/:id" element={<ExerciseDetails />} />
-        <Route path="/planner" element={<Planner />} />
-        <Route path="/tracker" element={<Tracker />} />
+        <Route
+          path="/planner"
+          element={!authData ? <Navigate to="/login" replace /> : <Planner />}
+        />
+        <Route
+          path="/tracker"
+          element={!authData ? <Navigate to="/login" replace /> : <Tracker />}
+        />
         <Route path="/explore" element={<Explore />} />
       </Routes>
     </Router>

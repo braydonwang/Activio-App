@@ -15,9 +15,43 @@ router.post("/", async (req, res) => {
 //GET EXERCISES
 router.get("/", async (req, res) => {
   try {
-    const exercise = await Exercise.find();
-    res.status(200).json({ data: exercise, currentPage: 1, numberOfPages: 1 });
+    const { page } = req.query;
+
+    const LIMIT = 16;
+    const startIndex = (Number(page) - 1) * LIMIT;
+    const total = await Exercise.countDocuments({});
+
+    const exercises = await Exercise.find().limit(LIMIT).skip(startIndex);
+
+    res.status(200).json({
+      data: exercises,
+      currentPage: Number(page),
+      numberOfPages: Math.ceil(total / LIMIT),
+    });
   } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//GET EXERCISE BY SEARCH
+router.get("/search", async (req, res) => {
+  try {
+    const { bodyPart, target } = req.query;
+
+    let exercises;
+
+    if (bodyPart && target) {
+      exercises = await Exercise.find({
+        $and: [{ bodyPart }, { target }],
+      });
+    } else if (bodyPart) {
+      exercises = await Exercise.find({ bodyPart });
+    } else {
+      exercises = await Exercise.find({ target });
+    }
+
+    res.status(200).json({ data: exercises });
+  } catch (error) {
     res.status(500).json(err);
   }
 });

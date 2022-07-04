@@ -11,6 +11,7 @@ import classnames from "classnames";
 
 export default function Planner() {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
   const plan = [
     { id: "0001", time: "1", sets: "4", reps: "8" },
     { id: "0002", time: "5", sets: "3", reps: "10" },
@@ -31,7 +32,9 @@ export default function Planner() {
     <>
       <Navbar />
       <div className={classes.mainContainer}>
-        <h1 className={classes.heading}>First Last's Workout Plan</h1>
+        <h1
+          className={classes.heading}
+        >{`${user.user.name}'s Workout Plan`}</h1>
         {plan.map((planObj, ind) => {
           const { gifUrl, name, id } = exercises.find(
             (exercise) => exercise.id === planObj.id

@@ -1,14 +1,12 @@
-import Plan from "../Plan/Plan"
+import Plan from "../Plan/Plan";
 import classes from "./Plans.module.css";
 
-export default function Plans({plans}) {
-    console.log(plans)
+export default function Plans({ plans }) {
   return (
     <div className={classes.plans}>
-      {plans.map(p=>(
+      {plans.map((p) => (
         <Plan plan={p} />
       ))}
-        
     </div>
-  )
+  );
 }

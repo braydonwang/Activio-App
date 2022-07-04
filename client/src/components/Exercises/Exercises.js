@@ -1,19 +1,46 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Stack } from "@mui/material";
+import { Box, CircularProgress, Stack } from "@mui/material";
 import ExerciseCard from "./ExerciseCard/ExerciseCard";
 import Navbar from "../Navbar/Navbar";
 
 import classes from "./Exercises.module.css";
-import { getExercises } from "../../features/exercises/exerciseSlice";
+import {
+  getExercises,
+  getExercisesBySearch,
+} from "../../features/exercises/exerciseSlice";
+import Paginate from "../Paginate/Paginate";
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export default function Exercises() {
   const dispatch = useDispatch();
-  const { exercises } = useSelector((state) => state.exercises);
+  const query = useQuery();
+  const { exercises, currentPage, isLoading } = useSelector(
+    (state) => state.exercises
+  );
+  const page = query.get("page") || 1;
+  const bodyPart = query.get("bodyPart");
+  const target = query.get("target");
 
   useEffect(() => {
-    dispatch(getExercises(1));
-  }, []);
+    if (bodyPart || target) {
+      dispatch(getExercisesBySearch({ bodyPart, target }));
+    } else {
+      dispatch(getExercises(page));
+    }
+  }, [page, bodyPart, target]);
+
+  if (isLoading) {
+    return (
+      <div className={classes.loadingContainer}>
+        <CircularProgress size="7em" />
+      </div>
+    );
+  }
 
   return (
     <div className={classes.container}>
@@ -31,6 +58,7 @@ export default function Exercises() {
           ))}
         </Stack>
       </Box>
+      {!bodyPart && !target && <Paginate page={page} />}
     </div>
   );
 }
