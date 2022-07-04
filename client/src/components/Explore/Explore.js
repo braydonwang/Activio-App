@@ -8,6 +8,7 @@ import Navbar from "../Navbar/Navbar";
 export default function Explore() {
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
+  const [title, setTitle] = useState("");
   const [catDropDown, setCatDropDown] = useState(false);
   const [sortDropDown, setSortDropDown] = useState(false);
   const [plans, setPlans] = useState([]);
@@ -50,6 +51,13 @@ export default function Explore() {
           Discover what others have to share...
         </span>
         <div className={classes.dropDownList}>
+          <input
+            className={classes.titleInput}
+            type="text"
+            placeholder="Search for a title..."
+            autoFocus={true}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <div className={classes.dropDown}>
             <button
               className={classes.dropDownButton}
@@ -93,7 +101,10 @@ export default function Explore() {
                 <div
                   className={classes.dropDownOptions}
                   onClick={() => handleChooseCat("balance")}
-                  style={{ borderRadius: "0px 0px 10px 10px", borderBottom: "groove" }}
+                  style={{
+                    borderRadius: "0px 0px 10px 10px",
+                    borderBottom: "groove",
+                  }}
                 >
                   Balance
                 </div>
@@ -137,7 +148,10 @@ export default function Explore() {
                 <div
                   className={classes.dropDownOptions}
                   onClick={() => handleChooseSort("alphabetical")}
-                  style={{ borderRadius: "0px 0px 10px 10px", borderBottom: "groove" }}
+                  style={{
+                    borderRadius: "0px 0px 10px 10px",
+                    borderBottom: "groove",
+                  }}
                 >
                   Alphabetical
                 </div>
@@ -147,13 +161,21 @@ export default function Explore() {
           <div className={classes.search}>
             <Link
               to={
-                category && sort
+                title && category && sort
+                  ? `/explore/?title=${title}&cat=${category}&sort=${sort}`
+                  : title && category
+                  ? `/explore/?title=${title}&cat=${category}`
+                  : title && sort
+                  ? `/explore/?title=${title}&sort=${sort}`
+                  : category && sort
                   ? `/explore/?cat=${category}&sort=${sort}`
+                  : title
+                  ? `/explore/?title=${title}`
                   : category
                   ? `/explore/?cat=${category}`
                   : sort
                   ? `/explore/?sort=${sort}`
-                  : ""
+                  : ``
               }
               className={classes.exploreSearchLink}
             >
