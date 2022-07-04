@@ -74,8 +74,14 @@ router.get("/", async (req, res) => {
   const catName = req.query.cat;
   const sort = req.query.sort;
 
+  const username = req.query.sort;
+
   try {
     let plans;
+
+    if (username) {
+      plans = await Plan.find({username});
+    }
 
     if (title) {
       if (catName && catName != "all") {
@@ -201,6 +207,17 @@ router.get("/", async (req, res) => {
       }
     }
 
+    res.status(200).json(plans);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//GET USER'S PLANS
+router.get("/user", async (req, res) => {
+  const username = req.query.sort;
+  try {
+    const plans = await Plan.find({username});
     res.status(200).json(plans);
   } catch (err) {
     res.status(500).json(err);
