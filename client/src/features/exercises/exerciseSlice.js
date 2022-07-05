@@ -96,7 +96,9 @@ export const exerciseSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.exercise = action.payload.data;
-        state.similarBodyPart = action.payload.bodyPart.data;
+        state.similarBodyPart = action.payload.bodyPart;
+        state.similarTarget = action.payload.target;
+        state.similarEquipment = action.payload.equipment;
       })
       .addCase(getExercise.rejected, (state, action) => {
         state.isLoading = false;

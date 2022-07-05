@@ -54,7 +54,7 @@ body::-webkit-scrollbar-thumb {
 
 .titleInput {
   height: 35px;
-  width: 350px;
+  width: 13vw;
   margin-right: 30px;
   padding-left: 5px;
   background-color: rgb(29, 26, 58);
@@ -75,14 +75,14 @@ body::-webkit-scrollbar-thumb {
 }
 
 .dropDown {
-  width: 300px;
+  width: 12vw;
   margin-right: 30px;
   position: relative;
 }
 
 .dropDownButton {
   height: 50px;
-  width: 300px;
+  width: 12vw;
   background-color: rgb(29, 26, 58);
   color: white;
   border-radius: 10px 10px 10px 10px;
@@ -151,8 +151,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .search {
-  width: 300px;
-  margin-left: 30px;
+  width: 12vw;
 }
 
 .exploreSearchLink {
@@ -166,7 +165,7 @@ body::-webkit-scrollbar-thumb {
   text-align: center;
 
   height: 50px;
-  width: 300px;
+  width: 12vw;
   background-color: #bf5af2;
   border-radius: 10px 10px 10px 10px;
   color: white;

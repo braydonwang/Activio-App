@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ExerciseCard from "../Exercises/ExerciseCard/ExerciseCard";
@@ -34,8 +34,8 @@ export default function HorizontalScrollbar({ data }) {
       RightArrow={RightArrow}
       className={classes.scrollmenu}
     >
-      {data.map((item) => (
-        <ExerciseCard exercise={item} />
+      {data.map((item, ind) => (
+        <ExerciseCard exercise={item} key={ind} />
       ))}
     </ScrollMenu>
   );

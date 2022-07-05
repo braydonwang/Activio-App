@@ -15,7 +15,13 @@ export default function ExerciseCard({ exercise }) {
   };
 
   return (
-    <Link className={classes.cardContainer} to={`/exercise/${exercise._id}`}>
+    <Link
+      className={classes.cardContainer}
+      to={`/exercise/${exercise._id}`}
+      onClick={() => {
+        window.scrollTo(0, 0);
+      }}
+    >
       <img
         className={classes.image}
         src={exercise.gifUrl}

@@ -13,40 +13,85 @@ const getExercise = async (id) => {
   const bodyPart = await axios.get(
     API_URL + `/search?bodyPart=${data.data.bodyPart}`
   );
+  const target = await axios.get(
+    API_URL + `/search?target=${data.data.target}`
+  );
+  const equipment = await axios.get(
+    API_URL + `/search?equipment=${data.data.equipment}`
+  );
 
-  return { ...data, bodyPart: bodyPart.data };
+  const bodyPartData = bodyPart.data.data.filter((item) => item._id !== id);
+  const targetData = target.data.data.filter((item) => item._id !== id);
+  const equipmentData = equipment.data.data.filter((item) => item._id !== id);
+
+  return {
+    ...data,
+    bodyPart: bodyPartData,
+    target: targetData,
+    equipment: equipmentData,
+  };
 };
 
 const getExercisesBySearch = async (searchData) => {
+  const { exercise, bodyPart, target, equipment } = searchData;
   let res;
-  if (searchData.exercise && searchData.bodyPart && searchData.target) {
+  if (exercise && bodyPart && target && equipment) {
     res = await axios.get(
       API_URL +
-        `/search?searchQuery=${searchData.exercise}&bodyPart=${searchData.bodyPart}&target=${searchData.target}`
+        `/search?searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
     );
-  } else if (searchData.exercise && searchData.bodyPart) {
+  } else if (exercise && bodyPart && equipment) {
     res = await axios.get(
       API_URL +
-        `/search?searchQuery=${searchData.exercise}&bodyPart=${searchData.bodyPart}`
+        `/search?searchQuery=${exercise}&bodyPart=${bodyPart}&equipment=${equipment}`
     );
-  } else if (searchData.exercise && searchData.target) {
+  } else if (exercise && target && equipment) {
     res = await axios.get(
       API_URL +
-        `/search?searchQuery=${searchData.exercise}&target=${searchData.target}`
+        `/search?searchQuery=${exercise}&target=${target}&equipment=${equipment}`
     );
-  } else if (searchData.bodyPart && searchData.target) {
+  } else if (bodyPart && target && equipment) {
     res = await axios.get(
       API_URL +
-        `/search?bodyPart=${searchData.bodyPart}&target=${searchData.target}`
+        `/search?bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
     );
-  } else if (searchData.bodyPart) {
-    res = await axios.get(API_URL + `/search?bodyPart=${searchData.bodyPart}`);
-  } else if (searchData.target) {
-    res = await axios.get(API_URL + `/search?target=${searchData.target}`);
+  } else if (exercise && bodyPart && target) {
+    res = await axios.get(
+      API_URL +
+        `/search?searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}`
+    );
+  } else if (bodyPart && equipment) {
+    res = await axios.get(
+      API_URL + `/search?bodyPart=${bodyPart}&equipment=${equipment}`
+    );
+  } else if (target && equipment) {
+    res = await axios.get(
+      API_URL + `/search?target=${target}&equipment=${equipment}`
+    );
+  } else if (exercise && equipment) {
+    res = await axios.get(
+      API_URL + `/search?searchQuery=${exercise}&equipment=${equipment}`
+    );
+  } else if (exercise && bodyPart) {
+    res = await axios.get(
+      API_URL + `/search?searchQuery=${exercise}&bodyPart=${bodyPart}`
+    );
+  } else if (exercise && target) {
+    res = await axios.get(
+      API_URL + `/search?searchQuery=${exercise}&target=${target}`
+    );
+  } else if (bodyPart && target) {
+    res = await axios.get(
+      API_URL + `/search?bodyPart=${bodyPart}&target=${target}`
+    );
+  } else if (bodyPart) {
+    res = await axios.get(API_URL + `/search?bodyPart=${bodyPart}`);
+  } else if (target) {
+    res = await axios.get(API_URL + `/search?target=${target}`);
+  } else if (equipment) {
+    res = await axios.get(API_URL + `/search?equipment=${equipment}`);
   } else {
-    res = await axios.get(
-      API_URL + `/search?searchQuery=${searchData.exercise}`
-    );
+    res = await axios.get(API_URL + `/search?searchQuery=${exercise}`);
   }
 
   return res.data;

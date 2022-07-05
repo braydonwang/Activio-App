@@ -6,6 +6,7 @@ import ExerciseCard from "./ExerciseCard/ExerciseCard";
 import Navbar from "../Navbar/Navbar";
 import bodyParts from "./BodyPartData";
 import targets from "./TargetData";
+import equipments from "./EquipmentData";
 
 import classes from "./Exercises.module.css";
 import {
@@ -24,30 +25,35 @@ export default function Exercises() {
   const { exercises, isLoading } = useSelector((state) => state.exercises);
   const [bodyPartDropDown, setBodyPartDropDown] = useState(false);
   const [targetDropDown, setTargetDropDown] = useState(false);
+  const [equipmentDropDown, setEquipmentDropDown] = useState(false);
   const [exercise, setExercise] = useState("");
   const [bodyPart, setBodyPart] = useState("");
   const [target, setTarget] = useState("");
-  const page = query.get("page") || 1;
+  const [equipment, setEquipment] = useState("");
   const searchQuery = query.get("searchQuery");
   const bodyPartQuery = query.get("bodyPart");
   const targetQuery = query.get("target");
+  const equipmentQuery = query.get("equipment");
+  const page = query.get("page") || 1;
 
   useEffect(() => {
-    if (searchQuery || bodyPartQuery || targetQuery) {
+    if (searchQuery || bodyPartQuery || targetQuery || equipmentQuery) {
       dispatch(
         getExercisesBySearch({
           exercise: searchQuery,
           bodyPart: bodyPartQuery,
           target: targetQuery,
+          equipment: equipmentQuery,
         })
       );
       setExercise("");
       setBodyPart("");
       setTarget("");
+      setEquipment("");
     } else {
       dispatch(getExercises(page));
     }
-  }, [page, searchQuery, bodyPartQuery, targetQuery]);
+  }, [page, searchQuery, bodyPartQuery, targetQuery, equipmentQuery]);
 
   const handleBodyPartDropDown = () => {
     setBodyPartDropDown(!bodyPartDropDown);
@@ -65,6 +71,15 @@ export default function Exercises() {
   const handleChooseTarget = (target) => {
     setTargetDropDown(false);
     setTarget(target);
+  };
+
+  const handleEquipmentDropDown = () => {
+    setEquipmentDropDown(!equipmentDropDown);
+  };
+
+  const handleChooseEquipment = (equipment) => {
+    setEquipmentDropDown(false);
+    setEquipment(equipment);
   };
 
   if (isLoading) {
@@ -104,10 +119,11 @@ export default function Exercises() {
 
             {bodyPartDropDown && (
               <div className={classes.dropDownOptionList}>
-                {bodyParts.map((part) => (
+                {bodyParts.map((part, ind) => (
                   <div
                     className={classes.dropDownOptions}
                     onClick={() => handleChooseBodyPart(part)}
+                    key={ind}
                   >
                     {part}
                   </div>
@@ -163,11 +179,62 @@ export default function Exercises() {
               </div>
             )}
           </div>
+          <div className={classes.dropDown}>
+            <button
+              className={classes.dropDownButton}
+              onClick={handleEquipmentDropDown}
+              style={{
+                borderRadius: equipmentDropDown
+                  ? "10px 10px 0px 0px"
+                  : "10px 10px 10px 10px",
+              }}
+            >
+              {equipment === "" ? "EQUIPMENT" : equipment}{" "}
+              <i className="downArrow fa-solid fa-caret-down"></i>
+            </button>
+
+            {equipmentDropDown && (
+              <div className={classes.dropDownOptionList}>
+                {equipments.map((equipmentItem) => (
+                  <div
+                    className={classes.dropDownOptions}
+                    onClick={() => handleChooseEquipment(equipmentItem)}
+                  >
+                    {equipmentItem}
+                  </div>
+                ))}
+                <div
+                  className={classes.dropDownOptions}
+                  onClick={() => handleChooseEquipment("wheel roller")}
+                  style={{
+                    borderRadius: "0px 0px 10px 10px",
+                    borderBottom: "groove",
+                  }}
+                >
+                  Wheel Roller
+                </div>
+              </div>
+            )}
+          </div>
           <div className={classes.search}>
             <Link
               to={
-                exercise && bodyPart && target
+                exercise && bodyPart && target && equipment
+                  ? `/exercises/search?searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
+                  : exercise && bodyPart && equipment
+                  ? `/exercises/search?searchQuery=${exercise}&bodyPart=${bodyPart}&equipment=${equipment}`
+                  : exercise && target && equipment
+                  ? `/exercises/search?searchQuery=${exercise}&target=${target}&equipment=${equipment}`
+                  : bodyPart && target && equipment
+                  ? `/exercises/search?bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
+                  : exercise && bodyPart && target
                   ? `/exercises/search?searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}`
+                  : exercise && equipment
+                  ? `/exercises/search?searchQuery=${exercise}&equipment=${equipment}`
+                  : bodyPart && equipment
+                  ? `/exercises/search?bodyPart=${bodyPart}&equipment=${equipment}`
+                  : target && equipment
+                  ? `/exercises/search?target=${target}&equipment=${equipment}`
                   : exercise && bodyPart
                   ? `/exercises/search?searchQuery=${exercise}&bodyPart=${bodyPart}`
                   : exercise && target
@@ -180,6 +247,8 @@ export default function Exercises() {
                   ? `/exercises/search?bodyPart=${bodyPart}`
                   : target
                   ? `/exercises/search?target=${target}`
+                  : equipment
+                  ? `/exercises/search?equipment=${equipment}`
                   : ``
               }
               className={classes.exploreSearchLink}
@@ -201,7 +270,7 @@ export default function Exercises() {
           ))}
         </Stack>
       </Box>
-      {!searchQuery && !bodyPartQuery && !targetQuery && (
+      {!searchQuery && !bodyPartQuery && !targetQuery && !equipmentQuery && (
         <Paginate page={page} />
       )}
     </div>

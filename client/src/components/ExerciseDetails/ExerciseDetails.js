@@ -7,10 +7,7 @@ import { CircularProgress } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import classes from "./ExerciseDetails.module.css";
-import {
-  getExercise,
-  getSimilarBodyPart,
-} from "../../features/exercises/exerciseSlice";
+import { getExercise } from "../../features/exercises/exerciseSlice";
 
 import bodyPartImg from "../../images/body-part.png";
 import equipmentImg from "../../images/equipment.png";
@@ -20,9 +17,13 @@ import HorizontalScrollbar from "../HorizontalScrollbar/HorizontalScrollbar";
 export default function ExerciseDetails() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { exercises, exercise, similarBodyPart, isLoading } = useSelector(
-    (state) => state.exercises
-  );
+  const {
+    exercise,
+    similarBodyPart,
+    similarTarget,
+    similarEquipment,
+    isLoading,
+  } = useSelector((state) => state.exercises);
 
   useEffect(() => {
     dispatch(getExercise(id));
@@ -112,11 +113,11 @@ export default function ExerciseDetails() {
         Similar <span style={{ color: "#5E5CE6" }}>Target Muscle</span>{" "}
         Exercises:
       </h2>
-      <HorizontalScrollbar data={exercises} />
+      <HorizontalScrollbar data={similarTarget} />
       <h2 className={classes.subheading}>
         Similar <span style={{ color: "#60BFF4" }}>Equipment</span> Exercises:
       </h2>
-      <HorizontalScrollbar data={exercises} />
+      <HorizontalScrollbar data={similarEquipment} />
     </main>
   );
 }

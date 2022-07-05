@@ -36,16 +36,80 @@ router.get("/", async (req, res) => {
 //GET EXERCISE BY SEARCH
 router.get("/search", async (req, res) => {
   try {
-    const { searchQuery, bodyPart, target } = req.query;
+    const { searchQuery, bodyPart, target, equipment } = req.query;
 
-    const name = new RegExp(searchQuery, "i");
+    let name;
+
+    if (searchQuery) {
+      name = new RegExp(searchQuery, "i");
+    }
 
     let exercises;
 
-    if (name && bodyPart && bodyPart !== "all" && target && target !== "all") {
+    if (
+      name &&
+      bodyPart &&
+      bodyPart !== "all" &&
+      target &&
+      target !== "all" &&
+      equipment &&
+      equipment !== "all"
+    ) {
+      exercises = await Exercise.find({
+        $and: [{ name }, { bodyPart }, { target }, { equipment }],
+      });
+    } else if (
+      name &&
+      bodyPart &&
+      bodyPart !== "all" &&
+      equipment &&
+      equipment !== "all"
+    ) {
+      exercises = await Exercise.find({
+        $and: [{ name }, { bodyPart }, { equipment }],
+      });
+    } else if (
+      name &&
+      target &&
+      target !== "all" &&
+      equipment &&
+      equipment !== "all"
+    ) {
+      exercises = await Exercise.find({
+        $and: [{ name }, { target }, { equipment }],
+      });
+    } else if (
+      bodyPart &&
+      bodyPart !== "all" &&
+      target &&
+      target !== "all" &&
+      equipment &&
+      equipment !== "all"
+    ) {
+      exercises = await Exercise.find({
+        $and: [{ bodyPart }, { target }, { equipment }],
+      });
+    } else if (
+      name &&
+      bodyPart &&
+      bodyPart !== "all" &&
+      target &&
+      target !== "all"
+    ) {
       exercises = await Exercise.find({
         $and: [{ name }, { bodyPart }, { target }],
       });
+    } else if (
+      bodyPart &&
+      bodyPart !== "all" &&
+      equipment &&
+      equipment !== "all"
+    ) {
+      exercises = await Exercise.find({ bodyPart }, { equipment });
+    } else if (target && target !== "all" && equipment && equipment !== "all") {
+      exercises = await Exercise.find({ target }, { equipment });
+    } else if (name && equipment && equipment !== "all") {
+      exercises = await Exercise.find({ name }, { equipment });
     } else if (name && bodyPart && bodyPart !== "all") {
       exercises = await Exercise.find({
         $and: [{ name }, { bodyPart }],
@@ -58,6 +122,8 @@ router.get("/search", async (req, res) => {
       exercises = await Exercise.find({
         $and: [{ bodyPart }, { target }],
       });
+    } else if (equipment && equipment !== "all") {
+      exercises = await Exercise.find({ equipment });
     } else if (bodyPart && bodyPart !== "all") {
       exercises = await Exercise.find({ bodyPart });
     } else if (target && target !== "all") {
