@@ -121,3 +121,126 @@
 .removeButton:active {
   border-style: outset;
 }
+
+.planPopUp {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20vw;
+  height: 20vw;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #29015c;
+  background: -webkit-linear-gradient(top left, #29015c, #0c012a);
+  background: -moz-linear-gradient(top left, #29015c, #0c012a);
+  background: linear-gradient(to bottom right, #29015c, #0c012a);
+  border-radius: 10px;
+  border-style: outset;
+  border-color: #bf5af2;
+}
+
+.planPopUpBigTitle {
+  font-family: "Inter", sans-serif;
+  font-size: 35px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.planPopUpItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 40%;
+  margin: 10px;
+}
+
+.planPopUpTitle {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.planPopUpInput {
+  height: 80%;
+  width: 30%;
+  background-color: rgb(29, 26, 58);
+  border-style: outset;
+  font-family: "Inter", sans-serif;
+  color: white;
+  border-color: white;
+  text-align: center;
+}
+
+.planPopUpInput::placeholder {
+  color: white;
+  text-align: center;
+}
+.planPopUpInput:focus {
+  outline: 1px solid white;
+}
+
+.popUpButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.popUpConfirmButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 35%;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #bf5af2;
+  background-color: transparent;
+  border-color: #bf5af2;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 30px;
+  transition: 0.3s;
+  margin-top: 15px;
+}
+
+.popUpConfirmButton:hover {
+  background-color: #36074e;
+}
+
+.popUpConfirmButton:active {
+  border-style: outset;
+}
+
+.popUpCancelButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 35%;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #5e5ce6;
+  background-color: transparent;
+  border-color: #5e5ce6;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 15px;
+}
+
+.popUpCancelButton:hover {
+  background-color: #191851;
+}
+
+.popUpCancelButton:active {
+  border-style: outset;
+}
