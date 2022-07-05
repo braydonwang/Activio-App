@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
   try {
     const { page } = req.query;
 
-    const LIMIT = 16;
+    const LIMIT = 12;
     const startIndex = (Number(page) - 1) * LIMIT;
     const total = await Exercise.countDocuments({});
 

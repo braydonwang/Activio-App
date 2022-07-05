@@ -4,6 +4,9 @@ import exerciseService from "./exerciseService";
 const initialState = {
   exercises: [],
   exercise: null,
+  similarBodyPart: [],
+  similarTarget: [],
+  similarEquipment: [],
   currentPage: 1,
   numberOfPages: 1,
   isError: false,
@@ -93,6 +96,7 @@ export const exerciseSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.exercise = action.payload.data;
+        state.similarBodyPart = action.payload.bodyPart.data;
       })
       .addCase(getExercise.rejected, (state, action) => {
         state.isLoading = false;

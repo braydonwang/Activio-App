@@ -10,8 +10,11 @@ const getExercises = async (page) => {
 
 const getExercise = async (id) => {
   const { data } = await axios.get(API_URL + id);
+  const bodyPart = await axios.get(
+    API_URL + `/search?bodyPart=${data.data.bodyPart}`
+  );
 
-  return data;
+  return { ...data, bodyPart: bodyPart.data };
 };
 
 const getExercisesBySearch = async (searchData) => {
