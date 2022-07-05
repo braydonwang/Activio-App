@@ -80,17 +80,23 @@ router.get("/:id", async (req, res) => {
 
 //GET ALL PLANS
 router.get("/", async (req, res) => {
-  const title = req.query.title;
+  const queryTitle = req.query.title;
   const catName = req.query.cat;
   const sort = req.query.sort;
 
   const username = req.query.sort;
 
+  let title;
+
+  if (queryTitle) {
+    title = new RegExp(queryTitle, "i");
+  }
+
   try {
     let plans;
 
     if (username) {
-      plans = await Plan.find({username});
+      plans = await Plan.find({ username });
     }
 
     if (title) {
@@ -98,34 +104,28 @@ router.get("/", async (req, res) => {
         if (sort) {
           if (sort === "alphabetical") {
             plans = await Plan.find({
-              title: {
-                $text: {
-                  $search: title,
-                  $caseSensitive: false,
-                  $diacreticSensitive: false,
-                },
-              },
+              title,
               categories: {
                 $in: [catName],
               },
             }).sort({ title: 1 });
           } else if (sort === "newest") {
             plans = await Plan.find({
-              username,
+              title,
               categories: {
                 $in: [catName],
               },
             }).sort({ createdAt: -1 });
           } else if (sort === "oldest") {
             plans = await Plan.find({
-              username,
+              title,
               categories: {
                 $in: [catName],
               },
             }).sort({ createdAt: 1 });
           } else {
             plans = await Plan.find({
-              username,
+              title,
               categories: {
                 $in: [catName],
               },
@@ -133,7 +133,7 @@ router.get("/", async (req, res) => {
           }
         } else {
           plans = await Plan.find({
-            username,
+            title,
             categories: {
               $in: [catName],
             },
@@ -143,43 +143,25 @@ router.get("/", async (req, res) => {
         if (sort) {
           if (sort === "alphabetical") {
             plans = await Plan.find({
-              username,
+              title,
             }).sort({ title: 1 });
           } else if (sort === "newest") {
             plans = await Plan.find({
-              username,
+              title,
             }).sort({ createdAt: -1 });
           } else if (sort === "oldest") {
             plans = await Plan.find({
-              username,
+              title,
             }).sort({ createdAt: 1 });
           } else {
             plans = await Plan.find({
-              username,
+              title,
             }).sort({ likeCount: -1 });
           }
         } else {
           plans = await Plan.find({
             title,
           });
-
-          console.log("hi");
-
-          plans = await db.collection("workoutPlans").find({
-            $text: {
-              $search: {
-                index: "indexSearch",
-                text: {
-                  query: title,
-                  path: {
-                    wildcard: "*",
-                  },
-                },
-              },
-            },
-          });
-
-          console.log(plans);
         }
       }
     } else {
@@ -244,7 +226,7 @@ router.get("/", async (req, res) => {
 router.get("/user", async (req, res) => {
   const username = req.query.sort;
   try {
-    const plans = await Plan.find({username});
+    const plans = await Plan.find({ username });
     res.status(200).json(plans);
   } catch (err) {
     res.status(500).json(err);
