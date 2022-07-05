@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, CircularProgress, Stack } from "@mui/material";
 import ExerciseCard from "./ExerciseCard/ExerciseCard";
 import Navbar from "../Navbar/Navbar";
+import bodyParts from "./BodyPartData";
+import targets from "./TargetData";
 
 import classes from "./Exercises.module.css";
 import {
@@ -26,61 +28,26 @@ export default function Exercises() {
   const [bodyPart, setBodyPart] = useState("");
   const [target, setTarget] = useState("");
   const page = query.get("page") || 1;
+  const searchQuery = query.get("searchQuery");
   const bodyPartQuery = query.get("bodyPart");
   const targetQuery = query.get("target");
 
-  const bodyParts = [
-    {
-      name: "all",
-      title: "All",
-    },
-    {
-      name: "back",
-      title: "Back",
-    },
-    {
-      name: "cardio",
-      title: "Cardio",
-    },
-    {
-      name: "chest",
-      title: "Chest",
-    },
-    {
-      name: "lower-arms",
-      title: "Lower Arms",
-    },
-    {
-      name: "lower-legs",
-      title: "Lower Legs",
-    },
-    {
-      name: "neck",
-      title: "Neck",
-    },
-    {
-      name: "shoulders",
-      title: "Shoulders",
-    },
-    {
-      name: "upper-arms",
-      title: "Upper Arms",
-    },
-    {
-      name: "upper-legs",
-      title: "Upper Legs",
-    },
-  ];
-
   useEffect(() => {
-    if (bodyPartQuery || targetQuery) {
+    if (searchQuery || bodyPartQuery || targetQuery) {
       dispatch(
-        getExercisesBySearch({ bodyPart: bodyPartQuery, target: targetQuery })
+        getExercisesBySearch({
+          exercise: searchQuery,
+          bodyPart: bodyPartQuery,
+          target: targetQuery,
+        })
       );
+      setExercise("");
+      setBodyPart("");
+      setTarget("");
     } else {
       dispatch(getExercises(page));
     }
-  }, [page, bodyPartQuery, targetQuery]);
+  }, [page, searchQuery, bodyPartQuery, targetQuery]);
 
   const handleBodyPartDropDown = () => {
     setBodyPartDropDown(!bodyPartDropDown);
@@ -140,9 +107,9 @@ export default function Exercises() {
                 {bodyParts.map((part) => (
                   <div
                     className={classes.dropDownOptions}
-                    onClick={() => handleChooseBodyPart(part.name)}
+                    onClick={() => handleChooseBodyPart(part)}
                   >
-                    {part.title}
+                    {part}
                   </div>
                 ))}
 
@@ -175,33 +142,23 @@ export default function Exercises() {
 
             {targetDropDown && (
               <div className={classes.dropDownOptionList}>
+                {targets.map((targetItem) => (
+                  <div
+                    className={classes.dropDownOptions}
+                    onClick={() => handleChooseTarget(targetItem)}
+                  >
+                    {targetItem}
+                  </div>
+                ))}
                 <div
                   className={classes.dropDownOptions}
-                  onClick={() => handleChooseTarget("newest")}
-                >
-                  Newest
-                </div>
-                <div
-                  className={classes.dropDownOptions}
-                  onClick={() => handleChooseTarget("oldest")}
-                >
-                  Oldest
-                </div>
-                <div
-                  className={classes.dropDownOptions}
-                  onClick={() => handleChooseTarget("most liked")}
-                >
-                  Most Liked
-                </div>
-                <div
-                  className={classes.dropDownOptions}
-                  onClick={() => handleChooseTarget("alphabetical")}
+                  onClick={() => handleChooseTarget("upper back")}
                   style={{
                     borderRadius: "0px 0px 10px 10px",
                     borderBottom: "groove",
                   }}
                 >
-                  Alphabetical
+                  Upper Back
                 </div>
               </div>
             )}
@@ -244,7 +201,9 @@ export default function Exercises() {
           ))}
         </Stack>
       </Box>
-      {!bodyPart && !target && <Paginate page={page} />}
+      {!searchQuery && !bodyPartQuery && !targetQuery && (
+        <Paginate page={page} />
+      )}
     </div>
   );
 }

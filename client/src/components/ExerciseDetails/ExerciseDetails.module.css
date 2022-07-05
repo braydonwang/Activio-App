@@ -45,6 +45,12 @@
   text-transform: capitalize;
 }
 
+.subheading {
+  font-size: 1.75rem;
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
 .description {
   font-size: 1vw;
   font-weight: 400;

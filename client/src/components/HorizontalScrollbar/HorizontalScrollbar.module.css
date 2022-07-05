@@ -1,0 +1,11 @@
+.arrow {
+  display: flex;
+  border-radius: 20px;
+  transition: 0.3s;
+  cursor: pointer;
+  align-items: center;
+}
+
+.arrow:hover {
+  background-color: rgba(128, 128, 128, 0.2);
+}

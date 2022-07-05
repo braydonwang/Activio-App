@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
   try {
     const { page } = req.query;
 
-    const LIMIT = 16;
+    const LIMIT = 12;
     const startIndex = (Number(page) - 1) * LIMIT;
     const total = await Exercise.countDocuments({});
 
@@ -36,18 +36,36 @@ router.get("/", async (req, res) => {
 //GET EXERCISE BY SEARCH
 router.get("/search", async (req, res) => {
   try {
-    const { bodyPart, target } = req.query;
+    const { searchQuery, bodyPart, target } = req.query;
+
+    const name = new RegExp(searchQuery, "i");
 
     let exercises;
 
-    if (bodyPart && target) {
+    if (name && bodyPart && bodyPart !== "all" && target && target !== "all") {
+      exercises = await Exercise.find({
+        $and: [{ name }, { bodyPart }, { target }],
+      });
+    } else if (name && bodyPart && bodyPart !== "all") {
+      exercises = await Exercise.find({
+        $and: [{ name }, { bodyPart }],
+      });
+    } else if (name && target && target !== "all") {
+      exercises = await Exercise.find({
+        $and: [{ name }, { target }],
+      });
+    } else if (bodyPart && bodyPart !== "all" && target && target !== "all") {
       exercises = await Exercise.find({
         $and: [{ bodyPart }, { target }],
       });
-    } else if (bodyPart) {
+    } else if (bodyPart && bodyPart !== "all") {
       exercises = await Exercise.find({ bodyPart });
-    } else {
+    } else if (target && target !== "all") {
       exercises = await Exercise.find({ target });
+    } else if (name) {
+      exercises = await Exercise.find({ name });
+    } else {
+      exercises = await Exercise.find({});
     }
 
     res.status(200).json({ data: exercises });
