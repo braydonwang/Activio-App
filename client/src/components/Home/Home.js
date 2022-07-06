@@ -39,7 +39,7 @@ export default function Home() {
       <div className={classes.statOptions}>
         <div className={classes.stats}>
           <FontAwesomeIcon icon={faDumbbell} color="white" size="6x" />
-          <h3 className={classes.number}>500+</h3>
+          <h3 className={classes.number}>1000+</h3>
           <p className={classes.text}>Exercises</p>
         </div>
         <div className={classes.stats}>

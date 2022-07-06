@@ -5,7 +5,6 @@ const initialState = {
   exercises: [],
   exercise: null,
   similarBodyPart: [],
-  similarTarget: [],
   similarEquipment: [],
   currentPage: 1,
   numberOfPages: 1,
@@ -97,7 +96,6 @@ export const exerciseSlice = createSlice({
         state.isSuccess = true;
         state.exercise = action.payload.data;
         state.similarBodyPart = action.payload.bodyPart;
-        state.similarTarget = action.payload.target;
         state.similarEquipment = action.payload.equipment;
       })
       .addCase(getExercise.rejected, (state, action) => {

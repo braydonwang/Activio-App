@@ -13,21 +13,16 @@ const getExercise = async (id) => {
   const bodyPart = await axios.get(
     API_URL + `/search?bodyPart=${data.data.bodyPart}`
   );
-  const target = await axios.get(
-    API_URL + `/search?target=${data.data.target}`
-  );
   const equipment = await axios.get(
     API_URL + `/search?equipment=${data.data.equipment}`
   );
 
   const bodyPartData = bodyPart.data.data.filter((item) => item._id !== id);
-  const targetData = target.data.data.filter((item) => item._id !== id);
   const equipmentData = equipment.data.data.filter((item) => item._id !== id);
 
   return {
     ...data,
     bodyPart: bodyPartData,
-    target: targetData,
     equipment: equipmentData,
   };
 };

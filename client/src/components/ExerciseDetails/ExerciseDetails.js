@@ -17,13 +17,8 @@ import HorizontalScrollbar from "../HorizontalScrollbar/HorizontalScrollbar";
 export default function ExerciseDetails() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const {
-    exercise,
-    similarBodyPart,
-    similarTarget,
-    similarEquipment,
-    isLoading,
-  } = useSelector((state) => state.exercises);
+  const { exercise, similarBodyPart, similarEquipment, isLoading } =
+    useSelector((state) => state.exercises);
 
   const [popUp, setPopUp] = useState(false);
 
@@ -123,12 +118,7 @@ export default function ExerciseDetails() {
         </h2>
         <HorizontalScrollbar data={similarBodyPart} />
         <h2 className={classes.subheading}>
-          Similar <span style={{ color: "#5E5CE6" }}>Target Muscle</span>{" "}
-          Exercises:
-        </h2>
-        <HorizontalScrollbar data={similarTarget} />
-        <h2 className={classes.subheading}>
-          Similar <span style={{ color: "#60BFF4" }}>Equipment</span> Exercises:
+          Similar <span style={{ color: "#5E5CE6" }}>Equipment</span> Exercises:
         </h2>
         <HorizontalScrollbar data={similarEquipment} />
       </main>
