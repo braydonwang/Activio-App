@@ -1,12 +1,9 @@
 .mainContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   padding-bottom: 110px;
 }
 
 .heading {
+  text-align: center;
   text-shadow: -5px 5px 10px rgb(120, 33, 192);
   transition: 0.3s;
   color: #bf5af2;
@@ -33,6 +30,7 @@
   border-color: #5c2379;
   cursor: pointer;
   transition: 0.3s;
+  margin: 0;
 }
 
 .exerciseContainer:hover {
