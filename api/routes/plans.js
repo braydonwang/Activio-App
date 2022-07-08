@@ -1,7 +1,5 @@
 const router = require("express").Router();
-const User = require("../models/User");
 const Plan = require("../models/Plan");
-const { db } = require("../models/Plan");
 
 //CREATE PLAN
 router.post("/", async (req, res) => {

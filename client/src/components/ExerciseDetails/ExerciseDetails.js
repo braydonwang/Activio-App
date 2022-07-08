@@ -13,6 +13,7 @@ import bodyPartImg from "../../images/body-part.png";
 import equipmentImg from "../../images/equipment.png";
 import targetImg from "../../images/target.png";
 import HorizontalScrollbar from "../HorizontalScrollbar/HorizontalScrollbar";
+import axios from "axios";
 
 export default function ExerciseDetails() {
   const dispatch = useDispatch();
@@ -45,6 +46,13 @@ export default function ExerciseDetails() {
     { icon: targetImg, name: target },
     { icon: equipmentImg, name: equipment },
   ];
+
+  const handleAddExercise = () => {
+    //const prevPlan = await axios.get("/plans");
+    //await axios.put("/plansDraft")
+    
+    setPopUp(false);
+  }
 
   return (
     <>
@@ -141,7 +149,7 @@ export default function ExerciseDetails() {
           <span className={classes.popUpButton}>
             <button
               className={classes.popUpConfirmButton}
-              onClick={() => setPopUp(false)}
+              onClick={handleAddExercise}
             >
               <AddCircleIcon style={{ marginRight: "3px", fontSize: "18px" }} />{" "}
               Confirm
