@@ -17,8 +17,12 @@ const getExercise = async (id) => {
     API_URL + `/search?equipment=${data.data.equipment}`
   );
 
-  const bodyPartData = bodyPart.data.data.filter((item) => item._id !== id);
-  const equipmentData = equipment.data.data.filter((item) => item._id !== id);
+  const bodyPartData = bodyPart.data.data
+    .filter((item) => item._id !== id)
+    .slice(0, 10);
+  const equipmentData = equipment.data.data
+    .filter((item) => item._id !== id)
+    .slice(0, 10);
 
   return {
     ...data,

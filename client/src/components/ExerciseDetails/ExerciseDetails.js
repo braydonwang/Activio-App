@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import Navbar from "../Navbar/Navbar";
@@ -8,20 +8,27 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import classes from "./ExerciseDetails.module.css";
 import { getExercise } from "../../features/exercises/exerciseSlice";
+import { updatePlanDraft } from "../../features/planDrafts/planDraftSlice";
 
 import bodyPartImg from "../../images/body-part.png";
 import equipmentImg from "../../images/equipment.png";
 import targetImg from "../../images/target.png";
 import HorizontalScrollbar from "../HorizontalScrollbar/HorizontalScrollbar";
-import axios from "axios";
 
 export default function ExerciseDetails() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const { exercise, similarBodyPart, similarEquipment, isLoading } =
     useSelector((state) => state.exercises);
+  const { authData } = useSelector((state) => state.auth);
 
   const [popUp, setPopUp] = useState(false);
+  const [formData, setFormData] = useState({
+    time: "",
+    sets: "",
+    reps: "",
+  });
 
   useEffect(() => {
     dispatch(getExercise(id));
@@ -48,11 +55,27 @@ export default function ExerciseDetails() {
   ];
 
   const handleAddExercise = () => {
-    //const prevPlan = await axios.get("/plans");
-    //await axios.put("/plansDraft")
-    
+    dispatch(
+      updatePlanDraft({
+        data: {
+          username: authData.user.username,
+          exercise: {
+            ...formData,
+            id,
+            gifUrl,
+            name,
+          },
+        },
+        navigate,
+      })
+    );
+    setFormData({
+      time: "",
+      sets: "",
+      reps: "",
+    });
     setPopUp(false);
-  }
+  };
 
   return (
     <>
@@ -136,15 +159,39 @@ export default function ExerciseDetails() {
           <span className={classes.planPopUpBigTitle}>ADD TO PLAN</span>
           <div className={classes.planPopUpItem}>
             <span className={classes.planPopUpTitle}>TIME(S)</span>
-            <input className={classes.planPopUpInput} placeholder="0" />
+            <input
+              maxLength={3}
+              className={classes.planPopUpInput}
+              placeholder="0"
+              value={formData.time}
+              onChange={(e) =>
+                setFormData({ ...formData, time: e.target.value })
+              }
+            />
           </div>
           <div className={classes.planPopUpItem}>
             <span className={classes.planPopUpTitle}>SETS</span>
-            <input className={classes.planPopUpInput} placeholder="0" />
+            <input
+              maxLength={3}
+              className={classes.planPopUpInput}
+              placeholder="0"
+              value={formData.sets}
+              onChange={(e) =>
+                setFormData({ ...formData, sets: e.target.value })
+              }
+            />
           </div>
           <div className={classes.planPopUpItem}>
             <span className={classes.planPopUpTitle}>REPS</span>
-            <input className={classes.planPopUpInput} placeholder="0" />
+            <input
+              className={classes.planPopUpInput}
+              placeholder="0"
+              maxLength={3}
+              value={formData.reps}
+              onChange={(e) =>
+                setFormData({ ...formData, reps: e.target.value })
+              }
+            />
           </div>
           <span className={classes.popUpButton}>
             <button
@@ -156,7 +203,14 @@ export default function ExerciseDetails() {
             </button>
             <button
               className={classes.popUpCancelButton}
-              onClick={() => setPopUp(false)}
+              onClick={() => {
+                setPopUp(false);
+                setFormData({
+                  time: "",
+                  sets: "",
+                  reps: "",
+                });
+              }}
             >
               <RemoveCircleIcon
                 style={{ marginRight: "3px", fontSize: "18px" }}

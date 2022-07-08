@@ -1,38 +1,38 @@
 const mongoose = require("mongoose");
 const WorkoutPlanSchema = new mongoose.Schema(
   {
-    title:{
-        type:String,
-        required:true,
+    title: {
+      type: String,
+      required: true,
     },
-    desc:{
-        type:String,
-        required:true
+    desc: {
+      type: String,
+      required: true,
     },
-    photo:{
-        type:String,
-        required:false
+    photo: {
+      type: String,
+      required: false,
     },
-    username:{
-        type:String,
-        required:true
+    username: {
+      type: String,
+      required: true,
     },
-    categories:{
-        type:String,
-        required:true
+    categories: {
+      type: String,
+      required: true,
     },
-    likeCount:{
-        type:Number,
-        required:true
+    likeCount: {
+      type: Number,
+      required: true,
     },
-    timeInterval:{
-        type:Number,
-        rquired:true
+    timeInterval: {
+      type: Number,
+      rquired: true,
     },
-    exercises:{
-        type:[Number],
-        required:true
-    }
+    exercises: {
+      type: [String],
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -1,90 +1,64 @@
 const router = require("express").Router();
 const PlanDraft = require("../models/PlanDraft");
 
-//CREATE PLAN
-router.post("/", async (req, res) => {
-  const newPlan = new PlanDraft(req.body);
+//GET PLAN DRAFT
+router.get("/:username", async (req, res) => {
   try {
-    const savedPlan = await newPlan.save();
-    res.status(200).json(savedPlan);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//UPDATE PLAN
-router.put("/:id", async (req, res) => {
-  try {
-    const plan = await PlanDraft.findById(req.params.id);
-    if (plan.username === req.body.username) {
-      try {
-        const updatedPlan = await PlanDraft.findByIdAndUpdate(
-          req.params.id,
-          {
-            $set: req.body,
-          },
-          { new: true }
-        );
-        res.status(200).json(updatedPlan);
-      } catch (err) {
-        res.status(500).json(err);
-      }
-    } else {
-      res.status(401).json("You can update only your workout plan!");
-    }
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//DELETE PLAN
-router.delete("/:id", async (req, res) => {
-  try {
-    const plan = await PlanDraft.findById(req.params.id);
-    if (plan.username === req.body.username) {
-      try {
-        await plan.delete();
-        res.status(200).json("Workout plan has been deleted...");
-      } catch (err) {
-        res.status(500).json(err);
-      }
-    } else {
-      res.status(401).json("You can delete only your workout plan!");
-    }
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//GET NUMBER OF PLANS
-router.get("/numPlans", async (req, res) => {
-  try {
-    const total = await PlanDraft.countDocuments({});
-    res.status(200).json(total);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//GET PLAN
-router.get("/:id", async (req, res) => {
-  try {
-    const plan = await PlanDraft.findById(req.params.id);
+    const plan = await PlanDraft.findOne({ username: req.params.username });
     res.status(200).json(plan);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//GET USER'S PLANS
-router.get("/user", async (req, res) => {
-  const username = req.query.sort;
+//CREATE PLAN
+router.post("/", async (req, res) => {
+  const newPlan = new PlanDraft({ username: req.body.username, exercises: [] });
   try {
-    const plans = await PlanDraft.find({ username });
-    res.status(200).json(plans);
+    const savedPlan = await newPlan.save();
+    res.status(200).json(savedPlan);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
+});
+
+//UPDATE EXERCISE IN DRAFT PLAN
+router.put("/update", async (req, res) => {
+  const { username, exercise } = req.body;
+  const plan = await PlanDraft.findOne({ username });
+
+  const index = plan.exercises
+    .map((item) => item.id)
+    .findIndex((id) => id === exercise.id);
+
+  if (index === -1) {
+    plan.exercises.push(exercise);
+  } else {
+    plan.exercises = plan.exercises.map((item) =>
+      item.id === exercise.id ? exercise : item
+    );
+  }
+
+  const updatedPlan = await PlanDraft.findOneAndUpdate({ username }, plan, {
+    new: true,
+  });
+
+  res.status(200).json(updatedPlan);
+});
+
+//REMOVE EXERCISE IN DRAFT PLAN
+router.put("/remove", async (req, res) => {
+  const { username, exercise } = req.body;
+  const plan = await PlanDraft.findOne({ username });
+
+  plan.exercises = plan.exercises.filter((item) => item.id !== exercise.id);
+
+  const updatedPlan = await PlanDraft.findOneAndUpdate({ username }, plan, {
+    new: true,
+  });
+
+  res.status(200).json(updatedPlan);
 });
 
 module.exports = router;

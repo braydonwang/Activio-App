@@ -5,6 +5,7 @@ import ButtonBase from "@mui/material/ButtonBase";
 import logoImg from "../../images/logo.png";
 import { signup } from "../../features/auth/authSlice";
 import { numberOfUsers } from "../../features/users/userSlice";
+import { createPlanDraft } from "../../features/planDrafts/planDraftSlice";
 
 import classes from "./SignUp.module.css";
 
@@ -24,6 +25,7 @@ export default function SignUp() {
 
     dispatch(numberOfUsers());
     dispatch(signup({ formData: signUpData, navigate }));
+    dispatch(createPlanDraft({ username: signUpData.username }));
   };
 
   return (
