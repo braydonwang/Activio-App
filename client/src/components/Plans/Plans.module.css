@@ -1,6 +1,13 @@
-.plans{
-    flex: 9;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 20px;
+.plans {
+  flex: 9;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
 }

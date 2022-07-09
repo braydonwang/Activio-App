@@ -1,0 +1,10 @@
+.heading {
+  text-align: center;
+  text-shadow: -5px 5px 10px rgb(120, 33, 192);
+  transition: 0.3s;
+  color: #bf5af2;
+  opacity: 0.8;
+  font-size: 4.5vw;
+  font-weight: 900;
+  margin: 40px 0 0 0;
+}

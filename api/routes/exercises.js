@@ -105,11 +105,11 @@ router.get("/search", async (req, res) => {
       equipment &&
       equipment !== "all"
     ) {
-      exercises = await Exercise.find({ bodyPart }, { equipment });
+      exercises = await Exercise.find({ $and: [{ bodyPart }, { equipment }] });
     } else if (target && target !== "all" && equipment && equipment !== "all") {
-      exercises = await Exercise.find({ target }, { equipment });
+      exercises = await Exercise.find({ $and: [{ target }, { equipment }] });
     } else if (name && equipment && equipment !== "all") {
-      exercises = await Exercise.find({ name }, { equipment });
+      exercises = await Exercise.find({ $and: [{ name }, { equipment }] });
     } else if (name && bodyPart && bodyPart !== "all") {
       exercises = await Exercise.find({
         $and: [{ name }, { bodyPart }],

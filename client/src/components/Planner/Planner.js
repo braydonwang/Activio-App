@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ResponsiveGridLayout from "react-grid-layout";
+import { CircularProgress } from "@mui/material";
 import "/node_modules/react-grid-layout/css/styles.css";
 import Navbar from "../Navbar/Navbar";
 import IconButton from "@mui/material/IconButton";
@@ -31,7 +32,7 @@ const getWindowDimensions = () => {
 export default function Planner() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { planExercises } = useSelector((state) => state.planDrafts);
+  const { isLoading, planExercises } = useSelector((state) => state.planDrafts);
   const user = JSON.parse(localStorage.getItem("user"));
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
@@ -98,6 +99,14 @@ export default function Planner() {
     );
     setPopUp(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className={classes.loadingContainer}>
+        <CircularProgress size="7em" />
+      </div>
+    );
+  }
 
   return (
     <>
