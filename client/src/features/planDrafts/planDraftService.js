@@ -13,8 +13,8 @@ const createPlanDraft = async (username) => {
 };
 
 const updatePlanDraft = async (planData) => {
-  const { data } = await axios.put(API_URL + "update", planData.data);
   planData.navigate("/planner");
+  const { data } = await axios.put(API_URL + "update", planData.data);
   return data;
 };
 

@@ -26,32 +26,37 @@ export default function Exercises() {
   const [bodyPartDropDown, setBodyPartDropDown] = useState(false);
   const [targetDropDown, setTargetDropDown] = useState(false);
   const [equipmentDropDown, setEquipmentDropDown] = useState(false);
-  const [exercise, setExercise] = useState("");
-  const [bodyPart, setBodyPart] = useState("");
-  const [target, setTarget] = useState("");
-  const [equipment, setEquipment] = useState("");
   const searchQuery = query.get("searchQuery");
   const bodyPartQuery = query.get("bodyPart");
   const targetQuery = query.get("target");
   const equipmentQuery = query.get("equipment");
+  const [exercise, setExercise] = useState("");
+  const [bodyPart, setBodyPart] = useState("");
+  const [target, setTarget] = useState("");
+  const [equipment, setEquipment] = useState("");
   const page = query.get("page") || 1;
 
   useEffect(() => {
     if (searchQuery || bodyPartQuery || targetQuery || equipmentQuery) {
       dispatch(
         getExercisesBySearch({
+          page: page,
           exercise: searchQuery,
           bodyPart: bodyPartQuery,
           target: targetQuery,
           equipment: equipmentQuery,
         })
       );
+      setExercise(searchQuery ? searchQuery : "");
+      setBodyPart(bodyPartQuery ? bodyPartQuery : "");
+      setTarget(targetQuery ? targetQuery : "");
+      setEquipment(equipmentQuery ? equipmentQuery : "");
+    } else {
+      dispatch(getExercises(page));
       setExercise("");
       setBodyPart("");
       setTarget("");
       setEquipment("");
-    } else {
-      dispatch(getExercises(page));
     }
   }, [page, searchQuery, bodyPartQuery, targetQuery, equipmentQuery]);
 
@@ -101,6 +106,7 @@ export default function Exercises() {
             type="text"
             placeholder="Search for an exercise..."
             autoFocus={true}
+            value={exercise}
             onChange={(e) => setExercise(e.target.value)}
           />
           <div className={classes.dropDown}>
@@ -220,35 +226,35 @@ export default function Exercises() {
             <Link
               to={
                 exercise && bodyPart && target && equipment
-                  ? `/exercises/search?searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
+                  ? `/exercises/search?page=1&searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
                   : exercise && bodyPart && equipment
-                  ? `/exercises/search?searchQuery=${exercise}&bodyPart=${bodyPart}&equipment=${equipment}`
+                  ? `/exercises/search?page=1&searchQuery=${exercise}&bodyPart=${bodyPart}&equipment=${equipment}`
                   : exercise && target && equipment
-                  ? `/exercises/search?searchQuery=${exercise}&target=${target}&equipment=${equipment}`
+                  ? `/exercises/search?page=1&searchQuery=${exercise}&target=${target}&equipment=${equipment}`
                   : bodyPart && target && equipment
-                  ? `/exercises/search?bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
+                  ? `/exercises/search?page=1&bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
                   : exercise && bodyPart && target
-                  ? `/exercises/search?searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}`
+                  ? `/exercises/search?page=1&searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}`
                   : exercise && equipment
-                  ? `/exercises/search?searchQuery=${exercise}&equipment=${equipment}`
+                  ? `/exercises/search?page=1&searchQuery=${exercise}&equipment=${equipment}`
                   : bodyPart && equipment
-                  ? `/exercises/search?bodyPart=${bodyPart}&equipment=${equipment}`
+                  ? `/exercises/search?page=1&bodyPart=${bodyPart}&equipment=${equipment}`
                   : target && equipment
-                  ? `/exercises/search?target=${target}&equipment=${equipment}`
+                  ? `/exercises/search?page=1&target=${target}&equipment=${equipment}`
                   : exercise && bodyPart
-                  ? `/exercises/search?searchQuery=${exercise}&bodyPart=${bodyPart}`
+                  ? `/exercises/search?page=1&searchQuery=${exercise}&bodyPart=${bodyPart}`
                   : exercise && target
-                  ? `/exercises/search?searchQuery=${exercise}&target=${target}`
+                  ? `/exercises/search?page=1&searchQuery=${exercise}&target=${target}`
                   : bodyPart && target
-                  ? `/exercises/search?bodyPart=${bodyPart}&target=${target}`
+                  ? `/exercises/search?page=1&bodyPart=${bodyPart}&target=${target}`
                   : exercise
-                  ? `/exercises/search?searchQuery=${exercise}`
+                  ? `/exercises/search?page=1&searchQuery=${exercise}`
                   : bodyPart
-                  ? `/exercises/search?bodyPart=${bodyPart}`
+                  ? `/exercises/search?page=1&&bodyPart=${bodyPart}`
                   : target
-                  ? `/exercises/search?target=${target}`
+                  ? `/exercises/search?page=1&target=${target}`
                   : equipment
-                  ? `/exercises/search?equipment=${equipment}`
+                  ? `/exercises/search?page=1&equipment=${equipment}`
                   : ``
               }
               className={classes.exploreSearchLink}
@@ -270,9 +276,7 @@ export default function Exercises() {
           ))}
         </Stack>
       </Box>
-      {!searchQuery && !bodyPartQuery && !targetQuery && !equipmentQuery && (
-        <Paginate page={page} />
-      )}
+      <Paginate page={page} />
     </div>
   );
 }

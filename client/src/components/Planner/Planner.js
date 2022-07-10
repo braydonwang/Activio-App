@@ -58,14 +58,6 @@ export default function Planner() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const layout = [
-    { i: "0001", x: 0, y: 0, w: 1, h: 1 },
-    { i: "0002", x: 0, y: 1, w: 1, h: 1 },
-    { i: "1512", x: 0, y: 2, w: 1, h: 1 },
-    { i: "1368", x: 0, y: 3, w: 1, h: 1 },
-    { i: "3293", x: 0, y: 4, w: 1, h: 1 },
-  ];
-
   const handleRemove = (e, id) => {
     e.stopPropagation();
     dispatch(
@@ -123,7 +115,6 @@ export default function Planner() {
 
           <ResponsiveGridLayout
             margin={[0, 0]}
-            layout={layout}
             cols={1}
             rowHeight={250}
             width={windowDimensions.width - 18}

@@ -1,11 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Pagination, PaginationItem } from "@mui/material";
 
 import classes from "./Paginate.module.css";
 
 export default function Paginate({ page }) {
+  const location = useLocation();
   const { numberOfPages } = useSelector((state) => state.exercises);
+
+  let urlFirst = location.pathname;
+  const searchLocation = location.search.split("&");
+
+  let urlSecond = "";
+
+  for (let i = 1; i < searchLocation.length; i++) {
+    urlSecond += "&" + searchLocation[i];
+  }
 
   return (
     <Pagination
@@ -20,7 +30,7 @@ export default function Paginate({ page }) {
           style={{ color: "white", marginTop: "10px", marginBottom: "20px" }}
           {...item}
           component={Link}
-          to={`/exercises?page=${item.page}`}
+          to={`${urlFirst}?page=${item.page}${urlSecond}`}
         />
       )}
     />

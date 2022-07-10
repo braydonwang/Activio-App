@@ -36,7 +36,11 @@ router.get("/", async (req, res) => {
 //GET EXERCISE BY SEARCH
 router.get("/search", async (req, res) => {
   try {
-    const { searchQuery, bodyPart, target, equipment } = req.query;
+    const { page, searchQuery, bodyPart, target, equipment } = req.query;
+
+    const LIMIT = 24;
+    const startIndex = (Number(page) - 1) * LIMIT;
+    let total;
 
     let name;
 
@@ -57,6 +61,11 @@ router.get("/search", async (req, res) => {
     ) {
       exercises = await Exercise.find({
         $and: [{ name }, { bodyPart }, { target }, { equipment }],
+      })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
+        $and: [{ name }, { bodyPart }, { target }, { equipment }],
       });
     } else if (
       name &&
@@ -66,6 +75,11 @@ router.get("/search", async (req, res) => {
       equipment !== "all"
     ) {
       exercises = await Exercise.find({
+        $and: [{ name }, { bodyPart }, { equipment }],
+      })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
         $and: [{ name }, { bodyPart }, { equipment }],
       });
     } else if (
@@ -77,6 +91,11 @@ router.get("/search", async (req, res) => {
     ) {
       exercises = await Exercise.find({
         $and: [{ name }, { target }, { equipment }],
+      })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
+        $and: [{ name }, { equipment }, { target }],
       });
     } else if (
       bodyPart &&
@@ -88,6 +107,11 @@ router.get("/search", async (req, res) => {
     ) {
       exercises = await Exercise.find({
         $and: [{ bodyPart }, { target }, { equipment }],
+      })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
+        $and: [{ equipment }, { bodyPart }, { target }],
       });
     } else if (
       name &&
@@ -98,6 +122,11 @@ router.get("/search", async (req, res) => {
     ) {
       exercises = await Exercise.find({
         $and: [{ name }, { bodyPart }, { target }],
+      })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
+        $and: [{ name }, { bodyPart }, { target }],
       });
     } else if (
       bodyPart &&
@@ -105,38 +134,82 @@ router.get("/search", async (req, res) => {
       equipment &&
       equipment !== "all"
     ) {
-      exercises = await Exercise.find({ $and: [{ bodyPart }, { equipment }] });
+      exercises = await Exercise.find({ $and: [{ bodyPart }, { equipment }] })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
+        $and: [{ bodyPart }, { equipment }],
+      });
     } else if (target && target !== "all" && equipment && equipment !== "all") {
-      exercises = await Exercise.find({ $and: [{ target }, { equipment }] });
+      exercises = await Exercise.find({ $and: [{ target }, { equipment }] })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
+        $and: [{ equipment }, { target }],
+      });
     } else if (name && equipment && equipment !== "all") {
-      exercises = await Exercise.find({ $and: [{ name }, { equipment }] });
+      exercises = await Exercise.find({ $and: [{ name }, { equipment }] })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
+        $and: [{ name }, { equipment }],
+      });
     } else if (name && bodyPart && bodyPart !== "all") {
       exercises = await Exercise.find({
         $and: [{ name }, { bodyPart }],
+      })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
+        $and: [{ bodyPart }, { name }],
       });
     } else if (name && target && target !== "all") {
       exercises = await Exercise.find({
+        $and: [{ name }, { target }],
+      })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
         $and: [{ name }, { target }],
       });
     } else if (bodyPart && bodyPart !== "all" && target && target !== "all") {
       exercises = await Exercise.find({
         $and: [{ bodyPart }, { target }],
+      })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({
+        $and: [{ bodyPart }, { target }],
       });
     } else if (equipment && equipment !== "all") {
-      exercises = await Exercise.find({ equipment });
+      exercises = await Exercise.find({ equipment })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({ equipment });
     } else if (bodyPart && bodyPart !== "all") {
-      exercises = await Exercise.find({ bodyPart });
+      exercises = await Exercise.find({ bodyPart })
+        .limit(LIMIT)
+        .skip(startIndex);
+      total = await Exercise.countDocuments({ bodyPart });
     } else if (target && target !== "all") {
-      exercises = await Exercise.find({ target });
+      exercises = await Exercise.find({ target }).limit(LIMIT).skip(startIndex);
+      total = await Exercise.countDocuments({ target });
     } else if (name) {
-      exercises = await Exercise.find({ name });
+      exercises = await Exercise.find({ name }).limit(LIMIT).skip(startIndex);
+      total = await Exercise.countDocuments({ name });
     } else {
-      exercises = await Exercise.find({});
+      exercises = await Exercise.find({}).limit(LIMIT).skip(startIndex);
+      total = await Exercise.countDocuments({});
     }
 
-    res.status(200).json({ data: exercises });
+    res.status(200).json({
+      data: exercises,
+      currentPage: Number(page),
+      numberOfPages: Math.ceil(total / LIMIT),
+    });
   } catch (error) {
-    res.status(500).json(err);
+    console.log(error);
+    res.status(500).json(error);
   }
 });
 

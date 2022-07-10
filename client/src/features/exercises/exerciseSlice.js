@@ -110,6 +110,8 @@ export const exerciseSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.exercises = action.payload.data;
+        state.currentPage = action.payload.currentPage;
+        state.numberOfPages = action.payload.numberOfPages;
       })
       .addCase(getExercisesBySearch.rejected, (state, action) => {
         state.isLoading = false;

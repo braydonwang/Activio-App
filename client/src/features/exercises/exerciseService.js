@@ -11,10 +11,10 @@ const getExercises = async (page) => {
 const getExercise = async (id) => {
   const { data } = await axios.get(API_URL + id);
   const bodyPart = await axios.get(
-    API_URL + `/search?bodyPart=${data.data.bodyPart}`
+    API_URL + `search?bodyPart=${data.data.bodyPart}`
   );
   const equipment = await axios.get(
-    API_URL + `/search?equipment=${data.data.equipment}`
+    API_URL + `search?equipment=${data.data.equipment}`
   );
 
   const bodyPartData = bodyPart.data.data
@@ -32,65 +32,72 @@ const getExercise = async (id) => {
 };
 
 const getExercisesBySearch = async (searchData) => {
-  const { exercise, bodyPart, target, equipment } = searchData;
+  const { page, exercise, bodyPart, target, equipment } = searchData;
   let res;
   if (exercise && bodyPart && target && equipment) {
     res = await axios.get(
       API_URL +
-        `/search?searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
+        `search?page=${page}&searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
     );
   } else if (exercise && bodyPart && equipment) {
     res = await axios.get(
       API_URL +
-        `/search?searchQuery=${exercise}&bodyPart=${bodyPart}&equipment=${equipment}`
+        `search?page=${page}&searchQuery=${exercise}&bodyPart=${bodyPart}&equipment=${equipment}`
     );
   } else if (exercise && target && equipment) {
     res = await axios.get(
       API_URL +
-        `/search?searchQuery=${exercise}&target=${target}&equipment=${equipment}`
+        `search?page=${page}&searchQuery=${exercise}&target=${target}&equipment=${equipment}`
     );
   } else if (bodyPart && target && equipment) {
     res = await axios.get(
       API_URL +
-        `/search?bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
+        `search?page=${page}&bodyPart=${bodyPart}&target=${target}&equipment=${equipment}`
     );
   } else if (exercise && bodyPart && target) {
     res = await axios.get(
       API_URL +
-        `/search?searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}`
+        `search?page=${page}&searchQuery=${exercise}&bodyPart=${bodyPart}&target=${target}`
     );
   } else if (bodyPart && equipment) {
     res = await axios.get(
-      API_URL + `/search?bodyPart=${bodyPart}&equipment=${equipment}`
+      API_URL +
+        `search?page=${page}&bodyPart=${bodyPart}&equipment=${equipment}`
     );
   } else if (target && equipment) {
     res = await axios.get(
-      API_URL + `/search?target=${target}&equipment=${equipment}`
+      API_URL + `search?page=${page}&target=${target}&equipment=${equipment}`
     );
   } else if (exercise && equipment) {
     res = await axios.get(
-      API_URL + `/search?searchQuery=${exercise}&equipment=${equipment}`
+      API_URL +
+        `search?page=${page}&searchQuery=${exercise}&equipment=${equipment}`
     );
   } else if (exercise && bodyPart) {
     res = await axios.get(
-      API_URL + `/search?searchQuery=${exercise}&bodyPart=${bodyPart}`
+      API_URL +
+        `search?page=${page}&searchQuery=${exercise}&bodyPart=${bodyPart}`
     );
   } else if (exercise && target) {
     res = await axios.get(
-      API_URL + `/search?searchQuery=${exercise}&target=${target}`
+      API_URL + `search?page=${page}&searchQuery=${exercise}&target=${target}`
     );
   } else if (bodyPart && target) {
     res = await axios.get(
-      API_URL + `/search?bodyPart=${bodyPart}&target=${target}`
+      API_URL + `search?page=${page}&bodyPart=${bodyPart}&target=${target}`
     );
   } else if (bodyPart) {
-    res = await axios.get(API_URL + `/search?bodyPart=${bodyPart}`);
+    res = await axios.get(API_URL + `search?page=${page}&bodyPart=${bodyPart}`);
   } else if (target) {
-    res = await axios.get(API_URL + `/search?target=${target}`);
+    res = await axios.get(API_URL + `search?page=${page}&target=${target}`);
   } else if (equipment) {
-    res = await axios.get(API_URL + `/search?equipment=${equipment}`);
+    res = await axios.get(
+      API_URL + `search?page=${page}&equipment=${equipment}`
+    );
   } else {
-    res = await axios.get(API_URL + `/search?searchQuery=${exercise}`);
+    res = await axios.get(
+      API_URL + `search?page=${page}&searchQuery=${exercise}`
+    );
   }
 
   return res.data;
