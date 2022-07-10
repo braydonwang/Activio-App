@@ -17,6 +17,31 @@
   text-shadow: -8px 8px 10px rgb(120, 33, 192);
 }
 
+.shareButton{
+  width: 8%;
+  height: 40px;
+  background-color: teal;
+  color: white;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.shareButton:hover{
+  background-color: rgb(3, 103, 103);
+  transition: all ease-in-out 0.3s;
+}
+
+.shareTitle{
+  margin: 5px;
+}
+
+.shareIcon{
+  margin: 5px;
+}
+
 .exerciseContainer {
   position: relative;
   display: flex;
@@ -242,4 +267,37 @@
 
 .popUpCancelButton:active {
   border-style: outset;
+}
+
+.sharePop{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  height: 50vw;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #29015c;
+  background: -webkit-linear-gradient(top left, #29015c, #0c012a);
+  background: -moz-linear-gradient(top left, #29015c, #0c012a);
+  background: linear-gradient(to bottom right, #29015c, #0c012a);
+  border-radius: 10px;
+  border-style: outset;
+  border-color: #bf5af2;
+}
+
+.writeIcon{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: rgb(121, 118, 118);
+  cursor: pointer;
 }

@@ -25,12 +25,8 @@ const WorkoutPlanSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    timeInterval: {
-      type: Number,
-      rquired: true,
-    },
     exercises: {
-      type: [String],
+      type: [Object],
       required: true,
     },
   },

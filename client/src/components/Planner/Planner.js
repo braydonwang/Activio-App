@@ -18,6 +18,7 @@ import {
   removePlanDraft,
   updatePlanDraft,
 } from "../../features/planDrafts/planDraftSlice";
+import axios from "axios";
 
 const getWindowDimensions = () => {
   const width = window.innerWidth;
@@ -47,6 +48,20 @@ export default function Planner() {
     sets: "",
     reps: "",
   });
+  const [sharePop, setSharePop] = useState(false);
+  const [title, setTitle] = useState("");
+  const [file, setFile] = useState("");
+  const [desc, setDesc] = useState("");
+  const [catDropDown, setCatDropDown] = useState(false);
+  const [category, setCategory] = useState("");
+
+  const handleCatDropDown = () => {
+    setCatDropDown(!catDropDown);
+  };
+  const handleChooseCat = (cat) => {
+    setCatDropDown(false);
+    setCategory(cat);
+  };
 
   useEffect(() => {
     function handleResize() {
@@ -99,6 +114,30 @@ export default function Planner() {
     setPopUp(false);
   };
 
+  const handleSharePlan = async () => {
+    const newPlan = {
+      title,
+      desc,
+      username: user.user.username,
+      categories:category,
+      likeCount: 0,
+      exercises: planExercises,
+    };
+    if (file) {
+      const data = new FormData();
+      const filename = Date.now() + file.name;
+      data.append("name", filename);
+      data.append("file", file);
+      newPlan.photo = filename;
+      try {
+        await axios.post("/upload", data);
+      } catch (err) {}
+    }
+    try {
+      await axios.post("/plans", newPlan);
+    } catch (err) {}
+  }
+
   return (
     <>
       <main
@@ -111,6 +150,20 @@ export default function Planner() {
           <h1
             className={classes.heading}
           >{`${user.user.name}'s Workout Plan`}</h1>
+
+          <button
+            className={classes.shareButton}
+            onClick={() => setSharePop(true)}
+          >
+            <span className={classes.shareTitle}>Share</span>
+            <i
+              className={classnames(
+                classes.shareIcon,
+                "fa-solid",
+                "fa-share-from-square"
+              )}
+            ></i>
+          </button>
 
           <ResponsiveGridLayout
             margin={[0, 0]}
@@ -253,6 +306,90 @@ export default function Planner() {
               Cancel
             </button>
           </span>
+        </div>
+      )}
+
+      {sharePop && (
+        <div className={classes.sharePop}>
+          <span className={classes.sharePopTitle}>SHARE WORKOUT PLAN</span>
+          <label htmlFor="fileInput">
+            <i className={classnames(classes.writeIcon,"fas fa-plus")}></i>
+          </label>
+          <input
+            type="file"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+          <input
+            type="text"
+            placeholder="Title"
+            className={classes.writeInput}
+            autoFocus={true}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <textarea
+            placeholder="Workout Description"
+            type="text"
+            className={classes.writeText}
+            onChange={(e) => setDesc(e.target.value)}
+          ></textarea>
+          <div className={classes.dropDown}>
+            <button
+              className={classes.dropDownButton}
+              onClick={handleCatDropDown}
+              style={{
+                borderRadius: catDropDown
+                  ? "10px 10px 0px 0px"
+                  : "10px 10px 10px 10px",
+              }}
+            >
+              {category === "" ? "CATEGORIES" : category}{" "}
+              <i className="downArrow fa-solid fa-caret-down"></i>
+            </button>
+
+            {catDropDown && (
+              <div className={classes.dropDownOptionList}>
+                <div
+                  className={classes.dropDownOptions}
+                  onClick={() => handleChooseCat("all")}
+                >
+                  All
+                </div>
+                <div
+                  className={classes.dropDownOptions}
+                  onClick={() => handleChooseCat("aerobic")}
+                >
+                  Aerobic
+                </div>
+                <div
+                  className={classes.dropDownOptions}
+                  onClick={() => handleChooseCat("strength")}
+                >
+                  Strength
+                </div>
+                <div
+                  className={classes.dropDownOptions}
+                  onClick={() => handleChooseCat("flexibility")}
+                >
+                  Flexibility
+                </div>
+                <div
+                  className={classes.dropDownOptions}
+                  onClick={() => handleChooseCat("balance")}
+                  style={{
+                    borderRadius: "0px 0px 10px 10px",
+                    borderBottom: "groove",
+                  }}
+                >
+                  Balance
+                </div>
+              </div>
+            )}
+          </div>
+          <button className={classes.shareSubmit} onClick={handleSharePlan}>Share</button>
+          <button className={classes.shareCancel} onClick={() => setSharePop(false)}>Cancel</button>
+
         </div>
       )}
     </>
