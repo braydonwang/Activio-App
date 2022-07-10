@@ -1,8 +1,9 @@
 import classes from "./Explore.module.css";
 import Plans from "../Plans/Plans";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
+import { getPlans } from "../../features/plans/planSlice";
 import Navbar from "../Navbar/Navbar";
 
 export default function Explore() {
@@ -11,8 +12,8 @@ export default function Explore() {
   const [title, setTitle] = useState("");
   const [catDropDown, setCatDropDown] = useState(false);
   const [sortDropDown, setSortDropDown] = useState(false);
-  const [plans, setPlans] = useState([]);
   const { search } = useLocation();
+  const dispatch = useDispatch();
 
   const handleCatDropDown = () => {
     setCatDropDown(!catDropDown);
@@ -33,11 +34,7 @@ export default function Explore() {
   };
 
   useEffect(() => {
-    const fetchPlans = async () => {
-      const res = await axios.get("/plans" + search);
-      setPlans(res.data);
-    };
-    fetchPlans();
+    dispatch(getPlans(search));
   }, [search]);
   return (
     <>
@@ -183,7 +180,7 @@ export default function Explore() {
           </div>
         </div>
       </div>
-      <Plans plans={plans} />
+      <Plans />
     </>
   );
 }

@@ -6,12 +6,12 @@ export default function ExerciseCard({ exercise }) {
   const navigate = useNavigate();
   const handleBodyPart = (e) => {
     e.preventDefault();
-    navigate(`/exercises/search?bodyPart=${exercise.bodyPart}`);
+    navigate(`/exercises/search?page=1&bodyPart=${exercise.bodyPart}`);
   };
 
   const handleTarget = (e) => {
     e.preventDefault();
-    navigate(`/exercises/search?target=${exercise.target}`);
+    navigate(`/exercises/search?page=1&target=${exercise.target}`);
   };
 
   return (

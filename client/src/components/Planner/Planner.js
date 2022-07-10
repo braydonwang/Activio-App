@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ResponsiveGridLayout from "react-grid-layout";
+import { CircularProgress } from "@mui/material";
 import "/node_modules/react-grid-layout/css/styles.css";
 import Navbar from "../Navbar/Navbar";
 import IconButton from "@mui/material/IconButton";
@@ -32,7 +33,7 @@ const getWindowDimensions = () => {
 export default function Planner() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { planExercises } = useSelector((state) => state.planDrafts);
+  const { isLoading, planExercises } = useSelector((state) => state.planDrafts);
   const user = JSON.parse(localStorage.getItem("user"));
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
@@ -71,14 +72,6 @@ export default function Planner() {
     dispatch(getPlanDraft({ username: user.user.username }));
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const layout = [
-    { i: "0001", x: 0, y: 0, w: 1, h: 1 },
-    { i: "0002", x: 0, y: 1, w: 1, h: 1 },
-    { i: "1512", x: 0, y: 2, w: 1, h: 1 },
-    { i: "1368", x: 0, y: 3, w: 1, h: 1 },
-    { i: "3293", x: 0, y: 4, w: 1, h: 1 },
-  ];
 
   const handleRemove = (e, id) => {
     e.stopPropagation();
@@ -137,6 +130,14 @@ export default function Planner() {
       await axios.post("/plans", newPlan);
     } catch (err) {}
   }
+  
+  if (isLoading) {
+    return (
+      <div className={classes.loadingContainer}>
+        <CircularProgress size="7em" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -167,7 +168,6 @@ export default function Planner() {
 
           <ResponsiveGridLayout
             margin={[0, 0]}
-            layout={layout}
             cols={1}
             rowHeight={250}
             width={windowDimensions.width - 18}

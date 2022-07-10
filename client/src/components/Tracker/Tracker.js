@@ -1,5 +1,11 @@
+import Navbar from "../Navbar/Navbar";
 import classes from "./Tracker.module.css";
 
 export default function Tracker() {
-  return <div>Tracker</div>;
+  return (
+    <>
+      <Navbar />
+      <h1 className={classes.heading}>Calorie Tracker</h1>
+    </>
+  );
 }

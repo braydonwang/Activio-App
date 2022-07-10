@@ -7,8 +7,14 @@ const numberOfPlans = async () => {
   return data;
 };
 
+const getPlans = async (search) => {
+  const { data } = await axios.get("/plans" + search);
+  return data;
+};
+
 const planService = {
   numberOfPlans,
+  getPlans,
 };
 
 export default planService;
