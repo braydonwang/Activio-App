@@ -5,6 +5,8 @@ import ResponsiveGridLayout from "react-grid-layout";
 import { CircularProgress } from "@mui/material";
 import "/node_modules/react-grid-layout/css/styles.css";
 import Navbar from "../Navbar/Navbar";
+import Fade from "@mui/material/Fade";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import IconButton from "@mui/material/IconButton";
 import TimerIcon from "@mui/icons-material/Timer";
 import CloseIcon from "@mui/icons-material/Close";
@@ -39,6 +41,7 @@ export default function Planner() {
     getWindowDimensions()
   );
   const [popUp, setPopUp] = useState(false);
+  const [workoutTimer, setWorkoutTimer] = useState(false);
   const [currentEdit, setCurrentEdit] = useState({
     id: "",
     gifUrl: "",
@@ -112,7 +115,7 @@ export default function Planner() {
       title,
       desc,
       username: user.user.username,
-      categories:category,
+      categories: category,
       likeCount: 0,
       exercises: planExercises,
     };
@@ -129,8 +132,8 @@ export default function Planner() {
     try {
       await axios.post("/plans", newPlan);
     } catch (err) {}
-  }
-  
+  };
+
   if (isLoading) {
     return (
       <div className={classes.loadingContainer}>
@@ -151,7 +154,6 @@ export default function Planner() {
           <h1
             className={classes.heading}
           >{`${user.user.name}'s Workout Plan`}</h1>
-
           <button
             className={classes.shareButton}
             onClick={() => setSharePop(true)}
@@ -236,13 +238,16 @@ export default function Planner() {
           >
             Add More Exercises
           </button>
-          <button className={classnames(classes.button, classes.startButton)}>
+          <button
+            className={classnames(classes.button, classes.startButton)}
+            onClick={() => setWorkoutTimer(true)}
+          >
             Start Workout
           </button>
         </div>
       </main>
 
-      {popUp && (
+      <Fade in={popUp}>
         <div className={classes.planPopUp}>
           <span className={classes.planPopUpBigTitle}>EDIT EXERCISE</span>
           <div className={classes.planPopUpItem}>
@@ -307,13 +312,13 @@ export default function Planner() {
             </button>
           </span>
         </div>
-      )}
+      </Fade>
 
-      {sharePop && (
+      <Fade in={sharePop}>
         <div className={classes.sharePop}>
           <span className={classes.sharePopTitle}>SHARE WORKOUT PLAN</span>
           <label htmlFor="fileInput">
-            <i className={classnames(classes.writeIcon,"fas fa-plus")}></i>
+            <i className={classnames(classes.writeIcon, "fas fa-plus")}></i>
           </label>
           <input
             type="file"
@@ -387,11 +392,30 @@ export default function Planner() {
               </div>
             )}
           </div>
-          <button className={classes.shareSubmit} onClick={handleSharePlan}>Share</button>
-          <button className={classes.shareCancel} onClick={() => setSharePop(false)}>Cancel</button>
-
+          <button className={classes.shareSubmit} onClick={handleSharePlan}>
+            Share
+          </button>
+          <button
+            className={classes.shareCancel}
+            onClick={() => setSharePop(false)}
+          >
+            Cancel
+          </button>
         </div>
-      )}
+      </Fade>
+
+      <Fade in={workoutTimer}>
+        <div>
+          <CountdownCircleTimer
+            isPlaying={false}
+            duration={7}
+            colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+            colorsTime={[7, 5, 2, 0]}
+          >
+            {({ remainingTime }) => remainingTime}
+          </CountdownCircleTimer>
+        </div>
+      </Fade>
     </>
   );
 }

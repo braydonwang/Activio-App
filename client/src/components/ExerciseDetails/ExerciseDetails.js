@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import Navbar from "../Navbar/Navbar";
 import { CircularProgress } from "@mui/material";
+import Fade from "@mui/material/Fade";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import classes from "./ExerciseDetails.module.css";
@@ -154,7 +155,7 @@ export default function ExerciseDetails() {
         <HorizontalScrollbar data={similarEquipment} />
       </main>
 
-      {popUp && (
+      <Fade in={popUp}>
         <div className={classes.planPopUp}>
           <span className={classes.planPopUpBigTitle}>ADD TO PLAN</span>
           <div className={classes.planPopUpItem}>
@@ -219,7 +220,7 @@ export default function ExerciseDetails() {
             </button>
           </span>
         </div>
-      )}
+      </Fade>
     </>
   );
 }

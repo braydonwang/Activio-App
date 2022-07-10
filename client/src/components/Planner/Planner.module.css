@@ -6,6 +6,7 @@
 }
 
 .mainContainer {
+  position: relative;
   padding-bottom: 120px;
 }
 
@@ -24,7 +25,7 @@
   text-shadow: -8px 8px 10px rgb(120, 33, 192);
 }
 
-.shareButton{
+.shareButton {
   width: 8%;
   height: 40px;
   background-color: teal;
@@ -36,16 +37,16 @@
   transition: all ease-in-out 0.3s;
 }
 
-.shareButton:hover{
+.shareButton:hover {
   background-color: rgb(3, 103, 103);
   transition: all ease-in-out 0.3s;
 }
 
-.shareTitle{
+.shareTitle {
   margin: 5px;
 }
 
-.shareIcon{
+.shareIcon {
   margin: 5px;
 }
 
@@ -276,7 +277,7 @@
   border-style: outset;
 }
 
-.sharePop{
+.sharePop {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -296,7 +297,7 @@
   border-color: #bf5af2;
 }
 
-.writeIcon{
+.writeIcon {
   width: 25px;
   height: 25px;
   border-radius: 50%;

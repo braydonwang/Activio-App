@@ -11,10 +11,10 @@ const getExercises = async (page) => {
 const getExercise = async (id) => {
   const { data } = await axios.get(API_URL + id);
   const bodyPart = await axios.get(
-    API_URL + `search?bodyPart=${data.data.bodyPart}`
+    API_URL + `search?page=1&bodyPart=${data.data.bodyPart}`
   );
   const equipment = await axios.get(
-    API_URL + `search?equipment=${data.data.equipment}`
+    API_URL + `search?page=1&equipment=${data.data.equipment}`
   );
 
   const bodyPartData = bodyPart.data.data
