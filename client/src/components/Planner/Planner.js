@@ -5,7 +5,10 @@ import ResponsiveGridLayout from "react-grid-layout";
 import { CircularProgress } from "@mui/material";
 import "/node_modules/react-grid-layout/css/styles.css";
 import Navbar from "../Navbar/Navbar";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
 import Fade from "@mui/material/Fade";
+import Slide from "@mui/material/Slide";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import IconButton from "@mui/material/IconButton";
 import TimerIcon from "@mui/icons-material/Timer";
@@ -14,6 +17,10 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import classes from "./Planner.module.css";
 import classnames from "classnames";
 import {
@@ -42,6 +49,9 @@ export default function Planner() {
   );
   const [popUp, setPopUp] = useState(false);
   const [workoutTimer, setWorkoutTimer] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0);
+  const [duration, setDuration] = useState(30);
   const [currentEdit, setCurrentEdit] = useState({
     id: "",
     gifUrl: "",
@@ -80,10 +90,13 @@ export default function Planner() {
     e.stopPropagation();
     dispatch(
       removePlanDraft({
-        username: user.user.username,
-        exercise: {
-          id,
+        data: {
+          username: user.user.username,
+          exercise: {
+            id,
+          },
         },
+        navigate,
       })
     );
   };
@@ -146,7 +159,7 @@ export default function Planner() {
     <>
       <main
         style={{
-          opacity: popUp ? 0.1 : 1,
+          opacity: popUp || sharePop || workoutTimer ? 0.1 : 1,
         }}
       >
         <Navbar />
@@ -404,18 +417,133 @@ export default function Planner() {
         </div>
       </Fade>
 
-      <Fade in={workoutTimer}>
-        <div>
-          <CountdownCircleTimer
-            isPlaying={false}
-            duration={7}
-            colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-            colorsTime={[7, 5, 2, 0]}
+      <Slide
+        style={{ left: "5vw", top: "10vh" }}
+        direction="up"
+        in={workoutTimer}
+        mountOnEnter
+        unmountOnExit
+      >
+        <div className={classes.timerContainer}>
+          <IconButton
+            style={{
+              position: "absolute",
+              right: "15px",
+              top: "15px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(191, 90, 242, 0.4)",
+            }}
+            color="inherit"
+            aria-label="remove"
+            onClick={() => {
+              setWorkoutTimer(false);
+              setIsPlaying(false);
+            }}
           >
-            {({ remainingTime }) => remainingTime}
-          </CountdownCircleTimer>
+            <CloseIcon fontSize="large" />
+          </IconButton>
+          <h1 className={classes.timerTitle}>Air Bike</h1>
+          <h2 className={classes.timerStats}>
+            3 SETS{" "}
+            <span
+              style={{ fontSize: "20px", margin: "0 15px", opacity: "0.8" }}
+            >
+              of
+            </span>{" "}
+            8 REPS
+          </h2>
+          <div className={classes.prevExercise}>
+            <h2 className={classes.nextTitle}>Previous Exercise</h2>
+            <h3 className={classes.nextName}>Lateral Pulldowns</h3>
+            <img
+              className={classes.timeNextImage}
+              src={"http://d205bpvrqc9yn1.cloudfront.net/0007.gif"}
+              alt={"lateral"}
+              loading="lazy"
+            />
+          </div>
+          <img
+            className={classes.timerImage}
+            src={"http://d205bpvrqc9yn1.cloudfront.net/0003.gif"}
+            alt={"air bike"}
+            loading="lazy"
+          />
+          <div style={{ position: "fixed" }}>
+            <CountdownCircleTimer
+              strokeWidth={20}
+              size={windowDimensions.height / 2}
+              isPlaying={isPlaying}
+              duration={duration}
+              colors={["#8B008B", "#8A2BE2", "#360e95", "#116ab3"]}
+              colorsTime={[60, 30, 15, 0]}
+            >
+              {({ remainingTime, color }) => {
+                setRemainingTime(remainingTime);
+                return (
+                  <div className={classes.timeWrapper}>
+                    <div className={classes.textAround}>Remaining</div>
+                    <div style={{ color }} className={classes.timeText}>
+                      {remainingTime}
+                    </div>
+                    <div className={classes.textAround}>seconds</div>
+                  </div>
+                );
+              }}
+            </CountdownCircleTimer>
+          </div>
+          <div className={classes.nextExercise}>
+            <h2 className={classes.nextTitle}>Next Exercise</h2>
+            <h3 className={classes.nextName}>3/4 Sit Ups</h3>
+            <img
+              className={classes.timeNextImage}
+              src={"http://d205bpvrqc9yn1.cloudfront.net/0001.gif"}
+              alt={"lateral"}
+              loading="lazy"
+            />
+          </div>
+          <div className={classes.timerIcons}>
+            <IconButton
+              style={{ fontSize: "60px" }}
+              color="inherit"
+              aria-label="remove"
+              onClick={() => {}}
+            >
+              <SkipPreviousIcon fontSize="inherit" />
+            </IconButton>
+            <IconButton
+              style={{ fontSize: "60px" }}
+              color="inherit"
+              aria-label="remove"
+              onClick={() => setIsPlaying(!isPlaying)}
+            >
+              {!isPlaying ? (
+                <PlayCircleOutlineIcon fontSize="inherit" />
+              ) : (
+                <PauseCircleOutlineIcon fontSize="inherit" />
+              )}
+            </IconButton>
+            <IconButton
+              style={{ fontSize: "60px" }}
+              color="inherit"
+              aria-label="remove"
+              onClick={() => {}}
+            >
+              <SkipNextIcon fontSize="inherit" />
+            </IconButton>
+          </div>
+          <h2 className={classes.timeNumber}>
+            {remainingTime < 10
+              ? `00:0${remainingTime}`
+              : `00:${remainingTime}`}
+          </h2>
+          <Box sx={{ width: "90%", position: "absolute", bottom: "3vh" }}>
+            <LinearProgress
+              variant="determinate"
+              value={((duration - remainingTime) / duration) * 100}
+            />
+          </Box>
         </div>
-      </Fade>
+      </Slide>
     </>
   );
 }

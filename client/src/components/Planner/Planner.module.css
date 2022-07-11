@@ -309,3 +309,133 @@
   color: rgb(121, 118, 118);
   cursor: pointer;
 }
+
+.timerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  height: 90vh;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  background: #29015c;
+  background: -webkit-linear-gradient(top left, #29015c, #0c012a);
+  background: -moz-linear-gradient(top left, #29015c, #0c012a);
+  background: linear-gradient(to bottom right, #29015c, #0c012a);
+  border-radius: 10px;
+  border-style: outset;
+  border-color: rgb(191, 90, 242);
+}
+
+.timerTitle {
+  position: absolute;
+  font-weight: 800;
+  font-size: 3vw;
+  margin: 0;
+  top: 4vh;
+}
+
+.timerStats {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  font-weight: 500;
+  top: 10vh;
+  opacity: 0.9;
+}
+
+.timerImage {
+  position: absolute;
+  width: 50vh;
+  -webkit-mask-image: radial-gradient(
+    rgba(0, 0, 0, 0.7) 20%,
+    rgba(0, 0, 0, 0.5) 40%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  -webkit-mask-repeat: no-repeat;
+}
+
+.timeWrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.timeText {
+  font-size: 5vw;
+  font-weight: 800;
+  text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff,
+    -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;
+}
+
+.textAround {
+  font-size: 20px;
+  opacity: 0.9;
+  margin: 10px 0;
+}
+
+.timerIcons {
+  display: flex;
+  position: absolute;
+  bottom: 10vh;
+  font-size: 60px;
+  gap: 20px;
+}
+
+.timeNumber {
+  position: absolute;
+  bottom: 4vh;
+}
+
+.timePrevImage {
+  position: absolute;
+  left: 10vw;
+  width: 30vh;
+  -webkit-mask-image: radial-gradient(
+    rgba(0, 0, 0, 0.7) 20%,
+    rgba(0, 0, 0, 0.5) 40%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  -webkit-mask-repeat: no-repeat;
+}
+
+.nextExercise {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 10vw;
+}
+
+.prevExercise {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 10vw;
+}
+
+.timeNextImage {
+  width: 30vh;
+  -webkit-mask-image: radial-gradient(
+    rgba(0, 0, 0, 0.7) 20%,
+    rgba(0, 0, 0, 0.5) 40%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  -webkit-mask-repeat: no-repeat;
+}
+
+.nextTitle {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.nextName {
+  margin-top: 10px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+  font-weight: 500;
+}

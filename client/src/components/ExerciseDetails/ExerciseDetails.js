@@ -9,7 +9,10 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import classes from "./ExerciseDetails.module.css";
 import { getExercise } from "../../features/exercises/exerciseSlice";
-import { updatePlanDraft } from "../../features/planDrafts/planDraftSlice";
+import {
+  removePlanDraft,
+  updatePlanDraft,
+} from "../../features/planDrafts/planDraftSlice";
 
 import bodyPartImg from "../../images/body-part.png";
 import equipmentImg from "../../images/equipment.png";
@@ -78,6 +81,20 @@ export default function ExerciseDetails() {
     setPopUp(false);
   };
 
+  const handleRemove = () => {
+    dispatch(
+      removePlanDraft({
+        data: {
+          username: authData.user.username,
+          exercise: {
+            id,
+          },
+        },
+        navigate,
+      })
+    );
+  };
+
   return (
     <>
       <main
@@ -139,7 +156,7 @@ export default function ExerciseDetails() {
             >
               <AddCircleIcon style={{ marginRight: "10px" }} /> Add to Plan
             </button>
-            <button className={classes.removeButton}>
+            <button className={classes.removeButton} onClick={handleRemove}>
               <RemoveCircleIcon style={{ marginRight: "10px" }} />
               Remove from Plan
             </button>
