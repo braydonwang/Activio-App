@@ -24,7 +24,7 @@
   text-shadow: -8px 8px 10px rgb(120, 33, 192);
 }
 
-.shareButton{
+.shareButton {
   width: 8%;
   height: 40px;
   background-color: teal;
@@ -36,16 +36,16 @@
   transition: all ease-in-out 0.3s;
 }
 
-.shareButton:hover{
+.shareButton:hover {
   background-color: rgb(3, 103, 103);
   transition: all ease-in-out 0.3s;
 }
 
-.shareTitle{
+.shareTitle {
   margin: 5px;
 }
 
-.shareIcon{
+.shareIcon {
   margin: 5px;
 }
 
@@ -276,13 +276,13 @@
   border-style: outset;
 }
 
-.sharePop{
+.sharePop {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 50vw;
-  height: 50vw;
+  justify-content: center;
+  width: 60vw;
+  height: 40vw;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -296,15 +296,249 @@
   border-color: #bf5af2;
 }
 
-.writeIcon{
+.writeImgDiv{
+  top: 0%;
+  position: absolute;
+  margin: 50px;
+  width: 85%;
+  height: 25%;
+}
+
+.writeImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.writeForm {
+  margin-top: 10%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.writeFormGroup {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.writeFormSubGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.writeTitle {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.writeIcon {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0%);
   width: 25px;
   height: 25px;
+  padding: 20px;
   border-radius: 50%;
-  border: 1px solid;
+  border: 2px solid white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  color: rgb(121, 118, 118);
+  font-size: 40px;
+  color: white;
+  background-color: #29015c;
   cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.writeIcon:hover {
+  background-color: #443952;
+  transition: all ease-in-out 0.3s;
+}
+
+.writeEditIcon{
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  margin: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.writeEditIcon:hover{
+  color: grey;
+  transition: all ease-in-out 0.3s;
+}
+
+.writeInput {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  padding: 5px;
+  width: 60%;
+  margin: 10px;
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-bottom: 2px solid white;
+}
+
+.writeInput::placeholder {
+  color: white;
+}
+
+.writeInput:focus {
+  outline: none;
+}
+
+.writeText {
+  margin: 10px;
+  font-family: "Inter", sans-serif;
+  width: 100%;
+  padding: 10px;
+  font-size: 17px;
+  height: 30%;
+  min-height: 100px;
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+}
+
+.writeText::placeholder {
+  color: white;
+}
+
+.dropDown {
+  width: 40%;
+  margin: 10px;
+  position: relative;
+}
+
+.dropDownButton {
+  height: 50px;
+  width: 100%;
+  background-color: rgb(29, 26, 58);
+  color: white;
+  border-radius: 10px 10px 10px 10px;
+  border-color: white;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 600;
+  padding-left: 20px;
+  text-transform: uppercase;
+  transition: all ease-in-out 0.3s;
+}
+
+.dropDownButton:hover {
+  background-color: rgb(90, 87, 111);
+  transition: all ease-in-out 0.3s;
+}
+
+.downArrow {
+  padding-left: 8px;
+}
+
+.dropDownOptionList {
+  width: 100%;
+  position: absolute;
+}
+
+.dropDownOptions {
+  padding: 10px;
+  padding-left: 20px;
+  background-color: rgb(29, 26, 58);
+  list-style: none;
+  cursor: pointer;
+  border-color: white;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  border-style: groove;
+  border-top: 0ch;
+  border-bottom: 0ch;
+  border-color: white;
+  transition: all ease-in-out 0.3s;
+}
+
+.dropDownOptions:hover {
+  background-color: rgb(90, 87, 111);
+  transition: all ease-in-out 0.3s;
+}
+
+.shareButtonList {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.shareSubmit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #bf5af2;
+  background-color: transparent;
+  border-color: #bf5af2;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 20px;
+}
+
+.shareSubmit:hover {
+  background-color: #36074e;
+}
+
+.shareSubmit:active {
+  border-style: outset;
+}
+
+.shareCancel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #5e5ce6;
+  background-color: transparent;
+  border-color: #5e5ce6;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 20px;
+}
+
+.shareCancel:hover {
+  background-color: #191851;
+}
+
+.shareCancel:active {
+  border-style: outset;
 }

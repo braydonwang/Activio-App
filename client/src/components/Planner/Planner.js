@@ -112,7 +112,7 @@ export default function Planner() {
       title,
       desc,
       username: user.user.username,
-      categories:category,
+      categories: category,
       likeCount: 0,
       exercises: planExercises,
     };
@@ -129,8 +129,8 @@ export default function Planner() {
     try {
       await axios.post("/plans", newPlan);
     } catch (err) {}
-  }
-  
+  };
+
   if (isLoading) {
     return (
       <div className={classes.loadingContainer}>
@@ -143,7 +143,7 @@ export default function Planner() {
     <>
       <main
         style={{
-          opacity: popUp ? 0.1 : 1,
+          opacity: popUp || sharePop ? 0.1 : 1,
         }}
       >
         <Navbar />
@@ -311,85 +311,131 @@ export default function Planner() {
 
       {sharePop && (
         <div className={classes.sharePop}>
-          <span className={classes.sharePopTitle}>SHARE WORKOUT PLAN</span>
-          <label htmlFor="fileInput">
-            <i className={classnames(classes.writeIcon,"fas fa-plus")}></i>
-          </label>
-          <input
-            type="file"
-            id="fileInput"
-            style={{ display: "none" }}
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-          <input
-            type="text"
-            placeholder="Title"
-            className={classes.writeInput}
-            autoFocus={true}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <textarea
-            placeholder="Workout Description"
-            type="text"
-            className={classes.writeText}
-            onChange={(e) => setDesc(e.target.value)}
-          ></textarea>
-          <div className={classes.dropDown}>
-            <button
-              className={classes.dropDownButton}
-              onClick={handleCatDropDown}
-              style={{
-                borderRadius: catDropDown
-                  ? "10px 10px 0px 0px"
-                  : "10px 10px 10px 10px",
-              }}
-            >
-              {category === "" ? "CATEGORIES" : category}{" "}
-              <i className="downArrow fa-solid fa-caret-down"></i>
-            </button>
+          {file && (
+            <div className={classes.writeImgDiv}>
+              <img
+                src={URL.createObjectURL(file)}
+                alt=""
+                className={classes.writeImg}
+              />
+              <label htmlFor="fileInput">
+                <i
+                  className={classnames(
+                    classes.writeEditIcon,
+                    "fa-solid fa-pen-to-square"
+                  )}
+                ></i>
+              </label>
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </div>
+          )}
 
-            {catDropDown && (
-              <div className={classes.dropDownOptionList}>
-                <div
-                  className={classes.dropDownOptions}
-                  onClick={() => handleChooseCat("all")}
-                >
-                  All
-                </div>
-                <div
-                  className={classes.dropDownOptions}
-                  onClick={() => handleChooseCat("aerobic")}
-                >
-                  Aerobic
-                </div>
-                <div
-                  className={classes.dropDownOptions}
-                  onClick={() => handleChooseCat("strength")}
-                >
-                  Strength
-                </div>
-                <div
-                  className={classes.dropDownOptions}
-                  onClick={() => handleChooseCat("flexibility")}
-                >
-                  Flexibility
-                </div>
-                <div
-                  className={classes.dropDownOptions}
-                  onClick={() => handleChooseCat("balance")}
-                  style={{
-                    borderRadius: "0px 0px 10px 10px",
-                    borderBottom: "groove",
-                  }}
-                >
-                  Balance
+          {!file && (
+            <>
+              <label htmlFor="fileInput">
+                <i className={classnames(classes.writeIcon, "fas fa-plus")}></i>
+              </label>
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </>
+          )}
+
+          <div className={classes.writeForm}>
+            <div className={classes.writeFormGroup}>
+              <div className={classes.writeFormSubGroup}>
+                <input
+                  type="text"
+                  placeholder="Title"
+                  value={title}
+                  className={classes.writeInput}
+                  autoFocus={true}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <div className={classes.dropDown}>
+                  <button
+                    className={classes.dropDownButton}
+                    onClick={handleCatDropDown}
+                    style={{
+                      borderRadius: catDropDown
+                        ? "10px 10px 0px 0px"
+                        : "10px 10px 10px 10px",
+                    }}
+                  >
+                    {category === "" ? "CATEGORIES" : category}{" "}
+                    <i className="downArrow fa-solid fa-caret-down"></i>
+                  </button>
+
+                  {catDropDown && (
+                    <div className={classes.dropDownOptionList}>
+                      <div
+                        className={classes.dropDownOptions}
+                        onClick={() => handleChooseCat("all")}
+                      >
+                        All
+                      </div>
+                      <div
+                        className={classes.dropDownOptions}
+                        onClick={() => handleChooseCat("aerobic")}
+                      >
+                        Aerobic
+                      </div>
+                      <div
+                        className={classes.dropDownOptions}
+                        onClick={() => handleChooseCat("strength")}
+                      >
+                        Strength
+                      </div>
+                      <div
+                        className={classes.dropDownOptions}
+                        onClick={() => handleChooseCat("flexibility")}
+                      >
+                        Flexibility
+                      </div>
+                      <div
+                        className={classes.dropDownOptions}
+                        onClick={() => handleChooseCat("balance")}
+                        style={{
+                          borderRadius: "0px 0px 10px 10px",
+                          borderBottom: "groove",
+                        }}
+                      >
+                        Balance
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
-          </div>
-          <button className={classes.shareSubmit} onClick={handleSharePlan}>Share</button>
-          <button className={classes.shareCancel} onClick={() => setSharePop(false)}>Cancel</button>
 
+              <textarea
+                placeholder="Workout description..."
+                value={desc}
+                type="text"
+                className={classes.writeText}
+                onChange={(e) => setDesc(e.target.value)}
+              ></textarea>
+            </div>
+
+            <span className={classes.shareButtonList}>
+              <button className={classes.shareSubmit} onClick={handleSharePlan}>
+                Share
+              </button>
+              <button
+                className={classes.shareCancel}
+                onClick={() => setSharePop(false)}
+              >
+                Cancel
+              </button>
+            </span>
+          </div>
         </div>
       )}
     </>
