@@ -53,6 +53,7 @@ export default function Planner() {
   const [workoutTimer, setWorkoutTimer] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
   const [previousExercise, setPreviousExercise] = useState({
     gifUrl: "",
     name: "",
@@ -97,6 +98,10 @@ export default function Planner() {
       setNextExercise({ name: "", gifUrl: "" });
     }
   }, [currentExercise]);
+
+  useEffect(() => {
+    setTotalTime((prevTime) => prevTime - 1);
+  }, [remainingTime]);
 
   const handleCatDropDown = () => {
     setCatDropDown(!catDropDown);
@@ -193,6 +198,11 @@ export default function Planner() {
       );
       setNextExercise({ name: next.name, gifUrl: next.gifUrl });
     }
+    let time = 0;
+    for (let i = 0; i < planExercises.length; i++) {
+      time = time + Number(planExercises[i].time);
+    }
+    setTotalTime(time + 1);
     setWorkoutTimer(true);
   };
 
@@ -216,6 +226,27 @@ export default function Planner() {
       delay: 5000,
       newInitialRemainingTime: currentExercise.time,
     };
+  };
+
+  const handleTotalTime = () => {
+    const min = Math.floor(totalTime / 60);
+    const sec = totalTime % 60;
+    let displayMin;
+    let displaySec;
+    if (min === 0) {
+      displayMin = "00";
+    } else if (min < 10) {
+      displayMin = "0" + min;
+    } else {
+      displayMin = "" + min;
+    }
+    if (sec < 10) {
+      displaySec = "0" + sec;
+    } else {
+      displaySec = "" + sec;
+    }
+
+    return displayMin + ":" + displaySec;
   };
 
   if (isLoading) {
@@ -549,7 +580,17 @@ export default function Planner() {
             aria-label="remove"
             onClick={() => {
               setPreviousExercise({ name: "", gifUrl: "" });
+              setCurrentExercise({
+                id: "",
+                gifUrl: "",
+                name: "",
+                time: "",
+                sets: "",
+                reps: "",
+                ind: -1,
+              });
               setNextExercise({ name: "", gifUrl: "" });
+              setTotalTime(0);
               setWorkoutTimer(false);
               setIsPlaying(false);
             }}
@@ -647,6 +688,11 @@ export default function Planner() {
                     ),
                     ind: 0,
                   });
+                  let time = 0;
+                  for (let i = 0; i < planExercises.length; i++) {
+                    time = time + Number(planExercises[i].time);
+                  }
+                  setTotalTime(time + 1);
                 }
                 setIsPlaying(!isPlaying);
               }}
@@ -666,11 +712,7 @@ export default function Planner() {
               <SkipNextIcon fontSize="inherit" />
             </IconButton>
           </div>
-          <h2 className={classes.timeNumber}>
-            {remainingTime < 10
-              ? `00:0${remainingTime}`
-              : `00:${remainingTime}`}
-          </h2>
+          <h2 className={classes.timeNumber}>{handleTotalTime()}</h2>
           <Box sx={{ width: "90%", position: "absolute", bottom: "3vh" }}>
             <LinearProgress
               variant="determinate"
