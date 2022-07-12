@@ -164,10 +164,11 @@ export default function Exercises() {
 
             {targetDropDown && (
               <div className={classes.dropDownOptionList}>
-                {targets.map((targetItem) => (
+                {targets.map((targetItem, ind) => (
                   <div
                     className={classes.dropDownOptions}
                     onClick={() => handleChooseTarget(targetItem)}
+                    key={ind}
                   >
                     {targetItem}
                   </div>
@@ -201,10 +202,11 @@ export default function Exercises() {
 
             {equipmentDropDown && (
               <div className={classes.dropDownOptionList}>
-                {equipments.map((equipmentItem) => (
+                {equipments.map((equipmentItem, ind) => (
                   <div
                     className={classes.dropDownOptions}
                     onClick={() => handleChooseEquipment(equipmentItem)}
+                    key={ind}
                   >
                     {equipmentItem}
                   </div>

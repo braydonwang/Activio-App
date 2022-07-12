@@ -86,21 +86,15 @@
   color: #bf5af2;
   background-color: transparent;
   border-color: #bf5af2;
-  padding: 10px 20px;
   border-radius: 5px;
   margin-top: 51px;
   min-width: 243px;
-  cursor: pointer;
   margin-right: 50px;
   transition: 0.3s;
 }
 
 .addButton:hover {
   background-color: #36074e;
-}
-
-.addButton:active {
-  border-style: outset;
 }
 
 .removeButton {
@@ -114,19 +108,13 @@
   color: #5e5ce6;
   background-color: transparent;
   border-color: #5e5ce6;
-  padding: 10px 20px;
   border-radius: 5px;
   margin-top: 50px;
-  cursor: pointer;
   transition: 0.3s;
 }
 
 .removeButton:hover {
   background-color: #36074e;
-}
-
-.removeButton:active {
-  border-style: outset;
 }
 
 .planPopUp {

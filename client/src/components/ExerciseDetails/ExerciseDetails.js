@@ -4,11 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import Navbar from "../Navbar/Navbar";
 import { CircularProgress } from "@mui/material";
+import Fade from "@mui/material/Fade";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import classes from "./ExerciseDetails.module.css";
 import { getExercise } from "../../features/exercises/exerciseSlice";
-import { updatePlanDraft } from "../../features/planDrafts/planDraftSlice";
+import {
+  removePlanDraft,
+  updatePlanDraft,
+} from "../../features/planDrafts/planDraftSlice";
 
 import bodyPartImg from "../../images/body-part.png";
 import equipmentImg from "../../images/equipment.png";
@@ -22,6 +26,7 @@ export default function ExerciseDetails() {
   const { exercise, similarBodyPart, similarEquipment, isLoading } =
     useSelector((state) => state.exercises);
   const { authData } = useSelector((state) => state.auth);
+  const { planExercises } = useSelector((state) => state.planDrafts);
 
   const [popUp, setPopUp] = useState(false);
   const [formData, setFormData] = useState({
@@ -29,9 +34,11 @@ export default function ExerciseDetails() {
     sets: "",
     reps: "",
   });
+  const [inPlanner, setInPlanner] = useState(false);
 
   useEffect(() => {
     dispatch(getExercise(id));
+    setInPlanner(planExercises.some((planObj) => planObj.id === id));
   }, [id]);
 
   if (!exercise) {
@@ -55,26 +62,42 @@ export default function ExerciseDetails() {
   ];
 
   const handleAddExercise = () => {
+    if (formData.time !== "" && formData.sets !== "" && formData.reps !== "") {
+      dispatch(
+        updatePlanDraft({
+          data: {
+            username: authData.user.username,
+            exercise: {
+              ...formData,
+              id,
+              gifUrl,
+              name,
+            },
+          },
+          navigate,
+        })
+      );
+      setFormData({
+        time: "",
+        sets: "",
+        reps: "",
+      });
+      setPopUp(false);
+    }
+  };
+
+  const handleRemove = () => {
     dispatch(
-      updatePlanDraft({
+      removePlanDraft({
         data: {
           username: authData.user.username,
           exercise: {
-            ...formData,
             id,
-            gifUrl,
-            name,
           },
         },
         navigate,
       })
     );
-    setFormData({
-      time: "",
-      sets: "",
-      reps: "",
-    });
-    setPopUp(false);
   };
 
   return (
@@ -132,16 +155,41 @@ export default function ExerciseDetails() {
             </div>
           </main>
           <span className={classes.button}>
-            <button
-              className={classes.addButton}
-              onClick={() => setPopUp(true)}
-            >
-              <AddCircleIcon style={{ marginRight: "10px" }} /> Add to Plan
-            </button>
-            <button className={classes.removeButton}>
-              <RemoveCircleIcon style={{ marginRight: "10px" }} />
-              Remove from Plan
-            </button>
+            <div className={classes.addButton}>
+              <Button
+                style={{
+                  color: inPlanner ? "grey" : "inherit",
+                  fontSize: "inherit",
+                  borderColor: inPlanner ? "grey" : "inherit",
+                  minWidth: "243px",
+                  cursor: inPlanner ? "none" : "pointer",
+                  opacity: inPlanner ? "0.5" : "1",
+                }}
+                disabled={inPlanner}
+                variant="outlined"
+                onClick={() => setPopUp(true)}
+              >
+                <AddCircleIcon style={{ marginRight: "10px" }} /> Add to Plan
+              </Button>
+            </div>
+            <div className={classes.removeButton}>
+              <Button
+                style={{
+                  color: !inPlanner ? "grey" : "inherit",
+                  fontSize: "inherit",
+                  borderColor: !inPlanner ? "grey" : "inherit",
+                  minWidth: "243px",
+                  cursor: !inPlanner ? "none" : "pointer",
+                  opacity: !inPlanner ? "0.5" : "1",
+                }}
+                disabled={!inPlanner}
+                variant="outlined"
+                onClick={handleRemove}
+              >
+                <RemoveCircleIcon style={{ marginRight: "10px" }} />
+                Remove from Plan
+              </Button>
+            </div>
           </span>
         </main>
         <h2 className={classes.subheading}>
@@ -154,7 +202,7 @@ export default function ExerciseDetails() {
         <HorizontalScrollbar data={similarEquipment} />
       </main>
 
-      {popUp && (
+      <Fade in={popUp}>
         <div className={classes.planPopUp}>
           <span className={classes.planPopUpBigTitle}>ADD TO PLAN</span>
           <div className={classes.planPopUpItem}>
@@ -219,7 +267,7 @@ export default function ExerciseDetails() {
             </button>
           </span>
         </div>
-      )}
+      </Fade>
     </>
   );
 }

@@ -19,7 +19,8 @@ const updatePlanDraft = async (planData) => {
 };
 
 const removePlanDraft = async (planData) => {
-  const { data } = await axios.put(API_URL + "remove", planData);
+  planData.navigate("/planner");
+  const { data } = await axios.put(API_URL + "remove", planData.data);
   return data;
 };
 

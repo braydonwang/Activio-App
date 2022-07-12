@@ -5,6 +5,11 @@ import ResponsiveGridLayout from "react-grid-layout";
 import { CircularProgress } from "@mui/material";
 import "/node_modules/react-grid-layout/css/styles.css";
 import Navbar from "../Navbar/Navbar";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
+import Fade from "@mui/material/Fade";
+import Slide from "@mui/material/Slide";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import IconButton from "@mui/material/IconButton";
 import TimerIcon from "@mui/icons-material/Timer";
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,6 +17,11 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
+import defaultImg from "../../images/white.png";
 import classes from "./Planner.module.css";
 import classnames from "classnames";
 import {
@@ -39,6 +49,27 @@ export default function Planner() {
     getWindowDimensions()
   );
   const [popUp, setPopUp] = useState(false);
+  const [layout, setLayout] = useState([]);
+  const [workoutTimer, setWorkoutTimer] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0);
+  const [previousExercise, setPreviousExercise] = useState({
+    gifUrl: "",
+    name: "",
+  });
+  const [nextExercise, setNextExercise] = useState({
+    gifUrl: "",
+    name: "",
+  });
+  const [currentExercise, setCurrentExercise] = useState({
+    id: "",
+    gifUrl: "",
+    name: "",
+    time: "",
+    sets: "",
+    reps: "",
+    ind: -1,
+  });
   const [currentEdit, setCurrentEdit] = useState({
     id: "",
     gifUrl: "",
@@ -55,6 +86,17 @@ export default function Planner() {
   const [desc, setDesc] = useState("");
   const [catDropDown, setCatDropDown] = useState(false);
   const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    if (currentExercise.ind + 1 < layout.length) {
+      const next = planExercises.find(
+        (planObj) => planObj.name === layout[currentExercise.ind + 1].i
+      );
+      setNextExercise({ name: next.name, gifUrl: next.gifUrl });
+    } else {
+      setNextExercise({ name: "", gifUrl: "" });
+    }
+  }, [currentExercise]);
 
   const handleCatDropDown = () => {
     setCatDropDown(!catDropDown);
@@ -77,10 +119,13 @@ export default function Planner() {
     e.stopPropagation();
     dispatch(
       removePlanDraft({
-        username: user.user.username,
-        exercise: {
-          id,
+        data: {
+          username: user.user.username,
+          exercise: {
+            id,
+          },
         },
+        navigate,
       })
     );
   };
@@ -131,6 +176,47 @@ export default function Planner() {
     } catch (err) {}
   };
 
+  const handleStartWorkout = async () => {
+    await setLayout((prevLayout) =>
+      prevLayout.sort((a, b) => {
+        return a.y - b.y;
+      })
+    );
+    setCurrentExercise({
+      ...planExercises.find((planObj) => planObj.name === layout[0].i),
+      ind: 0,
+    });
+    if (layout.length > 1) {
+      const next = planExercises.find(
+        (planObj) => planObj.name === layout[1].i
+      );
+      setNextExercise({ name: next.name, gifUrl: next.gifUrl });
+    }
+    setWorkoutTimer(true);
+  };
+
+  const changeExerciseTime = async () => {
+    if (currentExercise.ind === layout.length - 1) {
+      setIsPlaying(false);
+      return { shouldRepeat: false };
+    }
+    setPreviousExercise({
+      gifUrl: currentExercise.gifUrl,
+      name: currentExercise.name,
+    });
+    setCurrentExercise({
+      ...planExercises.find(
+        (planObj) => planObj.name === layout[currentExercise.ind + 1].i
+      ),
+      ind: currentExercise.ind + 1,
+    });
+    return {
+      shouldRepeat: true,
+      delay: 5000,
+      newInitialRemainingTime: currentExercise.time,
+    };
+  };
+
   if (isLoading) {
     return (
       <div className={classes.loadingContainer}>
@@ -143,7 +229,7 @@ export default function Planner() {
     <>
       <main
         style={{
-          opacity: popUp || sharePop ? 0.1 : 1,
+          opacity: popUp || sharePop || workoutTimer ? 0.1 : 1,
         }}
       >
         <Navbar />
@@ -151,7 +237,6 @@ export default function Planner() {
           <h1
             className={classes.heading}
           >{`${user.user.name}'s Workout Plan`}</h1>
-
           <button
             className={classes.shareButton}
             onClick={() => setSharePop(true)}
@@ -170,14 +255,15 @@ export default function Planner() {
             margin={[0, 0]}
             cols={1}
             rowHeight={250}
+            layout={layout}
+            onLayoutChange={(layouts) => setLayout(layouts)}
             width={windowDimensions.width - 18}
             isBounded
-            useCSSTransforms
           >
             {planExercises.map((planObj, ind) => {
               const { gifUrl, name, id } = planObj;
               return (
-                <div className={classes.exerciseContainer} key={ind}>
+                <div className={classes.exerciseContainer} key={name}>
                   <img
                     className={classes.image}
                     src={gifUrl}
@@ -236,13 +322,16 @@ export default function Planner() {
           >
             Add More Exercises
           </button>
-          <button className={classnames(classes.button, classes.startButton)}>
+          <button
+            className={classnames(classes.button, classes.startButton)}
+            onClick={handleStartWorkout}
+          >
             Start Workout
           </button>
         </div>
       </main>
 
-      {popUp && (
+      <Fade in={popUp}>
         <div className={classes.planPopUp}>
           <span className={classes.planPopUpBigTitle}>EDIT EXERCISE</span>
           <div className={classes.planPopUpItem}>
@@ -307,9 +396,9 @@ export default function Planner() {
             </button>
           </span>
         </div>
-      )}
+      </Fade>
 
-      {sharePop && (
+      <Fade in={sharePop}>
         <div className={classes.sharePop}>
           {file && (
             <div className={classes.writeImgDiv}>
@@ -437,7 +526,162 @@ export default function Planner() {
             </span>
           </div>
         </div>
-      )}
+      </Fade>
+
+      <Slide
+        style={{ left: "5vw", top: "10vh" }}
+        direction="up"
+        in={workoutTimer}
+        mountOnEnter
+        unmountOnExit
+      >
+        <div className={classes.timerContainer}>
+          <IconButton
+            style={{
+              position: "absolute",
+              right: "15px",
+              top: "15px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(191, 90, 242, 0.4)",
+            }}
+            color="inherit"
+            aria-label="remove"
+            onClick={() => {
+              setPreviousExercise({ name: "", gifUrl: "" });
+              setNextExercise({ name: "", gifUrl: "" });
+              setWorkoutTimer(false);
+              setIsPlaying(false);
+            }}
+          >
+            <CloseIcon fontSize="large" />
+          </IconButton>
+          <h1 className={classes.timerTitle}>{currentExercise.name}</h1>
+          <h2 className={classes.timerStats}>
+            {currentExercise.sets} SETS{" "}
+            <span
+              style={{ fontSize: "20px", margin: "0 15px", opacity: "0.8" }}
+            >
+              of
+            </span>{" "}
+            {currentExercise.reps} REPS
+          </h2>
+          <div className={classes.prevExercise}>
+            <h2 className={classes.nextTitle}>Previous Exercise</h2>
+            <h3 className={classes.nextName}>
+              {previousExercise.name !== "" ? previousExercise.name : ""}
+            </h3>
+            <img
+              className={classes.timeNextImage}
+              src={
+                previousExercise.name !== ""
+                  ? previousExercise.gifUrl
+                  : defaultImg
+              }
+              alt={"Previous Exercise"}
+              loading="lazy"
+            />
+          </div>
+          <img
+            className={classes.timerImage}
+            src={currentExercise.gifUrl}
+            alt={"Current Exercise"}
+            loading="lazy"
+          />
+          <div style={{ position: "fixed" }}>
+            <CountdownCircleTimer
+              key={currentExercise.name}
+              strokeWidth={20}
+              size={windowDimensions.height / 2}
+              isPlaying={isPlaying}
+              duration={currentExercise.time}
+              colors={["#8B008B", "#8A2BE2", "#360e95", "#116ab3"]}
+              colorsTime={[60, 30, 15, 0]}
+              onComplete={() => changeExerciseTime()}
+            >
+              {({ remainingTime, color }) => {
+                setRemainingTime(remainingTime);
+                return (
+                  <div className={classes.timeWrapper}>
+                    <div className={classes.textAround}>Remaining</div>
+                    <div style={{ color }} className={classes.timeText}>
+                      {remainingTime}
+                    </div>
+                    <div className={classes.textAround}>seconds</div>
+                  </div>
+                );
+              }}
+            </CountdownCircleTimer>
+          </div>
+          <div className={classes.nextExercise}>
+            <h2 className={classes.nextTitle}>Next Exercise</h2>
+            <h3 className={classes.nextName}>
+              {nextExercise.name !== "" ? nextExercise.name : ""}
+            </h3>
+            <img
+              className={classes.timeNextImage}
+              src={nextExercise.name !== "" ? nextExercise.gifUrl : defaultImg}
+              alt={"Next Exercise"}
+              loading="lazy"
+            />
+          </div>
+          <div className={classes.timerIcons}>
+            <IconButton
+              style={{ fontSize: "60px" }}
+              color="inherit"
+              aria-label="remove"
+              onClick={() => {}}
+            >
+              <SkipPreviousIcon fontSize="inherit" />
+            </IconButton>
+            <IconButton
+              style={{ fontSize: "60px" }}
+              color="inherit"
+              aria-label="remove"
+              onClick={() => {
+                if (!isPlaying && currentExercise.ind === layout.length - 1) {
+                  setPreviousExercise({ name: "", gifUrl: "" });
+                  setCurrentExercise({
+                    ...planExercises.find(
+                      (planObj) => planObj.name === layout[0].i
+                    ),
+                    ind: 0,
+                  });
+                }
+                setIsPlaying(!isPlaying);
+              }}
+            >
+              {!isPlaying ? (
+                <PlayCircleOutlineIcon fontSize="inherit" />
+              ) : (
+                <PauseCircleOutlineIcon fontSize="inherit" />
+              )}
+            </IconButton>
+            <IconButton
+              style={{ fontSize: "60px" }}
+              color="inherit"
+              aria-label="remove"
+              onClick={() => {}}
+            >
+              <SkipNextIcon fontSize="inherit" />
+            </IconButton>
+          </div>
+          <h2 className={classes.timeNumber}>
+            {remainingTime < 10
+              ? `00:0${remainingTime}`
+              : `00:${remainingTime}`}
+          </h2>
+          <Box sx={{ width: "90%", position: "absolute", bottom: "3vh" }}>
+            <LinearProgress
+              variant="determinate"
+              value={
+                ((currentExercise.time - remainingTime) /
+                  currentExercise.time) *
+                100
+              }
+            />
+          </Box>
+        </div>
+      </Slide>
     </>
   );
 }
