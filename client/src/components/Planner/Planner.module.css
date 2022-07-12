@@ -334,6 +334,7 @@
   font-size: 3vw;
   margin: 0;
   top: 4vh;
+  text-transform: capitalize;
 }
 
 .timerStats {
@@ -438,4 +439,5 @@
   opacity: 0.8;
   margin-bottom: 20px;
   font-weight: 500;
+  text-transform: capitalize;
 }
