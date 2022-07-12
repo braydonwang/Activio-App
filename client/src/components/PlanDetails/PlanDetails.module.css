@@ -1,0 +1,91 @@
+.plan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planTop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 300px;
+  margin: 50px;
+  background-color: black;
+  border-radius: 5px;
+}
+
+.planImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.planTitleDiv {
+  position: absolute;
+  bottom: 0%;
+  left: 0%;
+  margin-bottom: 20px;
+  margin-left: 30px;
+}
+
+.planTitle {
+  font-size: 40px;
+  font-weight: 700;
+  margin-right: 18px;
+}
+
+.planEditTitleIcon {
+  font-size: 30px;
+  margin-right: 18px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.planEditTitleIcon:hover {
+  color: rgb(183, 182, 182);
+  transition: all ease-in-out 0.3s;
+}
+
+.planAuthor{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.planEditImgIcon {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  margin: 20px;
+  font-size: 25px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.planEditImgIcon:hover {
+  color: rgb(183, 182, 182);
+  transition: all ease-in-out 0.3s;
+}
+
+.planLikes {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  margin-top: 20px;
+  margin-left: 30px;
+  font-size: 25px;
+}
+
+.planLikesIcon {
+  margin-right: 6px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.planLikesIcon:hover {
+  color: rgb(183, 182, 182);
+  transition: all ease-in-out 0.3s;
+}

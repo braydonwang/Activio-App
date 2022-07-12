@@ -14,6 +14,7 @@ import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
 import ExerciseDetails from "./components/ExerciseDetails/ExerciseDetails";
 import { useSelector } from "react-redux";
+import PlanDetails from "./components/PlanDetails/PlanDetails";
 
 export default function App() {
   const { authData } = useSelector((state) => state.auth);
@@ -36,6 +37,7 @@ export default function App() {
           element={!authData ? <Navigate to="/login" replace /> : <Tracker />}
         />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/plan/:planId" element={<PlanDetails />} />
       </Routes>
     </Router>
   );
