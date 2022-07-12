@@ -173,6 +173,7 @@ export default function Planner() {
     }
     try {
       await axios.post("/plans", newPlan);
+      window.location.replace("/explore");
     } catch (err) {}
   };
 
