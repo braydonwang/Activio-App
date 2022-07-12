@@ -57,10 +57,12 @@ export default function Planner() {
   const [previousExercise, setPreviousExercise] = useState({
     gifUrl: "",
     name: "",
+    time: 0,
   });
   const [nextExercise, setNextExercise] = useState({
     gifUrl: "",
     name: "",
+    time: 0,
   });
   const [currentExercise, setCurrentExercise] = useState({
     id: "",
@@ -93,9 +95,13 @@ export default function Planner() {
       const next = planExercises.find(
         (planObj) => planObj.name === layout[currentExercise.ind + 1].i
       );
-      setNextExercise({ name: next.name, gifUrl: next.gifUrl });
+      setNextExercise({
+        name: next.name,
+        gifUrl: next.gifUrl,
+        time: next.time,
+      });
     } else {
-      setNextExercise({ name: "", gifUrl: "" });
+      setNextExercise({ name: "", gifUrl: "", time: 0 });
     }
   }, [currentExercise]);
 
@@ -178,7 +184,7 @@ export default function Planner() {
     }
     try {
       await axios.post("/plans", newPlan);
-      window.location.replace("/explore");
+      navigate("/explore");
     } catch (err) {}
   };
 
@@ -196,7 +202,11 @@ export default function Planner() {
       const next = planExercises.find(
         (planObj) => planObj.name === layout[1].i
       );
-      setNextExercise({ name: next.name, gifUrl: next.gifUrl });
+      setNextExercise({
+        name: next.name,
+        gifUrl: next.gifUrl,
+        time: next.time,
+      });
     }
     let time = 0;
     for (let i = 0; i < planExercises.length; i++) {
@@ -214,6 +224,7 @@ export default function Planner() {
     setPreviousExercise({
       gifUrl: currentExercise.gifUrl,
       name: currentExercise.name,
+      time: currentExercise.time,
     });
     setCurrentExercise({
       ...planExercises.find(
@@ -247,6 +258,50 @@ export default function Planner() {
     }
 
     return displayMin + ":" + displaySec;
+  };
+
+  const handleSkipPrevious = () => {
+    if (currentExercise.ind > 0) {
+      setRemainingTime(-1);
+      let time = currentExercise.time - remainingTime;
+      setTotalTime(totalTime + time + Number(previousExercise.time) + 2);
+      if (currentExercise.ind > 1) {
+        const prev = planExercises.find(
+          (planObj) => planObj.name === layout[currentExercise.ind - 2].i
+        );
+        setPreviousExercise({
+          name: prev.name,
+          gifUrl: prev.gifUrl,
+          time: prev.time,
+        });
+      } else {
+        setPreviousExercise({ name: "", gifUrl: "" });
+      }
+      setCurrentExercise({
+        ...planExercises.find(
+          (planObj) => planObj.name === layout[currentExercise.ind - 1].i
+        ),
+        ind: currentExercise.ind - 1,
+      });
+    }
+  };
+
+  const handleSkipNext = () => {
+    if (currentExercise.ind < layout.length - 1) {
+      setRemainingTime(-1);
+      setTotalTime(totalTime - remainingTime + 2);
+      setPreviousExercise({
+        name: currentExercise.name,
+        gifUrl: currentExercise.gifUrl,
+        time: currentExercise.time,
+      });
+      setCurrentExercise({
+        ...planExercises.find(
+          (planObj) => planObj.name === layout[currentExercise.ind + 1].i
+        ),
+        ind: currentExercise.ind + 1,
+      });
+    }
   };
 
   if (isLoading) {
@@ -579,7 +634,7 @@ export default function Planner() {
             color="inherit"
             aria-label="remove"
             onClick={() => {
-              setPreviousExercise({ name: "", gifUrl: "" });
+              setPreviousExercise({ name: "", gifUrl: "", time: 0 });
               setCurrentExercise({
                 id: "",
                 gifUrl: "",
@@ -589,7 +644,7 @@ export default function Planner() {
                 reps: "",
                 ind: -1,
               });
-              setNextExercise({ name: "", gifUrl: "" });
+              setNextExercise({ name: "", gifUrl: "", time: 0 });
               setTotalTime(0);
               setWorkoutTimer(false);
               setIsPlaying(false);
@@ -671,7 +726,7 @@ export default function Planner() {
               style={{ fontSize: "60px" }}
               color="inherit"
               aria-label="remove"
-              onClick={() => {}}
+              onClick={handleSkipPrevious}
             >
               <SkipPreviousIcon fontSize="inherit" />
             </IconButton>
@@ -681,7 +736,7 @@ export default function Planner() {
               aria-label="remove"
               onClick={() => {
                 if (!isPlaying && currentExercise.ind === layout.length - 1) {
-                  setPreviousExercise({ name: "", gifUrl: "" });
+                  setPreviousExercise({ name: "", gifUrl: "", time: 0 });
                   setCurrentExercise({
                     ...planExercises.find(
                       (planObj) => planObj.name === layout[0].i
@@ -707,7 +762,7 @@ export default function Planner() {
               style={{ fontSize: "60px" }}
               color="inherit"
               aria-label="remove"
-              onClick={() => {}}
+              onClick={handleSkipNext}
             >
               <SkipNextIcon fontSize="inherit" />
             </IconButton>
