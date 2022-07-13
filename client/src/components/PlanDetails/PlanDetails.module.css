@@ -1,5 +1,6 @@
 .plan {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -50,9 +51,9 @@
   transition: all ease-in-out 0.3s;
 }
 
-.planAuthor{
-    font-size: 20px;
-    font-weight: 500;
+.planAuthor {
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .planEditImgIcon {
@@ -68,6 +69,15 @@
 .planEditImgIcon:hover {
   color: rgb(183, 182, 182);
   transition: all ease-in-out 0.3s;
+}
+
+.planDate {
+  position: absolute;
+  bottom: 0%;
+  right: 0%;
+  margin: 20px;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .planLikes {
@@ -88,4 +98,134 @@
 .planLikesIcon:hover {
   color: rgb(183, 182, 182);
   transition: all ease-in-out 0.3s;
+}
+
+.planMid {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.planCatDiv {
+  width: 20%;
+  border-radius: 5px;
+  border: 3px solid white;
+  background-color: rgb(191, 55, 17);
+  margin-bottom: 30px;
+}
+
+.planCat {
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.planTimeDiv {
+  width: 20%;
+  border-radius: 5px;
+  border: 3px solid white;
+  background-color: rgb(63, 145, 148);
+  margin-bottom: 30px;
+}
+
+.planTime {
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.planDescDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+  border-radius: 5px;
+  border: 3px solid white;
+  background-color: darkslateblue;
+  margin-bottom: 30px;
+}
+
+.planDesc {
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.planDescEdit {
+  padding: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.planDescEdit:hover {
+  color: rgb(183, 182, 182);
+  transition: all ease-in-out 0.3s;
+}
+
+.exercises {
+  margin: 50px;
+}
+
+.exerciseContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 250px;
+  border-width: 3px;
+  border-style: solid;
+  border-bottom: none;
+  border-color: #5c2379;
+  cursor: grab;
+  transition: 0.3s;
+  margin: 0;
+}
+
+.exerciseContainer:hover {
+  opacity: 0.8;
+  background-color: rgb(86, 86, 86, 0.1);
+}
+
+.image {
+  height: 250px;
+}
+
+.timeContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 50px;
+}
+
+.time {
+  font-size: large;
+  margin: 19px 0 0 0;
+}
+
+.setReps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30px;
+}
+
+.sets {
+  font-size: 16px;
+  margin: 9px 0;
+}
+
+.name {
+  font-size: xxx-large;
+  text-transform: capitalize;
+  margin-left: 50px;
 }

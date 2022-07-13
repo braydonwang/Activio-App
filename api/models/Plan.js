@@ -25,6 +25,10 @@ const WorkoutPlanSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    likedUsers: {
+      type: [String],
+      required: true,
+    },
     exercises: {
       type: [Object],
       required: true,
