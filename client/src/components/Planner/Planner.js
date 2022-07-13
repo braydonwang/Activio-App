@@ -4,8 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 import ResponsiveGridLayout from "react-grid-layout";
 import { CircularProgress } from "@mui/material";
 import "/node_modules/react-grid-layout/css/styles.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "../Navbar/Navbar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import SaveIcon from "@mui/icons-material/Save";
 import LinearProgress from "@mui/material/LinearProgress";
 import Fade from "@mui/material/Fade";
 import Slide from "@mui/material/Slide";
@@ -89,6 +93,8 @@ export default function Planner() {
   const [desc, setDesc] = useState("");
   const [catDropDown, setCatDropDown] = useState(false);
   const [category, setCategory] = useState("");
+  const [hasExercise, setHasExercise] = useState(false);
+  const [savedLayout, setSavedLayout] = useState(true);
 
   useEffect(() => {
     if (currentExercise.ind + 1 < layout.length) {
@@ -108,6 +114,14 @@ export default function Planner() {
   useEffect(() => {
     setTotalTime((prevTime) => prevTime - 1);
   }, [remainingTime]);
+
+  useEffect(() => {
+    if (planExercises.length === 0) {
+      setHasExercise(false);
+    } else {
+      setHasExercise(true);
+    }
+  }, [planExercises]);
 
   const handleCatDropDown = () => {
     setCatDropDown(!catDropDown);
@@ -189,31 +203,33 @@ export default function Planner() {
   };
 
   const handleStartWorkout = async () => {
-    await setLayout((prevLayout) =>
-      prevLayout.sort((a, b) => {
-        return a.y - b.y;
-      })
-    );
-    setCurrentExercise({
-      ...planExercises.find((planObj) => planObj.name === layout[0].i),
-      ind: 0,
-    });
-    if (layout.length > 1) {
-      const next = planExercises.find(
-        (planObj) => planObj.name === layout[1].i
+    if (planExercises.length > 0) {
+      await setLayout((prevLayout) =>
+        prevLayout.sort((a, b) => {
+          return a.y - b.y;
+        })
       );
-      setNextExercise({
-        name: next.name,
-        gifUrl: next.gifUrl,
-        time: next.time,
+      setCurrentExercise({
+        ...planExercises.find((planObj) => planObj.name === layout[0].i),
+        ind: 0,
       });
+      if (layout.length > 1) {
+        const next = planExercises.find(
+          (planObj) => planObj.name === layout[1].i
+        );
+        setNextExercise({
+          name: next.name,
+          gifUrl: next.gifUrl,
+          time: next.time,
+        });
+      }
+      let time = 0;
+      for (let i = 0; i < planExercises.length; i++) {
+        time = time + Number(planExercises[i].time);
+      }
+      setTotalTime(time + 1);
+      setWorkoutTimer(true);
     }
-    let time = 0;
-    for (let i = 0; i < planExercises.length; i++) {
-      time = time + Number(planExercises[i].time);
-    }
-    setTotalTime(time + 1);
-    setWorkoutTimer(true);
   };
 
   const changeExerciseTime = async () => {
@@ -321,29 +337,99 @@ export default function Planner() {
       >
         <Navbar />
         <div className={classes.mainContainer}>
-          <h1
-            className={classes.heading}
-          >{`${user.user.name}'s Workout Plan`}</h1>
-          <button
-            className={classes.shareButton}
-            onClick={() => setSharePop(true)}
-          >
-            <span className={classes.shareTitle}>Share</span>
-            <i
-              className={classnames(
-                classes.shareIcon,
-                "fa-solid",
-                "fa-share-from-square"
-              )}
-            ></i>
-          </button>
+          <div className={classes.topBar}>
+            <h1
+              className={classes.heading}
+            >{`${user.user.name}'s Workout Plan`}</h1>
+            <div className={classes.topButton}>
+              <span className={classes.saveButton}>
+                <Button
+                  onClick={() => {}}
+                  style={{
+                    color: savedLayout ? "rgb(90, 90, 90)" : "inherit",
+                    fontSize: "inherit",
+                    margin: "0",
+                    padding: "0 23px",
+                    transition: "0.1s",
+                    cursor: savedLayout ? "none" : "pointer",
+                    backgroundColor: savedLayout ? "grey" : "inherit",
+                  }}
+                  disabled={savedLayout}
+                >
+                  <span style={{ margin: "5px 7px 0 10px" }}>Save</span>
+                  <SaveIcon />
+                </Button>
+              </span>
+              <span className={classes.shareButton}>
+                <Button
+                  onClick={() => setSharePop(true)}
+                  style={{
+                    color: !hasExercise ? "rgb(90, 90, 90)" : "inherit",
+                    fontSize: "inherit",
+                    margin: "0",
+                    padding: "0 10px",
+                    transition: "0.1s",
+                    cursor: !hasExercise ? "none" : "pointer",
+                    backgroundColor: !hasExercise ? "grey" : "inherit",
+                  }}
+                  disabled={!hasExercise}
+                >
+                  <span style={{ margin: "5px 7px 0 10px" }}>Share</span>
+                  <i
+                    className={classnames(
+                      classes.shareIcon,
+                      "fa-solid",
+                      "fa-share-from-square"
+                    )}
+                  ></i>
+                </Button>
+              </span>
+            </div>
+          </div>
+
+          {!hasExercise && (
+            <div className={classes.noExerciseContainer}>
+              <h1 className={classes.noExercises}>
+                There are no exercises in your plan
+              </h1>
+              <h2 className={classes.addExercises}>
+                Add some through the{" "}
+                <span
+                  style={{
+                    fontSize: "1.6vw",
+                    fontWeight: "800",
+                    color: "purple",
+                  }}
+                >
+                  Exercises
+                </span>{" "}
+                tab!
+              </h2>
+              <FontAwesomeIcon
+                icon={faDumbbell}
+                color="white"
+                opacity={0.8}
+                size="10x"
+              />
+            </div>
+          )}
 
           <ResponsiveGridLayout
             margin={[0, 0]}
             cols={1}
             rowHeight={250}
             layout={layout}
-            onLayoutChange={(layouts) => setLayout(layouts)}
+            onLayoutChange={(layouts) => {
+              if (
+                planExercises.length !== 0 &&
+                layouts.length === layout.length
+              ) {
+                setSavedLayout(false);
+              } else {
+                setSavedLayout(true);
+              }
+              setLayout(layouts);
+            }}
             width={windowDimensions.width - 18}
             isBounded
           >
