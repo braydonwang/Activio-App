@@ -121,16 +121,17 @@ export default function Planner() {
   }, [remainingTime]);
 
   useEffect(() => {
+    const deepCopy = JSON.parse(JSON.stringify(savedLayout));
+    setLayout(deepCopy);
+  }, [savedLayout]);
+
+  useEffect(() => {
     if (planExercises.length === 0) {
       setHasExercise(false);
     } else {
       setHasExercise(true);
     }
   }, [planExercises]);
-
-  useEffect(() => {
-    setLayout(savedLayout);
-  }, [savedLayout]);
 
   const handleCatDropDown = () => {
     setCatDropDown(!catDropDown);
@@ -158,6 +159,7 @@ export default function Planner() {
           exercise: {
             id,
           },
+          layout,
         },
         navigate,
       })
@@ -342,8 +344,6 @@ export default function Planner() {
     );
   }
 
-  console.log(isSaved);
-
   return (
     <>
       <main
@@ -403,7 +403,7 @@ export default function Planner() {
             </div>
           </div>
 
-          {!hasExercise && (
+          {planExercises.length === 0 && (
             <div className={classes.noExerciseContainer}>
               <h1 className={classes.noExercises}>
                 There are no exercises in your plan
