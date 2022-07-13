@@ -3,6 +3,7 @@ import planDraftService from "./planDraftService";
 
 const initialState = {
   planExercises: [],
+  savedLayout: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -77,6 +78,23 @@ export const removePlanDraft = createAsyncThunk(
   }
 );
 
+export const updateLayout = createAsyncThunk(
+  "planDraft/updateLayout",
+  async (planData, thunkAPI) => {
+    try {
+      return await planDraftService.updateLayout(planData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const planDraftSlice = createSlice({
   name: "planDraft",
   initialState,
@@ -92,6 +110,7 @@ export const planDraftSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.planExercises = action.payload.exercises;
+        state.savedLayout = action.payload.savedLayout;
       })
       .addCase(createPlanDraft.rejected, (state, action) => {
         state.isLoading = false;
@@ -105,6 +124,7 @@ export const planDraftSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.planExercises = action.payload.exercises;
+        state.savedLayout = action.payload.savedLayout;
       })
       .addCase(getPlanDraft.rejected, (state, action) => {
         state.isLoading = false;
@@ -118,6 +138,7 @@ export const planDraftSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.planExercises = action.payload.exercises;
+        state.savedLayout = action.payload.savedLayout;
       })
       .addCase(updatePlanDraft.rejected, (state, action) => {
         state.isLoading = false;
@@ -131,8 +152,22 @@ export const planDraftSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.planExercises = action.payload.exercises;
+        state.savedLayout = action.payload.savedLayout;
       })
       .addCase(removePlanDraft.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(updateLayout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateLayout.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.savedLayout = action.payload.savedLayout;
+      })
+      .addCase(updateLayout.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

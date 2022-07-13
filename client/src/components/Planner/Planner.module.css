@@ -25,29 +25,72 @@
   text-shadow: -8px 8px 10px rgb(120, 33, 192);
 }
 
+.topBar {
+  position: relative;
+}
+
+.topButton {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  right: 35px;
+  bottom: 0;
+  gap: 20px;
+}
+
 .shareButton {
-  width: 8%;
   height: 40px;
-  background-color: teal;
+  background-color: rgb(20, 131, 164);
   color: white;
   border-radius: 5px;
   font-size: 20px;
   font-weight: 700;
-  cursor: pointer;
   transition: all ease-in-out 0.3s;
 }
 
 .shareButton:hover {
-  background-color: rgb(3, 103, 103);
+  background-color: rgb(10, 97, 124);
   transition: all ease-in-out 0.3s;
 }
 
-.shareTitle {
-  margin: 5px;
+.saveButton {
+  height: 40px;
+  background-color: rgb(20, 80, 164);
+  color: white;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: 700;
+  transition: all ease-in-out 0.3s;
+}
+
+.saveButton:hover {
+  background-color: rgb(5, 59, 136);
+  transition: all ease-in-out 0.3s;
 }
 
 .shareIcon {
   margin: 5px;
+}
+
+.noExerciseContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 45vh;
+}
+
+.noExercises {
+  font-style: italic;
+  margin-bottom: 30px;
+  font-size: 2vw;
+  opacity: 0.9;
+}
+
+.addExercises {
+  margin: 0 0 50px 0;
+  font-size: 1.5vw;
+  opacity: 0.8;
 }
 
 .exerciseContainer {
@@ -105,6 +148,7 @@
   font-size: xxx-large;
   text-transform: capitalize;
   margin-left: 50px;
+  max-width: 60%;
 }
 
 .buttonContainer {
@@ -297,7 +341,7 @@
   border-color: #bf5af2;
 }
 
-.writeImgDiv{
+.writeImgDiv {
   top: 0%;
   position: absolute;
   margin: 50px;
@@ -368,7 +412,7 @@
   transition: all ease-in-out 0.3s;
 }
 
-.writeEditIcon{
+.writeEditIcon {
   position: absolute;
   top: 0%;
   right: 0%;
@@ -378,7 +422,7 @@
   transition: all ease-in-out 0.3s;
 }
 
-.writeEditIcon:hover{
+.writeEditIcon:hover {
   color: grey;
   transition: all ease-in-out 0.3s;
 }
@@ -674,4 +718,5 @@
   margin-bottom: 20px;
   font-weight: 500;
   text-transform: capitalize;
+  max-width: 30vh;
 }
