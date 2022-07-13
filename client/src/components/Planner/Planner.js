@@ -31,6 +31,7 @@ import classnames from "classnames";
 import {
   getPlanDraft,
   removePlanDraft,
+  updateLayout,
   updatePlanDraft,
 } from "../../features/planDrafts/planDraftSlice";
 import axios from "axios";
@@ -47,13 +48,17 @@ const getWindowDimensions = () => {
 export default function Planner() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, planExercises } = useSelector((state) => state.planDrafts);
+  const { isLoading, planExercises, savedLayout } = useSelector(
+    (state) => state.planDrafts
+  );
   const user = JSON.parse(localStorage.getItem("user"));
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
   const [popUp, setPopUp] = useState(false);
-  const [layout, setLayout] = useState([]);
+  const [layout, setLayout] = useState(
+    savedLayout.length > 0 ? savedLayout : []
+  );
   const [workoutTimer, setWorkoutTimer] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
@@ -94,7 +99,7 @@ export default function Planner() {
   const [catDropDown, setCatDropDown] = useState(false);
   const [category, setCategory] = useState("");
   const [hasExercise, setHasExercise] = useState(false);
-  const [savedLayout, setSavedLayout] = useState(true);
+  const [isSaved, setIsSaved] = useState(true);
 
   useEffect(() => {
     if (currentExercise.ind + 1 < layout.length) {
@@ -122,6 +127,10 @@ export default function Planner() {
       setHasExercise(true);
     }
   }, [planExercises]);
+
+  useEffect(() => {
+    setLayout(savedLayout);
+  }, [savedLayout]);
 
   const handleCatDropDown = () => {
     setCatDropDown(!catDropDown);
@@ -320,6 +329,11 @@ export default function Planner() {
     }
   };
 
+  const handleSave = () => {
+    dispatch(updateLayout({ username: user.user.username, layout }));
+    setIsSaved(true);
+  };
+
   if (isLoading) {
     return (
       <div className={classes.loadingContainer}>
@@ -327,6 +341,8 @@ export default function Planner() {
       </div>
     );
   }
+
+  console.log(isSaved);
 
   return (
     <>
@@ -344,17 +360,17 @@ export default function Planner() {
             <div className={classes.topButton}>
               <span className={classes.saveButton}>
                 <Button
-                  onClick={() => {}}
+                  onClick={handleSave}
                   style={{
-                    color: savedLayout ? "rgb(90, 90, 90)" : "inherit",
+                    color: isSaved ? "rgb(90, 90, 90)" : "inherit",
                     fontSize: "inherit",
                     margin: "0",
                     padding: "0 23px",
                     transition: "0.1s",
-                    cursor: savedLayout ? "none" : "pointer",
-                    backgroundColor: savedLayout ? "grey" : "inherit",
+                    cursor: isSaved ? "none" : "pointer",
+                    backgroundColor: isSaved ? "grey" : "inherit",
                   }}
-                  disabled={savedLayout}
+                  disabled={isSaved}
                 >
                   <span style={{ margin: "5px 7px 0 10px" }}>Save</span>
                   <SaveIcon />
@@ -421,12 +437,13 @@ export default function Planner() {
             layout={layout}
             onLayoutChange={(layouts) => {
               if (
+                JSON.stringify(savedLayout) !== JSON.stringify(layouts) &&
                 planExercises.length !== 0 &&
                 layouts.length === layout.length
               ) {
-                setSavedLayout(false);
+                setIsSaved(false);
               } else {
-                setSavedLayout(true);
+                setIsSaved(true);
               }
               setLayout(layouts);
             }}

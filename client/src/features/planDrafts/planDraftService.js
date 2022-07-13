@@ -24,11 +24,17 @@ const removePlanDraft = async (planData) => {
   return data;
 };
 
+const updateLayout = async (planData) => {
+  const { data } = await axios.put(API_URL + "layout", planData);
+  return data;
+};
+
 const planService = {
   createPlanDraft,
   getPlanDraft,
   updatePlanDraft,
   removePlanDraft,
+  updateLayout,
 };
 
 export default planService;

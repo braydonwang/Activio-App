@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
 
 //UPDATE EXERCISE IN DRAFT PLAN
 router.put("/update", async (req, res) => {
-  const { username, exercise } = req.body;
+  const { username, exercise, layout } = req.body;
   const plan = await PlanDraft.findOne({ username });
 
   const index = plan.exercises
@@ -40,6 +40,8 @@ router.put("/update", async (req, res) => {
     );
   }
 
+  plan.savedLayout = layout;
+
   const updatedPlan = await PlanDraft.findOneAndUpdate({ username }, plan, {
     new: true,
   });
@@ -49,10 +51,25 @@ router.put("/update", async (req, res) => {
 
 //REMOVE EXERCISE IN DRAFT PLAN
 router.put("/remove", async (req, res) => {
-  const { username, exercise } = req.body;
+  const { username, exercise, layout } = req.body;
   const plan = await PlanDraft.findOne({ username });
 
   plan.exercises = plan.exercises.filter((item) => item.id !== exercise.id);
+
+  plan.savedLayout = layout;
+
+  const updatedPlan = await PlanDraft.findOneAndUpdate({ username }, plan, {
+    new: true,
+  });
+
+  res.status(200).json(updatedPlan);
+});
+
+router.put("/layout", async (req, res) => {
+  const { username, layout } = req.body;
+  const plan = await PlanDraft.findOne({ username });
+
+  plan.savedLayout = layout;
 
   const updatedPlan = await PlanDraft.findOneAndUpdate({ username }, plan, {
     new: true,
