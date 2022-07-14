@@ -8,7 +8,7 @@ export default function Plan({ plan }) {
   return (
     <Link to={`/plan/${plan._id}`} className={classes.plan}>
       {plan.photo && (
-        <img className={classes.planImg} src={PF + plan.photo} alt="" />
+        <img className={classes.planImg} src={plan.photo} alt="" />
       )}
 
       <div className={classes.planInfo}>

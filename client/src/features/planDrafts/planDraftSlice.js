@@ -138,7 +138,6 @@ export const planDraftSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.planExercises = action.payload.exercises;
-        state.savedLayout = action.payload.savedLayout;
       })
       .addCase(updatePlanDraft.rejected, (state, action) => {
         state.isLoading = false;
@@ -152,7 +151,6 @@ export const planDraftSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.planExercises = action.payload.exercises;
-        state.savedLayout = action.payload.savedLayout;
       })
       .addCase(removePlanDraft.rejected, (state, action) => {
         state.isLoading = false;

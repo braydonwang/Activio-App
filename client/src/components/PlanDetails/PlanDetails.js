@@ -5,18 +5,19 @@ import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
+import { CircularProgress } from "@mui/material";
 import classes from "./PlanDetails.module.css";
 import TimerIcon from "@mui/icons-material/Timer";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import FileBase from "react-file-base64";
 
 const limit = 100;
 
 export default function PlanDetails() {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
-  const PF = "http://localhost:5000/images/";
 
   const navigate = useNavigate();
 
@@ -30,6 +31,7 @@ export default function PlanDetails() {
   const [likes, setLikes] = useState(0);
   const [likedUsers, setLikedUsers] = useState([]);
   const [time, setTime] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [updateTitle, setUpdateTitle] = useState(false);
   const [updateDesc, setUpdateDesc] = useState(false);
@@ -93,6 +95,7 @@ export default function PlanDetails() {
 
   useEffect(() => {
     const getPost = async () => {
+      setIsLoading(true);
       const res = await axios.get("/plans/" + path);
       setPlan(res.data);
       setTitle(res.data.title);
@@ -104,9 +107,18 @@ export default function PlanDetails() {
       let totalTime = 0;
       res.data.exercises.forEach((e) => (totalTime += parseInt(e.time)));
       setTime(totalTime);
+      setIsLoading(false);
     };
     getPost();
   }, [path]);
+
+  if (isLoading) {
+    return (
+      <div className={classes.loadingContainer}>
+        <CircularProgress size="7em" style={{ color: "#bf5af2" }} />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -114,7 +126,7 @@ export default function PlanDetails() {
 
       <div className={classes.plan}>
         <div className={classes.planTop}>
-          {file && <img src={PF + file} alt="" className={classes.planImg} />}
+          {file && <img src={file} alt="" className={classes.planImg} />}
           <div className={classes.planTitleDiv}>
             {updateTitle ? (
               <input
@@ -149,20 +161,22 @@ export default function PlanDetails() {
             <span className={classes.planAuthor}>by {username}</span>
           </div>
 
-          <label htmlFor="fileInput">
+          <label>
             <i
               className={classNames(
                 classes.planEditImgIcon,
                 "fa-solid fa-pen-to-square"
               )}
             ></i>
+            <div className={classes.fileTypeContainer}>
+              <FileBase
+                type="file"
+                value={file}
+                multiple={false}
+                onDone={({ base64 }) => setFile(base64)}
+              />
+            </div>
           </label>
-          <input
-            type="file"
-            id="fileInput"
-            style={{ display: "none" }}
-            onChange={(e) => setFile(e.target.files[0])}
-          />
 
           <span className={classes.planDate}>
             Created On: {new Date(plan.createdAt).toDateString()}
@@ -193,10 +207,15 @@ export default function PlanDetails() {
         </div>
         <div className={classes.planMid}>
           <div className={classes.planCatDiv}>
-            <div className={classes.planCat}>Category: {plan.categories}</div>
+            <div className={classes.planCat}>
+              <span style={{ fontWeight: "700" }}>Category:</span>{" "}
+              {plan.categories}
+            </div>
           </div>
           <div className={classes.planTimeDiv}>
-            <div className={classes.planTime}>Duration: {time} s</div>
+            <div className={classes.planTime}>
+              <span style={{ fontWeight: "700" }}>Duration:</span> {time} s
+            </div>
           </div>
           <div className={classes.planDescDiv}>
             {updateDesc ? (

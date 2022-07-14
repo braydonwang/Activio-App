@@ -135,7 +135,7 @@
 .planCat {
   padding: 15px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
@@ -150,7 +150,7 @@
 .planTime {
   padding: 15px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
@@ -176,7 +176,7 @@
 .planDesc {
   padding: 15px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   
 }
@@ -280,4 +280,15 @@
   font-size: xxx-large;
   text-transform: capitalize;
   margin-left: 50px;
+}
+
+.fileTypeContainer input[type="file"] {
+  display: none;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
