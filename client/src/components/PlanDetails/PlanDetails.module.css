@@ -39,6 +39,21 @@
   margin-right: 18px;
 }
 
+.planTitleInput{
+  font-family: "Inter", sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  margin-right: 18px;
+  border: none;
+  background-color: transparent;
+  color: white;
+  border-bottom: 2px solid white;
+}
+
+.planTitleInput:focus{
+  outline: none;
+}
+
 .planEditTitleIcon {
   font-size: 30px;
   margin-right: 18px;
@@ -87,6 +102,7 @@
   margin-top: 20px;
   margin-left: 30px;
   font-size: 25px;
+  transition: all ease-in-out 0.3s;
 }
 
 .planLikesIcon {
@@ -150,11 +166,35 @@
   margin-bottom: 30px;
 }
 
+.planDescSubDiv{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
 .planDesc {
   padding: 15px;
   font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
+  
+}
+
+.planDescInput{
+  font-family: "Inter", sans-serif;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-bottom: 2px solid white;
+}
+
+.planDescInput:focus{
+  outline: none;
 }
 
 .planDescEdit {
@@ -165,6 +205,18 @@
 }
 
 .planDescEdit:hover {
+  color: rgb(183, 182, 182);
+  transition: all ease-in-out 0.3s;
+}
+
+.planEditDescIcon{
+  padding: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.planEditDescIcon:hover {
   color: rgb(183, 182, 182);
   transition: all ease-in-out 0.3s;
 }

@@ -193,6 +193,7 @@ export default function Planner() {
       username: user.user.username,
       categories: category,
       likeCount: 0,
+      likedUsers: [],
       exercises: planExercises,
     };
     if (file) {

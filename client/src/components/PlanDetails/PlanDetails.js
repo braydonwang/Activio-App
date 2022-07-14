@@ -1,7 +1,7 @@
 import axios from "axios";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
@@ -10,6 +10,8 @@ import TimerIcon from "@mui/icons-material/Timer";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+
+const limit = 100;
 
 export default function PlanDetails() {
   const location = useLocation();
@@ -26,16 +28,67 @@ export default function PlanDetails() {
   const [file, setFile] = useState("");
   const [desc, setDesc] = useState("");
   const [likes, setLikes] = useState(0);
+  const [likedUsers, setLikedUsers] = useState([]);
   const [time, setTime] = useState(0);
 
+  const [updateTitle, setUpdateTitle] = useState(false);
+  const [updateDesc, setUpdateDesc] = useState(false);
+
+  const textareaRef = useRef(null);
+
+  const handleKeyDown = (e) => {
+    e.target.style.height = 'inherit';
+    e.target.style.height = `${e.target.scrollHeight}px`; 
+    console.log(e.target.style.height);
+    // In case you have a limitation
+    e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
+  }
+
   const handleLiked = async () => {
-    setLikes(likes + 1);
+    if (likedUsers.includes(user.username)) {
+      const idx = likedUsers.indexOf(user.username);
+      likedUsers.splice(idx, 1);
+      setLikedUsers(likedUsers);
+      setLikes(likes - 1);
+      try {
+        await axios.put(`/plans/${plan._id}`, {
+          username,
+          likeCount: likes - 1,
+          likedUsers: likedUsers,
+        });
+      } catch (err) {}
+    } else {
+      likedUsers.push(user.username);
+      setLikedUsers(likedUsers);
+      setLikes(likes + 1);
+      try {
+        await axios.put(`/plans/${plan._id}`, {
+          username,
+          likeCount: likes + 1,
+          likedUsers: likedUsers,
+        });
+      } catch (err) {}
+    }
+  };
+
+  const handleUpdateTitle = async () => {
     try {
       await axios.put(`/plans/${plan._id}`, {
-        username,
-        likeCount: likes + 1,
+        username: user.username,
+        title,
       });
     } catch (err) {}
+    setUpdateTitle(false);
+  };
+
+  const handleUpdateDesc = async () => {
+    try {
+      await axios.put(`/plans/${plan._id}`, {
+        username: user.username,
+        desc,
+      });
+    } catch (err) {}
+    setUpdateDesc(false);
   };
 
   useEffect(() => {
@@ -47,10 +100,10 @@ export default function PlanDetails() {
       setUsername(res.data.username);
       setDesc(res.data.desc);
       setLikes(res.data.likeCount);
+      setLikedUsers(res.data.likedUsers);
       let totalTime = 0;
-      res.data.exercises.forEach(e => totalTime += parseInt(e.time));
+      res.data.exercises.forEach((e) => (totalTime += parseInt(e.time)));
       setTime(totalTime);
-    
     };
     getPost();
   }, [path]);
@@ -63,13 +116,36 @@ export default function PlanDetails() {
         <div className={classes.planTop}>
           {file && <img src={PF + file} alt="" className={classes.planImg} />}
           <div className={classes.planTitleDiv}>
-            <span className={classes.planTitle}>{title}</span>
-            <i
-              className={classNames(
-                classes.planEditTitleIcon,
-                "fa-solid fa-pencil"
-              )}
-            ></i>
+            {updateTitle ? (
+              <input
+                type="text"
+                value={title}
+                className={classes.planTitleInput}
+                onChange={(e) => setTitle(e.target.value)}
+                maxLength={25}
+                autoFocus={true}
+              />
+            ) : (
+              <span className={classes.planTitle}>{title}</span>
+            )}
+            {updateTitle ? (
+              <i
+                className={classNames(
+                  classes.planEditTitleIcon,
+                  "fa-solid fa-check"
+                )}
+                onClick={handleUpdateTitle}
+              ></i>
+            ) : (
+              <i
+                className={classNames(
+                  classes.planEditTitleIcon,
+                  "fa-solid fa-pencil"
+                )}
+                onClick={() => setUpdateTitle(true)}
+              ></i>
+            )}
+
             <span className={classes.planAuthor}>by {username}</span>
           </div>
 
@@ -92,13 +168,25 @@ export default function PlanDetails() {
             Created On: {new Date(plan.createdAt).toDateString()}
           </span>
 
-          <div className={classes.planLikes}>
+          <div
+            className={classes.planLikes}
+            style={{
+              color: likedUsers.includes(user.username)
+                ? "rgb(133, 171, 241)"
+                : "white",
+            }}
+          >
             <i
               className={classNames(
                 classes.planLikesIcon,
                 "fa-regular fa-thumbs-up"
               )}
               onClick={handleLiked}
+              style={{
+                color: likedUsers.includes(user.username)
+                  ? "rgb(133, 171, 241)"
+                  : "white",
+              }}
             ></i>
             {likes}
           </div>
@@ -111,13 +199,37 @@ export default function PlanDetails() {
             <div className={classes.planTime}>Duration: {time} s</div>
           </div>
           <div className={classes.planDescDiv}>
-            <div className={classes.planDesc}>Description: {desc}</div>
-            <i
-              className={classNames(
-                classes.planDescEdit,
-                "fa-solid fa-pen-to-square"
-              )}
-            ></i>
+            {updateDesc ? (
+              <div className={classes.planDescSubDiv}>
+                <div className={classes.planDesc}>Description: </div>
+                <textarea
+                  className={classes.planDescInput}
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  rows={1}
+                />
+              </div>
+            ) : (
+              <div className={classes.planDesc}>Description: {desc}</div>
+            )}
+            {updateDesc ? (
+              <i
+                className={classNames(
+                  classes.planEditDescIcon,
+                  "fa-solid fa-check"
+                )}
+                onClick={handleUpdateDesc}
+              ></i>
+            ) : (
+              <i
+                className={classNames(
+                  classes.planDescEdit,
+                  "fa-solid fa-pen-to-square"
+                )}
+                onClick={() => setUpdateDesc(true)}
+              ></i>
+            )}
           </div>
         </div>
       </div>

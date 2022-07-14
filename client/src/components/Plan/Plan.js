@@ -27,6 +27,7 @@ export default function Plan({ plan }) {
           <span className={classes.planTitle}>{plan.title}</span>
           <div className={classes.planTemp}></div>
         </div>
+        <span className={classes.planAuthor}>By: {plan.username}</span>
         <span className={classes.planDate}>
           {new Date(plan.createdAt).toDateString()}
         </span>
