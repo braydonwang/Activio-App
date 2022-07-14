@@ -90,7 +90,7 @@ export default function Exercises() {
   if (isLoading) {
     return (
       <div className={classes.loadingContainer}>
-        <CircularProgress size="7em" />
+        <CircularProgress size="7em" style={{ color: "#bf5af2" }} />
       </div>
     );
   }

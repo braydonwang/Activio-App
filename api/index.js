@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
@@ -12,7 +13,16 @@ const multer = require("multer");
 const path = require("path");
 
 dotenv.config();
+app.use(bodyParser.json({ extended: true, limit: "50mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
 app.use(express.json());
+
 app.use("/images", express.static(path.join(__dirname, "/images")));
 
 mongoose

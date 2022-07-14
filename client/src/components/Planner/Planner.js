@@ -26,6 +26,7 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import defaultImg from "../../images/white.png";
+import FileBase from "react-file-base64";
 import classes from "./Planner.module.css";
 import classnames from "classnames";
 import {
@@ -196,17 +197,8 @@ export default function Planner() {
       categories: category,
       likeCount: 0,
       exercises: planExercises,
+      photo: file,
     };
-    if (file) {
-      const data = new FormData();
-      const filename = Date.now() + file.name;
-      data.append("name", filename);
-      data.append("file", file);
-      newPlan.photo = filename;
-      try {
-        await axios.post("/upload", data);
-      } catch (err) {}
-    }
     try {
       await axios.post("/plans", newPlan);
       navigate("/explore");
@@ -339,7 +331,7 @@ export default function Planner() {
   if (isLoading) {
     return (
       <div className={classes.loadingContainer}>
-        <CircularProgress size="7em" />
+        <CircularProgress size="7em" style={{ color: "#bf5af2" }} />
       </div>
     );
   }
@@ -592,39 +584,39 @@ export default function Planner() {
         <div className={classes.sharePop}>
           {file && (
             <div className={classes.writeImgDiv}>
-              <img
-                src={URL.createObjectURL(file)}
-                alt=""
-                className={classes.writeImg}
-              />
-              <label htmlFor="fileInput">
+              <img src={file} alt="" className={classes.writeImg} />
+              <label>
                 <i
                   className={classnames(
                     classes.writeEditIcon,
                     "fa-solid fa-pen-to-square"
                   )}
                 ></i>
+                <div className={classes.fileTypeContainer}>
+                  <FileBase
+                    type="file"
+                    value={file}
+                    multiple={false}
+                    onDone={({ base64 }) => setFile(base64)}
+                  />
+                </div>
               </label>
-              <input
-                type="file"
-                id="fileInput"
-                style={{ display: "none" }}
-                onChange={(e) => setFile(e.target.files[0])}
-              />
             </div>
           )}
 
           {!file && (
             <>
-              <label htmlFor="fileInput">
+              <label>
                 <i className={classnames(classes.writeIcon, "fas fa-plus")}></i>
+                <div className={classes.fileTypeContainer}>
+                  <FileBase
+                    type="file"
+                    value={file}
+                    multiple={false}
+                    onDone={({ base64 }) => setFile(base64)}
+                  />
+                </div>
               </label>
-              <input
-                type="file"
-                id="fileInput"
-                style={{ display: "none" }}
-                onChange={(e) => setFile(e.target.files[0])}
-              />
             </>
           )}
 

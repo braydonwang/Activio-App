@@ -720,3 +720,7 @@
   text-transform: capitalize;
   max-width: 30vh;
 }
+
+.fileTypeContainer input[type="file"] {
+  display: none;
+}
