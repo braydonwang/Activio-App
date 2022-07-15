@@ -33,6 +33,11 @@ const WorkoutPlanSchema = new mongoose.Schema(
       type: [Object],
       required: true,
     },
+    savedLayout: {
+      type: [Object],
+      require: false,
+      default: [],
+    },
   },
   { timestamps: true }
 );

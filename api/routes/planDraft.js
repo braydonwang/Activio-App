@@ -34,6 +34,13 @@ router.put("/update", async (req, res) => {
 
   if (index === -1) {
     plan.exercises.push(exercise);
+    plan.savedLayout.push({
+      w: 1,
+      h: 1,
+      x: 0,
+      y: plan.exercises.length - 1,
+      i: exercise.name,
+    });
   } else {
     plan.exercises = plan.exercises.map((item) =>
       item.id === exercise.id ? exercise : item
@@ -53,6 +60,9 @@ router.put("/remove", async (req, res) => {
   const plan = await PlanDraft.findOne({ username });
 
   plan.exercises = plan.exercises.filter((item) => item.id !== exercise.id);
+  plan.savedLayout = plan.savedLayout.filter(
+    (item) => item.i !== exercise.name
+  );
 
   const updatedPlan = await PlanDraft.findOneAndUpdate({ username }, plan, {
     new: true,
@@ -72,6 +82,20 @@ router.put("/layout", async (req, res) => {
   });
 
   res.status(200).json(updatedPlan);
+});
+
+router.put("/copy", async (req, res) => {
+  const { username, exercises, layout } = req.body;
+  const plan = await PlanDraft.findOne({ username });
+
+  plan.exercises = exercises;
+  plan.savedLayout = layout;
+
+  const updatedPlan = await PlanDraft.findOneAndUpdate({ username }, plan, {
+    new: true,
+  });
+
+  res.status(200).json({ exercises, savedLayout: layout });
 });
 
 module.exports = router;

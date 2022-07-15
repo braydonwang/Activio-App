@@ -36,6 +36,7 @@ import {
   updatePlanDraft,
 } from "../../features/planDrafts/planDraftSlice";
 import axios from "axios";
+import { createPlan } from "../../features/plans/planSlice";
 
 const getWindowDimensions = () => {
   const width = window.innerWidth;
@@ -107,11 +108,13 @@ export default function Planner() {
       const next = planExercises.find(
         (planObj) => planObj.name === layout[currentExercise.ind + 1].i
       );
-      setNextExercise({
-        name: next.name,
-        gifUrl: next.gifUrl,
-        time: next.time,
-      });
+      if (next) {
+        setNextExercise({
+          name: next.name,
+          gifUrl: next.gifUrl,
+          time: next.time,
+        });
+      }
     } else {
       setNextExercise({ name: "", gifUrl: "", time: 0 });
     }
@@ -151,7 +154,7 @@ export default function Planner() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleRemove = (e, id) => {
+  const handleRemove = (e, id, name) => {
     e.stopPropagation();
     dispatch(
       removePlanDraft({
@@ -159,6 +162,7 @@ export default function Planner() {
           username: user.user.username,
           exercise: {
             id,
+            name,
           },
           layout,
         },
@@ -199,11 +203,9 @@ export default function Planner() {
       likedUsers: [],
       exercises: planExercises,
       photo: file,
+      savedLayout: layout,
     };
-    try {
-      await axios.post("/plans", newPlan);
-      navigate("/explore");
-    } catch (err) {}
+    dispatch(createPlan({ navigate, data: newPlan }));
   };
 
   const handleStartWorkout = async () => {
@@ -467,7 +469,7 @@ export default function Planner() {
                     style={{ position: "absolute", right: "60px", top: "10px" }}
                     color="inherit"
                     aria-label="remove"
-                    onClick={(e) => handleRemove(e, id)}
+                    onClick={(e) => handleRemove(e, id, name)}
                   >
                     <RemoveCircleIcon fontSize="large" />
                   </IconButton>
@@ -831,7 +833,11 @@ export default function Planner() {
               color="inherit"
               aria-label="remove"
               onClick={() => {
-                if (!isPlaying && currentExercise.ind === layout.length - 1) {
+                if (
+                  !isPlaying &&
+                  currentExercise.ind === layout.length - 1 &&
+                  remainingTime === 0
+                ) {
                   setPreviousExercise({ name: "", gifUrl: "", time: 0 });
                   setCurrentExercise({
                     ...planExercises.find(

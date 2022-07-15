@@ -39,7 +39,7 @@
   margin-right: 18px;
 }
 
-.planTitleInput{
+.planTitleInput {
   font-family: "Inter", sans-serif;
   font-size: 40px;
   font-weight: 700;
@@ -50,7 +50,7 @@
   border-bottom: 2px solid white;
 }
 
-.planTitleInput:focus{
+.planTitleInput:focus {
   outline: none;
 }
 
@@ -140,13 +140,14 @@
   align-items: center;
   justify-content: space-between;
   width: 80%;
+  gap: 20px;
 }
 
 .planCatDiv {
-  width: 20%;
+  width: 17%;
   border-radius: 5px;
   border: 3px solid white;
-  background-color: rgb(191, 55, 17);
+  background-color: rgb(77, 75, 196);
   margin-bottom: 30px;
 }
 
@@ -158,10 +159,10 @@
 }
 
 .planTimeDiv {
-  width: 20%;
+  width: 17%;
   border-radius: 5px;
   border: 3px solid white;
-  background-color: rgb(63, 145, 148);
+  background-color: darkslateblue;
   margin-bottom: 30px;
 }
 
@@ -180,11 +181,11 @@
   width: 50%;
   border-radius: 5px;
   border: 3px solid white;
-  background-color: darkslateblue;
+  background-color: rgb(114, 81, 172);
   margin-bottom: 30px;
 }
 
-.planDescSubDiv{
+.planDescSubDiv {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -195,23 +196,28 @@
   padding: 15px;
   font-size: 15px;
   font-weight: 500;
-  text-transform: uppercase;
-  
 }
 
-.planDescInput{
+.planButtonDiv {
+  width: 10%;
+  border-radius: 5px;
+  border: 3px solid white;
+  background-color: rgb(99, 22, 141);
+  margin-bottom: 30px;
+}
+
+.planDescInput {
   font-family: "Inter", sans-serif;
   width: 100%;
   font-size: 15px;
   font-weight: 600;
-  text-transform: uppercase;
   background-color: transparent;
   color: white;
   border: none;
   border-bottom: 2px solid white;
 }
 
-.planDescInput:focus{
+.planDescInput:focus {
   outline: none;
 }
 
@@ -227,7 +233,7 @@
   transition: all ease-in-out 0.3s;
 }
 
-.planEditDescIcon{
+.planEditDescIcon {
   padding: 15px;
   font-size: 20px;
   cursor: pointer;
@@ -250,11 +256,9 @@
   align-items: center;
   width: 100%;
   height: 250px;
-  border-width: 3px;
+  border-width: 2px 3px 2px 3px;
   border-style: solid;
-  border-bottom: none;
   border-color: #5c2379;
-  cursor: grab;
   transition: 0.3s;
   margin: 0;
 }
@@ -375,4 +379,8 @@
 
 .planDeleteCancelButton:active{
   border-style: outset;
+}
+
+.gridLayoutContainer {
+  padding-bottom: 70px;
 }

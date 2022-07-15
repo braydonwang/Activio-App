@@ -93,6 +93,7 @@ export default function ExerciseDetails() {
           username: authData.user.username,
           exercise: {
             id,
+            name,
           },
         },
         navigate,
