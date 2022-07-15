@@ -107,11 +107,13 @@ export default function Planner() {
       const next = planExercises.find(
         (planObj) => planObj.name === layout[currentExercise.ind + 1].i
       );
-      setNextExercise({
-        name: next.name,
-        gifUrl: next.gifUrl,
-        time: next.time,
-      });
+      if (next) {
+        setNextExercise({
+          name: next.name,
+          gifUrl: next.gifUrl,
+          time: next.time,
+        });
+      }
     } else {
       setNextExercise({ name: "", gifUrl: "", time: 0 });
     }
@@ -199,6 +201,7 @@ export default function Planner() {
       likedUsers: [],
       exercises: planExercises,
       photo: file,
+      savedLayout: layout,
     };
     try {
       await axios.post("/plans", newPlan);
@@ -831,7 +834,11 @@ export default function Planner() {
               color="inherit"
               aria-label="remove"
               onClick={() => {
-                if (!isPlaying && currentExercise.ind === layout.length - 1) {
+                if (
+                  !isPlaying &&
+                  currentExercise.ind === layout.length - 1 &&
+                  remainingTime === 0
+                ) {
                   setPreviousExercise({ name: "", gifUrl: "", time: 0 });
                   setCurrentExercise({
                     ...planExercises.find(

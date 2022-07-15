@@ -1,11 +1,19 @@
 import axios from "axios";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
-import { CircularProgress } from "@mui/material";
+import ResponsiveGridLayout from "react-grid-layout";
+import { CircularProgress, Button } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import classes from "./PlanDetails.module.css";
 import TimerIcon from "@mui/icons-material/Timer";
 import IconButton from "@mui/material/IconButton";
@@ -14,6 +22,15 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FileBase from "react-file-base64";
 
 const limit = 100;
+
+const getWindowDimensions = () => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  return {
+    width,
+    height,
+  };
+};
 
 export default function PlanDetails() {
   const location = useLocation();
@@ -35,16 +52,17 @@ export default function PlanDetails() {
 
   const [updateTitle, setUpdateTitle] = useState(false);
   const [updateDesc, setUpdateDesc] = useState(false);
-
-  const textareaRef = useRef(null);
+  const [staticLayout, setStaticLayout] = useState([]);
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
 
   const handleKeyDown = (e) => {
-    e.target.style.height = 'inherit';
-    e.target.style.height = `${e.target.scrollHeight}px`; 
-    console.log(e.target.style.height);
+    e.target.style.height = "inherit";
+    e.target.style.height = `${e.target.scrollHeight}px`;
     // In case you have a limitation
     e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
-  }
+  };
 
   const handleLiked = async () => {
     if (likedUsers.includes(user.username)) {
@@ -111,6 +129,23 @@ export default function PlanDetails() {
     };
     getPost();
   }, [path]);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    setStaticLayout(
+      plan?.savedLayout?.map((planObj) => ({
+        ...planObj,
+        static: true,
+      }))
+    );
+  }, [plan?.savedLayout]);
 
   if (isLoading) {
     return (
@@ -214,13 +249,15 @@ export default function PlanDetails() {
           </div>
           <div className={classes.planTimeDiv}>
             <div className={classes.planTime}>
-              <span style={{ fontWeight: "700" }}>Duration:</span> {time} s
+              <span style={{ fontWeight: "700" }}>Duration:</span> {time} sec
             </div>
           </div>
           <div className={classes.planDescDiv}>
             {updateDesc ? (
               <div className={classes.planDescSubDiv}>
-                <div className={classes.planDesc}>Description: </div>
+                <div className={classes.planDesc}>
+                  <span style={{ fontWeight: "700" }}>DESCRIPTION:</span>{" "}
+                </div>
                 <textarea
                   className={classes.planDescInput}
                   value={desc}
@@ -230,7 +267,9 @@ export default function PlanDetails() {
                 />
               </div>
             ) : (
-              <div className={classes.planDesc}>Description: {desc}</div>
+              <div className={classes.planDesc}>
+                <span style={{ fontWeight: "700" }}>DESCRIPTION:</span> {desc}
+              </div>
             )}
             {updateDesc ? (
               <i
@@ -250,43 +289,67 @@ export default function PlanDetails() {
               ></i>
             )}
           </div>
+          <div className={classes.planButtonDiv}>
+            <Button
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                fontSize: "15px",
+                margin: "0",
+                padding: "12px",
+                color: "white",
+              }}
+            >
+              <ContentCopyIcon style={{ marginRight: "7px" }} />
+              Copy to Planner
+            </Button>
+          </div>
         </div>
       </div>
-      <div className={classes.exercises}>
-        {plan.exercises?.map((planObj, ind) => {
-          const { gifUrl, name, id } = planObj;
-          return (
-            <div className={classes.exerciseContainer} key={name}>
-              <img
-                className={classes.image}
-                src={gifUrl}
-                alt={name}
-                loading="lazy"
-              />
-              <div className={classes.timeContainer}>
-                <TimerIcon sx={{ fontSize: 50 }} />
-                <p className={classes.time}>{planObj.time} SEC</p>
+      <div className={classes.gridLayoutContainer}>
+        <ResponsiveGridLayout
+          margin={[50, 0]}
+          cols={1}
+          rowHeight={250}
+          layout={staticLayout}
+          width={windowDimensions.width - 18}
+          isBounded
+        >
+          {plan.exercises?.map((planObj, ind) => {
+            const { gifUrl, name, id } = planObj;
+            return (
+              <div className={classes.exerciseContainer} key={name}>
+                <img
+                  className={classes.image}
+                  src={gifUrl}
+                  alt={name}
+                  loading="lazy"
+                />
+                <div className={classes.timeContainer}>
+                  <TimerIcon sx={{ fontSize: 50 }} />
+                  <p className={classes.time}>{planObj.time} SEC</p>
+                </div>
+                <div className={classes.setReps}>
+                  <p className={classes.sets}>{planObj.sets} SETS</p>
+                  <CloseIcon sx={{ fontSize: 30 }} />
+                  <p className={classes.sets}>{planObj.reps} REPS</p>
+                </div>
+                <h3 className={classes.name}>{name}</h3>
+                <IconButton
+                  style={{
+                    position: "absolute",
+                    right: "30px",
+                  }}
+                  color="inherit"
+                  aria-label="details"
+                  onClick={() => navigate(`/exercise/${id}`)}
+                >
+                  <ArrowForwardIosIcon fontSize="large" />
+                </IconButton>
               </div>
-              <div className={classes.setReps}>
-                <p className={classes.sets}>{planObj.sets} SETS</p>
-                <CloseIcon sx={{ fontSize: 30 }} />
-                <p className={classes.sets}>{planObj.reps} REPS</p>
-              </div>
-              <h3 className={classes.name}>{name}</h3>
-              <IconButton
-                style={{
-                  position: "absolute",
-                  right: "30px",
-                }}
-                color="inherit"
-                aria-label="details"
-                onClick={() => navigate(`/exercise/${id}`)}
-              >
-                <ArrowForwardIosIcon fontSize="large" />
-              </IconButton>
-            </div>
-          );
-        })}
+            );
+          })}
+        </ResponsiveGridLayout>
       </div>
     </>
   );
