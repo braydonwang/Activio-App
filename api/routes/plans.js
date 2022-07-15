@@ -12,6 +12,33 @@ router.post("/", async (req, res) => {
   }
 });
 
+//LIKE PLAN
+router.put("/likes/:id", async (req, res) => {
+  try {
+    const { username } = req.body;
+    const plan = await Plan.findById(req.params.id);
+    try {
+      if (plan.likedUsers.some((likeObj) => likeObj === username)) {
+        plan.likedUsers = plan.likedUsers.filter(
+          (likeObj) => likeObj !== username
+        );
+        plan.likeCount -= 1;
+      } else {
+        plan.likedUsers.push(username);
+        plan.likeCount += 1;
+      }
+      const updatedPlan = await Plan.findByIdAndUpdate(req.params.id, plan, {
+        new: true,
+      });
+      res.status(200).json(updatedPlan);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //UPDATE PLAN
 router.put("/:id", async (req, res) => {
   try {

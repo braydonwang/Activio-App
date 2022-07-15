@@ -1,13 +1,6 @@
-import axios from "axios";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
-import {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
@@ -21,6 +14,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FileBase from "react-file-base64";
 import { copyPlanDraft } from "../../features/planDrafts/planDraftSlice";
+import {
+  getPlan,
+  updateLikes,
+  updatePlan,
+} from "../../features/plans/planSlice";
 
 const limit = 100;
 
@@ -40,8 +38,8 @@ export default function PlanDetails() {
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth.authData);
+  const { isLoading, plan } = useSelector((state) => state.plans);
 
-  const [plan, setPlan] = useState({});
   const [username, setUsername] = useState("");
   const [title, setTitle] = useState("");
   const [file, setFile] = useState("");
@@ -49,7 +47,6 @@ export default function PlanDetails() {
   const [likes, setLikes] = useState(0);
   const [likedUsers, setLikedUsers] = useState([]);
   const [time, setTime] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
 
   const [updateTitle, setUpdateTitle] = useState(false);
   const [updateDesc, setUpdateDesc] = useState(false);
@@ -67,48 +64,40 @@ export default function PlanDetails() {
 
   const handleLiked = async () => {
     if (likedUsers.includes(user.username)) {
-      const idx = likedUsers.indexOf(user.username);
-      likedUsers.splice(idx, 1);
-      setLikedUsers(likedUsers);
+      setLikedUsers(likedUsers.filter((likeObj) => likeObj !== user.username));
       setLikes(likes - 1);
-      try {
-        await axios.put(`/plans/${plan._id}`, {
-          username,
-          likeCount: likes - 1,
-          likedUsers: likedUsers,
-        });
-      } catch (err) {}
     } else {
-      likedUsers.push(user.username);
-      setLikedUsers(likedUsers);
+      setLikedUsers([...likedUsers, user.username]);
       setLikes(likes + 1);
-      try {
-        await axios.put(`/plans/${plan._id}`, {
-          username,
-          likeCount: likes + 1,
-          likedUsers: likedUsers,
-        });
-      } catch (err) {}
     }
+    dispatch(updateLikes({ id: plan._id, username: user.username }));
   };
 
   const handleUpdateTitle = async () => {
-    try {
-      await axios.put(`/plans/${plan._id}`, {
+    dispatch(
+      updatePlan({
+        id: plan._id,
         username: user.username,
+        desc,
         title,
-      });
-    } catch (err) {}
+        likeCount: likes,
+        likedUsers: likedUsers,
+      })
+    );
     setUpdateTitle(false);
   };
 
   const handleUpdateDesc = async () => {
-    try {
-      await axios.put(`/plans/${plan._id}`, {
+    dispatch(
+      updatePlan({
+        id: plan._id,
         username: user.username,
         desc,
-      });
-    } catch (err) {}
+        title,
+        likeCount: likes,
+        likedUsers: likedUsers,
+      })
+    );
     setUpdateDesc(false);
   };
 
@@ -126,23 +115,22 @@ export default function PlanDetails() {
   };
 
   useEffect(() => {
-    const getPost = async () => {
-      setIsLoading(true);
-      const res = await axios.get("/plans/" + path);
-      setPlan(res.data);
-      setTitle(res.data.title);
-      setFile(res.data.photo);
-      setUsername(res.data.username);
-      setDesc(res.data.desc);
-      setLikes(res.data.likeCount);
-      setLikedUsers(res.data.likedUsers);
-      let totalTime = 0;
-      res.data.exercises.forEach((e) => (totalTime += parseInt(e.time)));
-      setTime(totalTime);
-      setIsLoading(false);
-    };
-    getPost();
+    dispatch(getPlan(path));
   }, [path]);
+
+  useEffect(() => {
+    if (plan) {
+      setTitle(plan.title);
+      setFile(plan.photo);
+      setUsername(plan.username);
+      setDesc(plan.desc);
+      setLikes(plan.likeCount);
+      setLikedUsers(plan.likedUsers);
+      let totalTime = 0;
+      plan.exercises.forEach((e) => (totalTime += parseInt(e.time)));
+      setTime(totalTime);
+    }
+  }, [plan]);
 
   useEffect(() => {
     function handleResize() {
@@ -161,7 +149,7 @@ export default function PlanDetails() {
     );
   }, [plan?.savedLayout]);
 
-  if (isLoading) {
+  if (!plan || isLoading) {
     return (
       <div className={classes.loadingContainer}>
         <CircularProgress size="7em" style={{ color: "#bf5af2" }} />
