@@ -1,7 +1,7 @@
 import axios from "axios";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
@@ -35,16 +35,16 @@ export default function PlanDetails() {
 
   const [updateTitle, setUpdateTitle] = useState(false);
   const [updateDesc, setUpdateDesc] = useState(false);
+  const [deletePop, setDeletePop] = useState(false);
 
-  const textareaRef = useRef(null);
+  const isCreator = user.username === username;
 
   const handleKeyDown = (e) => {
-    e.target.style.height = 'inherit';
-    e.target.style.height = `${e.target.scrollHeight}px`; 
+    e.target.style.height = "inherit";
+    e.target.style.height = `${e.target.scrollHeight}-5px`;
     console.log(e.target.style.height);
-    // In case you have a limitation
     e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
-  }
+  };
 
   const handleLiked = async () => {
     if (likedUsers.includes(user.username)) {
@@ -93,6 +93,25 @@ export default function PlanDetails() {
     setUpdateDesc(false);
   };
 
+  const handleUpdateFile = async (base64) => {
+    setFile(base64);
+    try {
+      await axios.put(`/plans/${plan._id}`, {
+        username: user.username,
+        photo: base64,
+      });
+    } catch (err) {}
+  };
+  
+  const handleDeletePlan = async () => {
+    try {
+      await axios.delete(`/plans/${plan._id}`, {
+        data: {username: user.username}
+      });
+      navigate("/explore");
+    } catch (err) {}
+  }
+
   useEffect(() => {
     const getPost = async () => {
       setIsLoading(true);
@@ -124,7 +143,7 @@ export default function PlanDetails() {
     <>
       <Navbar />
 
-      <div className={classes.plan}>
+      <div className={classes.plan} style={{opacity: deletePop ? 0.1 : 1}}>
         <div className={classes.planTop}>
           {file && <img src={file} alt="" className={classes.planImg} />}
           <div className={classes.planTitleDiv}>
@@ -140,43 +159,57 @@ export default function PlanDetails() {
             ) : (
               <span className={classes.planTitle}>{title}</span>
             )}
-            {updateTitle ? (
-              <i
-                className={classNames(
-                  classes.planEditTitleIcon,
-                  "fa-solid fa-check"
-                )}
-                onClick={handleUpdateTitle}
-              ></i>
-            ) : (
-              <i
-                className={classNames(
-                  classes.planEditTitleIcon,
-                  "fa-solid fa-pencil"
-                )}
-                onClick={() => setUpdateTitle(true)}
-              ></i>
-            )}
+
+            {isCreator ? (
+              updateTitle ? (
+                <i
+                  className={classNames(
+                    classes.planEditTitleIcon,
+                    "fa-solid fa-check"
+                  )}
+                  onClick={handleUpdateTitle}
+                ></i>
+              ) : (
+                <i
+                  className={classNames(
+                    classes.planEditTitleIcon,
+                    "fa-solid fa-pencil"
+                  )}
+                  onClick={() => setUpdateTitle(true)}
+                ></i>
+              )
+            ) : null}
 
             <span className={classes.planAuthor}>by {username}</span>
           </div>
 
-          <label>
-            <i
-              className={classNames(
-                classes.planEditImgIcon,
-                "fa-solid fa-pen-to-square"
-              )}
-            ></i>
-            <div className={classes.fileTypeContainer}>
-              <FileBase
-                type="file"
-                value={file}
-                multiple={false}
-                onDone={({ base64 }) => setFile(base64)}
-              />
+          {isCreator && (
+            <div className={classes.planTopRightDiv}>
+              <label>
+                <i
+                  className={classNames(
+                    classes.planEditImgIcon,
+                    "fa-solid fa-pen-to-square"
+                  )}
+                ></i>
+                <div className={classes.fileTypeContainer}>
+                  <FileBase
+                    type="file"
+                    value={file}
+                    multiple={false}
+                    onDone={({ base64 }) => handleUpdateFile(base64)}
+                  />
+                </div>
+              </label>
+              <i
+                className={classNames(
+                  classes.planDeleteIcon,
+                  "fa-solid fa-trash-can"
+                )}
+                onClick={() => setDeletePop(true)}
+              ></i>
             </div>
-          </label>
+          )}
 
           <span className={classes.planDate}>
             Created On: {new Date(plan.createdAt).toDateString()}
@@ -232,27 +265,29 @@ export default function PlanDetails() {
             ) : (
               <div className={classes.planDesc}>Description: {desc}</div>
             )}
-            {updateDesc ? (
-              <i
-                className={classNames(
-                  classes.planEditDescIcon,
-                  "fa-solid fa-check"
-                )}
-                onClick={handleUpdateDesc}
-              ></i>
-            ) : (
-              <i
-                className={classNames(
-                  classes.planDescEdit,
-                  "fa-solid fa-pen-to-square"
-                )}
-                onClick={() => setUpdateDesc(true)}
-              ></i>
-            )}
+            {isCreator ? (
+              updateDesc ? (
+                <i
+                  className={classNames(
+                    classes.planEditDescIcon,
+                    "fa-solid fa-check"
+                  )}
+                  onClick={handleUpdateDesc}
+                ></i>
+              ) : (
+                <i
+                  className={classNames(
+                    classes.planDescEdit,
+                    "fa-solid fa-pen-to-square"
+                  )}
+                  onClick={() => setUpdateDesc(true)}
+                ></i>
+              )
+            ) : null}
           </div>
         </div>
       </div>
-      <div className={classes.exercises}>
+      <div className={classes.exercises} style={{opacity: deletePop ? 0.1 : 1}}>
         {plan.exercises?.map((planObj, ind) => {
           const { gifUrl, name, id } = planObj;
           return (
@@ -288,6 +323,18 @@ export default function PlanDetails() {
           );
         })}
       </div>
+
+      {deletePop && (
+        <div className={classes.planDeletePop}>
+          <span className={classes.planDeleteTitle}>
+            Are you sure you want to delete this plan?
+          </span>
+          <span className={classes.planButtonList}>
+            <button className={classes.planDeleteConfirmButton} onClick={handleDeletePlan}>Confirm</button>
+            <button className={classes.planDeleteCancelButton} onClick={() => setDeletePop(false)}>Cancel</button>
+          </span>
+        </div>
+      )}
     </>
   );
 }

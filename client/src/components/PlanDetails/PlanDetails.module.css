@@ -71,18 +71,36 @@
   font-weight: 500;
 }
 
-.planEditImgIcon {
+.planTopRightDiv{
+  display: flex;
+  flex-direction: row;
   position: absolute;
   top: 0%;
   right: 0%;
   margin: 20px;
   font-size: 25px;
+}
+
+.planEditImgIcon {
+  margin-right: 15px;
   cursor: pointer;
   transition: all ease-in-out 0.3s;
 }
 
 .planEditImgIcon:hover {
   color: rgb(183, 182, 182);
+  transition: all ease-in-out 0.3s;
+}
+
+.planDeleteIcon{
+  margin-top: 2px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+  color: rgb(205, 75, 75);
+}
+
+.planDeleteIcon:hover{
+  color: rgb(218, 29, 29);
   transition: all ease-in-out 0.3s;
 }
 
@@ -291,4 +309,70 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.planDeletePop{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 30vh;
+  height: 20vh;
+  background: #29015c;
+  background: -webkit-linear-gradient(top left, #29015c, #0c012a);
+  background: -moz-linear-gradient(top left, #29015c, #0c012a);
+  background: linear-gradient(to bottom right, #29015c, #0c012a);
+  border-radius: 10px;
+  border-style: outset;
+  border-color: #bf5af2;
+}
+
+.planDeleteTitle{
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin: 10px;
+}
+
+.planDeleteConfirmButton{
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  font-size: 15px;
+  padding: 5px;
+  color: #bf5af2;
+  background-color: transparent;
+  border-color: #bf5af2;
+}
+
+.planDeleteConfirmButton:hover{
+  background-color: #36074e;
+}
+
+.planDeleteConfirmButton:active{
+  border-style: outset;
+}
+
+.planDeleteCancelButton{
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  font-size: 15px;
+  padding: 5px;
+  color: #5e5ce6;
+  background-color: transparent;
+  border-color: #5e5ce6;
+}
+
+.planDeleteCancelButton:hover{
+  background-color: #191851;
+}
+
+.planDeleteCancelButton:active{
+  border-style: outset;
 }
