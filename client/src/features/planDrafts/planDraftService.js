@@ -29,12 +29,19 @@ const updateLayout = async (planData) => {
   return data;
 };
 
+const copyPlanDraft = async (planData) => {
+  planData.navigate("/planner");
+  const { data } = await axios.put(API_URL + "copy", planData.data);
+  return data;
+};
+
 const planService = {
   createPlanDraft,
   getPlanDraft,
   updatePlanDraft,
   removePlanDraft,
   updateLayout,
+  copyPlanDraft,
 };
 
 export default planService;

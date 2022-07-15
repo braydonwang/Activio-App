@@ -74,4 +74,18 @@ router.put("/layout", async (req, res) => {
   res.status(200).json(updatedPlan);
 });
 
+router.put("/copy", async (req, res) => {
+  const { username, exercises, layout } = req.body;
+  const plan = await PlanDraft.findOne({ username });
+
+  plan.exercises = exercises;
+  plan.savedLayout = layout;
+
+  const updatedPlan = await PlanDraft.findOneAndUpdate({ username }, plan, {
+    new: true,
+  });
+
+  res.status(200).json({ exercises, savedLayout: layout });
+});
+
 module.exports = router;

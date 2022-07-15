@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import ResponsiveGridLayout from "react-grid-layout";
@@ -20,6 +20,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FileBase from "react-file-base64";
+import { copyPlanDraft } from "../../features/planDrafts/planDraftSlice";
 
 const limit = 100;
 
@@ -35,7 +36,7 @@ const getWindowDimensions = () => {
 export default function PlanDetails() {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth.authData);
@@ -109,6 +110,19 @@ export default function PlanDetails() {
       });
     } catch (err) {}
     setUpdateDesc(false);
+  };
+
+  const handleCopy = () => {
+    dispatch(
+      copyPlanDraft({
+        navigate,
+        data: {
+          username: user.username,
+          exercises: plan.exercises,
+          layout: plan.savedLayout,
+        },
+      })
+    );
   };
 
   useEffect(() => {
@@ -299,6 +313,7 @@ export default function PlanDetails() {
                 padding: "12px",
                 color: "white",
               }}
+              onClick={handleCopy}
             >
               <ContentCopyIcon style={{ marginRight: "7px" }} />
               Copy to Planner

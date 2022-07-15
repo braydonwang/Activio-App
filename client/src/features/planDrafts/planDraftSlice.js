@@ -95,6 +95,23 @@ export const updateLayout = createAsyncThunk(
   }
 );
 
+export const copyPlanDraft = createAsyncThunk(
+  "planDraft/copyPlanDraft",
+  async (planData, thunkAPI) => {
+    try {
+      return await planDraftService.copyPlanDraft(planData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const planDraftSlice = createSlice({
   name: "planDraft",
   initialState,
@@ -166,6 +183,20 @@ export const planDraftSlice = createSlice({
         state.savedLayout = action.payload.savedLayout;
       })
       .addCase(updateLayout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(copyPlanDraft.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(copyPlanDraft.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.planExercises = action.payload.exercises;
+        state.savedLayout = action.payload.savedLayout;
+      })
+      .addCase(copyPlanDraft.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
