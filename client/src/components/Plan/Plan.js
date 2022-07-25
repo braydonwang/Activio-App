@@ -2,14 +2,17 @@ import { Link } from "react-router-dom";
 import classes from "./Plan.module.css";
 import classnames from "classnames";
 import { Image } from "../../images/login.jpg";
+import defaultImage from "../../images/defaultImage.png";
 
 export default function Plan({ plan }) {
   const PF = "http://localhost:5000/images/";
   return (
     <Link to={`/plan/${plan._id}`} className={classes.plan}>
-      {plan.photo && (
-        <img className={classes.planImg} src={plan.photo} alt="" />
-      )}
+      <img
+        className={classes.planImg}
+        src={plan.photo || defaultImage}
+        alt=""
+      />
 
       <div className={classes.planInfo}>
         <div className={classes.planCat}>{plan.categories}</div>

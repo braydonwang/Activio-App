@@ -60,7 +60,7 @@ export default function PlanDetails() {
     e.target.style.height = `${e.target.scrollHeight}-5px`;
 
     e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
-  }
+  };
 
   const [staticLayout, setStaticLayout] = useState([]);
   const [windowDimensions, setWindowDimensions] = useState(
@@ -115,15 +115,15 @@ export default function PlanDetails() {
       });
     } catch (err) {}
   };
-  
+
   const handleDeletePlan = async () => {
     try {
       await axios.delete(`/plans/${plan._id}`, {
-        data: {username: user.username}
+        data: { username: user.username },
       });
       navigate("/explore");
     } catch (err) {}
-  }
+  };
   const handleCopy = () => {
     dispatch(
       copyPlanDraft({
@@ -180,11 +180,13 @@ export default function PlanDetails() {
     );
   }
 
+  console.log(file);
+
   return (
     <>
       <Navbar />
 
-      <div className={classes.plan} style={{opacity: deletePop ? 0.1 : 1}}>
+      <div className={classes.plan} style={{ opacity: deletePop ? 0.1 : 1 }}>
         <div className={classes.planTop}>
           {file && <img src={file} alt="" className={classes.planImg} />}
           <div className={classes.planTitleDiv}>
@@ -348,7 +350,10 @@ export default function PlanDetails() {
           </div>
         </div>
       </div>
-      <div className={classes.gridLayoutContainer} style={{opacity: deletePop ? 0.1 : 1}}>
+      <div
+        className={classes.gridLayoutContainer}
+        style={{ opacity: deletePop ? 0.1 : 1 }}
+      >
         <ResponsiveGridLayout
           margin={[50, 0]}
           cols={1}
@@ -400,8 +405,18 @@ export default function PlanDetails() {
             Are you sure you want to delete this plan?
           </span>
           <span className={classes.planButtonList}>
-            <button className={classes.planDeleteConfirmButton} onClick={handleDeletePlan}>Confirm</button>
-            <button className={classes.planDeleteCancelButton} onClick={() => setDeletePop(false)}>Cancel</button>
+            <button
+              className={classes.planDeleteConfirmButton}
+              onClick={handleDeletePlan}
+            >
+              Confirm
+            </button>
+            <button
+              className={classes.planDeleteCancelButton}
+              onClick={() => setDeletePop(false)}
+            >
+              Cancel
+            </button>
           </span>
         </div>
       )}

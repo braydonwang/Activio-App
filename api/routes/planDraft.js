@@ -60,9 +60,17 @@ router.put("/remove", async (req, res) => {
   const plan = await PlanDraft.findOne({ username });
 
   plan.exercises = plan.exercises.filter((item) => item.id !== exercise.id);
+  let { y } = plan.savedLayout.find((item) => item.i === exercise.name);
   plan.savedLayout = plan.savedLayout.filter(
     (item) => item.i !== exercise.name
   );
+  plan.savedLayout = plan.savedLayout.map((item) => {
+    if (item.y > y) {
+      return { ...item, y: item.y - 1 };
+    } else {
+      return item;
+    }
+  });
 
   const updatedPlan = await PlanDraft.findOneAndUpdate({ username }, plan, {
     new: true,

@@ -35,7 +35,6 @@ import {
   updateLayout,
   updatePlanDraft,
 } from "../../features/planDrafts/planDraftSlice";
-import axios from "axios";
 import { createPlan } from "../../features/plans/planSlice";
 
 const getWindowDimensions = () => {
@@ -53,6 +52,7 @@ export default function Planner() {
   const { isLoading, planExercises, savedLayout } = useSelector(
     (state) => state.planDrafts
   );
+  const isLoadingPlans = useSelector((state) => state.plans.isLoading);
   const user = JSON.parse(localStorage.getItem("user"));
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
@@ -169,6 +169,7 @@ export default function Planner() {
         navigate,
       })
     );
+    setIsSaved(true);
   };
 
   const handleEdit = (e, time, sets, reps) => {
@@ -338,6 +339,8 @@ export default function Planner() {
       </div>
     );
   }
+
+  console.log(savedLayout);
 
   return (
     <>
@@ -584,133 +587,146 @@ export default function Planner() {
       </Fade>
 
       <Fade in={sharePop}>
-        <div className={classes.sharePop}>
-          {file && (
-            <div className={classes.writeImgDiv}>
-              <img src={file} alt="" className={classes.writeImg} />
-              <label>
-                <i
-                  className={classnames(
-                    classes.writeEditIcon,
-                    "fa-solid fa-pen-to-square"
-                  )}
-                ></i>
-                <div className={classes.fileTypeContainer}>
-                  <FileBase
-                    type="file"
-                    value={file}
-                    multiple={false}
-                    onDone={({ base64 }) => setFile(base64)}
-                  />
-                </div>
-              </label>
+        {isLoadingPlans ? (
+          <div className={classes.sharePop}>
+            <div className={classes.loadingContainer}>
+              <CircularProgress size="7em" style={{ color: "#bf5af2" }} />
             </div>
-          )}
+          </div>
+        ) : (
+          <div className={classes.sharePop}>
+            {file && (
+              <div className={classes.writeImgDiv}>
+                <img src={file} alt="" className={classes.writeImg} />
+                <label>
+                  <i
+                    className={classnames(
+                      classes.writeEditIcon,
+                      "fa-solid fa-pen-to-square"
+                    )}
+                  ></i>
+                  <div className={classes.fileTypeContainer}>
+                    <FileBase
+                      type="file"
+                      value={file}
+                      multiple={false}
+                      onDone={({ base64 }) => setFile(base64)}
+                    />
+                  </div>
+                </label>
+              </div>
+            )}
 
-          {!file && (
-            <>
-              <label>
-                <i className={classnames(classes.writeIcon, "fas fa-plus")}></i>
-                <div className={classes.fileTypeContainer}>
-                  <FileBase
-                    type="file"
-                    value={file}
-                    multiple={false}
-                    onDone={({ base64 }) => setFile(base64)}
+            {!file && (
+              <>
+                <label>
+                  <i
+                    className={classnames(classes.writeIcon, "fas fa-plus")}
+                  ></i>
+                  <div className={classes.fileTypeContainer}>
+                    <FileBase
+                      type="file"
+                      value={file}
+                      multiple={false}
+                      onDone={({ base64 }) => setFile(base64)}
+                    />
+                  </div>
+                </label>
+              </>
+            )}
+
+            <div className={classes.writeForm}>
+              <div className={classes.writeFormGroup}>
+                <div className={classes.writeFormSubGroup}>
+                  <input
+                    type="text"
+                    placeholder="Title"
+                    value={title}
+                    className={classes.writeInput}
+                    autoFocus={true}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
-                </div>
-              </label>
-            </>
-          )}
+                  <div className={classes.dropDown}>
+                    <button
+                      className={classes.dropDownButton}
+                      onClick={handleCatDropDown}
+                      style={{
+                        borderRadius: catDropDown
+                          ? "10px 10px 0px 0px"
+                          : "10px 10px 10px 10px",
+                      }}
+                    >
+                      {category === "" ? "CATEGORIES" : category}{" "}
+                      <i className="downArrow fa-solid fa-caret-down"></i>
+                    </button>
 
-          <div className={classes.writeForm}>
-            <div className={classes.writeFormGroup}>
-              <div className={classes.writeFormSubGroup}>
-                <input
+                    {catDropDown && (
+                      <div className={classes.dropDownOptionList}>
+                        <div
+                          className={classes.dropDownOptions}
+                          onClick={() => handleChooseCat("all")}
+                        >
+                          All
+                        </div>
+                        <div
+                          className={classes.dropDownOptions}
+                          onClick={() => handleChooseCat("aerobic")}
+                        >
+                          Aerobic
+                        </div>
+                        <div
+                          className={classes.dropDownOptions}
+                          onClick={() => handleChooseCat("strength")}
+                        >
+                          Strength
+                        </div>
+                        <div
+                          className={classes.dropDownOptions}
+                          onClick={() => handleChooseCat("flexibility")}
+                        >
+                          Flexibility
+                        </div>
+                        <div
+                          className={classes.dropDownOptions}
+                          onClick={() => handleChooseCat("balance")}
+                          style={{
+                            borderRadius: "0px 0px 10px 10px",
+                            borderBottom: "groove",
+                          }}
+                        >
+                          Balance
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <textarea
+                  placeholder="Workout description..."
+                  value={desc}
                   type="text"
-                  placeholder="Title"
-                  value={title}
-                  className={classes.writeInput}
-                  autoFocus={true}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <div className={classes.dropDown}>
-                  <button
-                    className={classes.dropDownButton}
-                    onClick={handleCatDropDown}
-                    style={{
-                      borderRadius: catDropDown
-                        ? "10px 10px 0px 0px"
-                        : "10px 10px 10px 10px",
-                    }}
-                  >
-                    {category === "" ? "CATEGORIES" : category}{" "}
-                    <i className="downArrow fa-solid fa-caret-down"></i>
-                  </button>
-
-                  {catDropDown && (
-                    <div className={classes.dropDownOptionList}>
-                      <div
-                        className={classes.dropDownOptions}
-                        onClick={() => handleChooseCat("all")}
-                      >
-                        All
-                      </div>
-                      <div
-                        className={classes.dropDownOptions}
-                        onClick={() => handleChooseCat("aerobic")}
-                      >
-                        Aerobic
-                      </div>
-                      <div
-                        className={classes.dropDownOptions}
-                        onClick={() => handleChooseCat("strength")}
-                      >
-                        Strength
-                      </div>
-                      <div
-                        className={classes.dropDownOptions}
-                        onClick={() => handleChooseCat("flexibility")}
-                      >
-                        Flexibility
-                      </div>
-                      <div
-                        className={classes.dropDownOptions}
-                        onClick={() => handleChooseCat("balance")}
-                        style={{
-                          borderRadius: "0px 0px 10px 10px",
-                          borderBottom: "groove",
-                        }}
-                      >
-                        Balance
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  className={classes.writeText}
+                  onChange={(e) => setDesc(e.target.value)}
+                ></textarea>
               </div>
 
-              <textarea
-                placeholder="Workout description..."
-                value={desc}
-                type="text"
-                className={classes.writeText}
-                onChange={(e) => setDesc(e.target.value)}
-              ></textarea>
+              <span className={classes.shareButtonList}>
+                <button
+                  className={classes.shareSubmit}
+                  onClick={handleSharePlan}
+                >
+                  Share
+                </button>
+                <button
+                  className={classes.shareCancel}
+                  onClick={() => setSharePop(false)}
+                >
+                  Cancel
+                </button>
+              </span>
             </div>
-
-            <span className={classes.shareButtonList}>
-              <button className={classes.shareSubmit} onClick={handleSharePlan}>
-                Share
-              </button>
-              <button
-                className={classes.shareCancel}
-                onClick={() => setSharePop(false)}
-              >
-                Cancel
-              </button>
-            </span>
           </div>
-        </div>
+        )}
       </Fade>
 
       <Slide
