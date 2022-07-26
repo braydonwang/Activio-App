@@ -6,5 +6,314 @@
   opacity: 0.8;
   font-size: 4.5vw;
   font-weight: 900;
-  margin: 40px 0 0 0;
+  margin: 40px 0 40px 0;
+}
+
+.heading:hover {
+  text-shadow: -8px 8px 10px rgb(120, 33, 192);
+}
+
+.topBar {
+  position: relative;
+}
+
+.topButton {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  right: 35px;
+  bottom: 0;
+}
+
+.addButton {
+  height: 40px;
+  background-color: rgb(93, 71, 236);
+  color: white;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: 700;
+  transition: all ease-in-out 0.3s;
+}
+
+.addButton:hover {
+  background-color: rgb(74, 58, 177);
+  transition: all ease-in-out 0.3s;
+}
+
+.totalContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 99%;
+  height: 200px;
+  border-width: 3px;
+  border-style: solid;
+  border-bottom: none;
+  border-color: #5c2379;
+  transition: 0.3s;
+  margin: 0;
+}
+
+.totalName {
+  font-size: xxx-large;
+  text-transform: capitalize;
+  margin-left: 50px;
+  margin-right: 250px;
+  width: 30%;
+}
+
+.totalText {
+  font-size: large;
+  margin: 10px 0 0 0;
+}
+
+.foodContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 99%;
+  height: 250px;
+  border-width: 3px;
+  border-style: solid;
+  border-bottom: none;
+  border-color: #5c2379;
+  transition: 0.3s;
+  margin: 0;
+}
+
+.foodContainer:hover {
+  opacity: 0.8;
+  background-color: rgb(86, 86, 86, 0.1);
+}
+
+.image {
+  height: 250px;
+}
+
+.name {
+  font-size: xxx-large;
+  text-transform: capitalize;
+  margin-left: 50px;
+  width: 30%;
+}
+
+.statContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 45%;
+}
+
+.calorieContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  font-size: large;
+  margin: 19px 0 0 0;
+}
+
+.number {
+  font-size: x-large;
+  font-weight: 700;
+  margin: 0;
+}
+
+.addPop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60vw;
+  height: 40vw;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #29015c;
+  background: -webkit-linear-gradient(top left, #29015c, #0c012a);
+  background: -moz-linear-gradient(top left, #29015c, #0c012a);
+  background: linear-gradient(to bottom right, #29015c, #0c012a);
+  border-radius: 10px;
+  border-style: outset;
+  border-color: #bf5af2;
+}
+
+.writeImgDiv {
+  top: 0%;
+  position: absolute;
+  margin: 50px;
+  width: 85%;
+  height: 25%;
+}
+
+.writeImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.writeForm {
+  margin-top: 10%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.writeFormGroup {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.writeFormSubGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.writeTitle {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.writeIcon {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 25px;
+  height: 25px;
+  padding: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: white;
+  background-color: #29015c;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.writeIcon:hover {
+  background-color: #443952;
+  transition: all ease-in-out 0.3s;
+}
+
+.writeEditIcon {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  margin: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.writeEditIcon:hover {
+  color: grey;
+  transition: all ease-in-out 0.3s;
+}
+
+.writeInput {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  padding: 5px;
+  width: 60%;
+  margin: 10px;
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-bottom: 2px solid white;
+}
+
+.writeInput::placeholder {
+  color: white;
+}
+
+.writeInput:focus {
+  outline: none;
+}
+
+.fileTypeContainer input[type="file"] {
+  display: none;
+}
+
+.shareButtonList {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.shareSubmit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #bf5af2;
+  background-color: transparent;
+  border-color: #bf5af2;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 20px;
+}
+
+.shareSubmit:hover {
+  background-color: #36074e;
+}
+
+.shareSubmit:active {
+  border-style: outset;
+}
+
+.shareCancel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #5e5ce6;
+  background-color: transparent;
+  border-color: #5e5ce6;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 20px;
+}
+
+.shareCancel:hover {
+  background-color: #191851;
+}
+
+.shareCancel:active {
+  border-style: outset;
 }

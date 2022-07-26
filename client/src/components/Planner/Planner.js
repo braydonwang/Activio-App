@@ -340,8 +340,6 @@ export default function Planner() {
     );
   }
 
-  console.log(savedLayout);
-
   return (
     <>
       <main
@@ -448,7 +446,7 @@ export default function Planner() {
             width={windowDimensions.width - 18}
             isBounded
           >
-            {planExercises.map((planObj, ind) => {
+            {planExercises.map((planObj) => {
               const { gifUrl, name, id } = planObj;
               return (
                 <div className={classes.exerciseContainer} key={name}>
