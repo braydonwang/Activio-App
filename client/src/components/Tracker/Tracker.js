@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Navbar from "../Navbar/Navbar";
 import { Button, Fade } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
@@ -11,14 +12,20 @@ import fatIcon from "../../images/fatIcon.png";
 import saltIcon from "../../images/saltIcon.png";
 import carbsIcon from "../../images/carbsIcon.png";
 import FileBase from "react-file-base64";
+import defaultImage from "../../images/defaultImage.png";
+import { addFood, getFood } from "../../features/food/foodSlice";
 
 import classes from "./Tracker.module.css";
 import classnames from "classnames";
 
 export default function Tracker() {
+  const dispatch = useDispatch();
+  const { food, foodItem, isLoading } = useSelector((state) => state.food);
+  const user = JSON.parse(localStorage.getItem("user"));
   const [addPop, setAddPop] = useState(false);
   const [file, setFile] = useState("");
   const [foodForm, setFoodForm] = useState({
+    image: "",
     name: "",
     calories: "",
     protein: "",
@@ -26,35 +33,43 @@ export default function Tracker() {
     sodium: "",
     carbs: "",
   });
-  const food = [
-    {
-      image: "http://d205bpvrqc9yn1.cloudfront.net/0001.gif",
-      name: "Banana",
-      calories: 900,
-      protein: 30,
-      sodium: 49,
-      carbs: 90,
-      fat: 80,
-    },
-    {
-      image: "http://d205bpvrqc9yn1.cloudfront.net/0001.gif",
-      name: "Big Mac Burger",
-      calories: 900,
-      protein: 30,
-      sodium: 49,
-      carbs: 90,
-      fat: 80,
-    },
-    {
-      image: "http://d205bpvrqc9yn1.cloudfront.net/0001.gif",
-      name: "Waffles, Chips and Soda",
-      calories: 900,
-      protein: 30,
-      sodium: 49,
-      carbs: 90,
-      fat: 80,
-    },
-  ];
+
+  useEffect(() => {
+    dispatch(getFood({ username: user.user.username }));
+  }, []);
+
+  const handleAddFood = () => {
+    dispatch(addFood({ ...foodForm, username: user.user.username }));
+  };
+  // const food = [
+  //   {
+  //     image: "http://d205bpvrqc9yn1.cloudfront.net/0001.gif",
+  //     name: "Banana",
+  //     calories: 900,
+  //     protein: 30,
+  //     sodium: 49,
+  //     carbs: 90,
+  //     fat: 80,
+  //   },
+  //   {
+  //     image: "http://d205bpvrqc9yn1.cloudfront.net/0001.gif",
+  //     name: "Big Mac Burger",
+  //     calories: 900,
+  //     protein: 30,
+  //     sodium: 49,
+  //     carbs: 90,
+  //     fat: 80,
+  //   },
+  //   {
+  //     image: "http://d205bpvrqc9yn1.cloudfront.net/0001.gif",
+  //     name: "Waffles, Chips and Soda",
+  //     calories: 900,
+  //     protein: 30,
+  //     sodium: 49,
+  //     carbs: 90,
+  //     fat: 80,
+  //   },
+  // ];
   return (
     <>
       <Navbar />
@@ -65,15 +80,14 @@ export default function Tracker() {
             <Button
               onClick={() => setAddPop(true)}
               style={{
-                color: food.length === 0 ? "rgb(90, 90, 90)" : "inherit",
+                color: "inherit",
                 fontSize: "inherit",
                 margin: "0",
                 padding: "0 23px",
                 transition: "0.1s",
-                cursor: food.length === 0 ? "none" : "pointer",
-                backgroundColor: food.length === 0 ? "grey" : "inherit",
+                cursor: "pointer",
+                backgroundColor: "inherit",
               }}
-              disabled={food.length === 0}
             >
               <span style={{ margin: "10px 7px 5px 10px" }}>Add Food Item</span>
               <FastfoodIcon style={{ marginLeft: "5px" }} />
@@ -137,7 +151,7 @@ export default function Tracker() {
             <div className={classes.foodContainer} key={ind}>
               <img
                 className={classes.image}
-                src={image}
+                src={image === "" ? defaultImage : image}
                 alt={name}
                 loading="lazy"
               />
@@ -242,7 +256,7 @@ export default function Tracker() {
             </div>
 
             <span className={classes.shareButtonList}>
-              <button className={classes.shareSubmit} onClick={() => {}}>
+              <button className={classes.shareSubmit} onClick={handleAddFood}>
                 Add
               </button>
               <button

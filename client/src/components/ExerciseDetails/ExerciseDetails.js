@@ -209,37 +209,43 @@ export default function ExerciseDetails() {
           <div className={classes.planPopUpItem}>
             <span className={classes.planPopUpTitle}>TIME(S)</span>
             <input
-              maxLength={3}
+              type="number"
               className={classes.planPopUpInput}
               placeholder="0"
               value={formData.time}
-              onChange={(e) =>
-                setFormData({ ...formData, time: e.target.value })
-              }
+              onChange={(e) => {
+                if (e.target.value < 999) {
+                  setFormData({ ...formData, time: e.target.value });
+                }
+              }}
             />
           </div>
           <div className={classes.planPopUpItem}>
             <span className={classes.planPopUpTitle}>SETS</span>
             <input
-              maxLength={3}
+              type="number"
               className={classes.planPopUpInput}
               placeholder="0"
               value={formData.sets}
-              onChange={(e) =>
-                setFormData({ ...formData, sets: e.target.value })
-              }
+              onChange={(e) => {
+                if (e.target.value < 999) {
+                  setFormData({ ...formData, sets: e.target.value });
+                }
+              }}
             />
           </div>
           <div className={classes.planPopUpItem}>
             <span className={classes.planPopUpTitle}>REPS</span>
             <input
+              type="number"
               className={classes.planPopUpInput}
               placeholder="0"
-              maxLength={3}
               value={formData.reps}
-              onChange={(e) =>
-                setFormData({ ...formData, reps: e.target.value })
-              }
+              onChange={(e) => {
+                if (e.target.value < 999) {
+                  setFormData({ ...formData, reps: e.target.value });
+                }
+              }}
             />
           </div>
           <span className={classes.popUpButton}>

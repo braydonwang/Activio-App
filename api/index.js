@@ -8,6 +8,7 @@ const userRoute = require("./routes/users");
 const planDraftRoute = require("./routes/planDraft");
 const planRoute = require("./routes/plans");
 const exerciseRoute = require("./routes/exercises");
+const foodRoute = require("./routes/food");
 
 const multer = require("multer");
 const path = require("path");
@@ -49,6 +50,7 @@ app.use("/api/users", userRoute);
 app.use("/api/planDrafts", planDraftRoute);
 app.use("/api/plans", planRoute);
 app.use("/api/exercises", exerciseRoute);
+app.use("/api/food", foodRoute);
 
 app.listen("5000", () => {
   console.log("Backend is running.");
