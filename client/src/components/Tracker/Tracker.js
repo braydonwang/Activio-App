@@ -87,35 +87,7 @@ export default function Tracker() {
       carbs: "",
     });
   };
-  // const food = [
-  //   {
-  //     image: "http://d205bpvrqc9yn1.cloudfront.net/0001.gif",
-  //     name: "Banana",
-  //     calories: 900,
-  //     protein: 30,
-  //     sodium: 49,
-  //     carbs: 90,
-  //     fat: 80,
-  //   },
-  //   {
-  //     image: "http://d205bpvrqc9yn1.cloudfront.net/0001.gif",
-  //     name: "Big Mac Burger",
-  //     calories: 900,
-  //     protein: 30,
-  //     sodium: 49,
-  //     carbs: 90,
-  //     fat: 80,
-  //   },
-  //   {
-  //     image: "http://d205bpvrqc9yn1.cloudfront.net/0001.gif",
-  //     name: "Waffles, Chips and Soda",
-  //     calories: 900,
-  //     protein: 30,
-  //     sodium: 49,
-  //     carbs: 90,
-  //     fat: 80,
-  //   },
-  // ];
+
   return (
     <>
       <main
