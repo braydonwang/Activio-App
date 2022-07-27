@@ -207,7 +207,7 @@ export default function ExerciseDetails() {
         <div className={classes.planPopUp}>
           <span className={classes.planPopUpBigTitle}>ADD TO PLAN</span>
           <div className={classes.planPopUpItem}>
-            <span className={classes.planPopUpTitle}>TIME(S)</span>
+            <span className={classes.planPopUpTitle}>TIME (SEC)</span>
             <input
               type="number"
               className={classes.planPopUpInput}

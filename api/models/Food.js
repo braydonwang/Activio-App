@@ -15,23 +15,23 @@ const FoodSchema = new mongoose.Schema(
       unique: true,
     },
     calories: {
-      type: Number,
+      type: String,
       required: true,
     },
     protein: {
-      type: Number,
+      type: String,
       required: true,
     },
     fat: {
-      type: Number,
+      type: String,
       required: true,
     },
     sodium: {
-      type: Number,
+      type: String,
       required: true,
     },
     carbs: {
-      type: Number,
+      type: String,
       required: true,
     },
   },

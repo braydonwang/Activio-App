@@ -27,7 +27,7 @@ export default function Home() {
     <div className={classes.mainContainer}>
       <Navbar />
       <h1 className={classes.heading}>
-        The <span className={classes.ultimateWord}>Ultimate</span> Workout App
+        The <span className={classes.ultimateWord}>Ultimate</span> Fitness App
       </h1>
       <h1 className={classes.backgroundText}>ACTIVIO</h1>
       <p className={classes.description}>

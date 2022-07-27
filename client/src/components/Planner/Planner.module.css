@@ -254,6 +254,7 @@
   color: white;
   text-align: center;
 }
+
 .planPopUpInput:focus {
   outline: 1px solid white;
 }

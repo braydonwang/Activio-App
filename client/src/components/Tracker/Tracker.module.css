@@ -45,7 +45,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 99%;
+  width: 99.6%;
   height: 200px;
   border-width: 3px;
   border-style: solid;
@@ -73,9 +73,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 99%;
+  width: 99.6%;
   height: 250px;
-  border-width: 3px;
+  border-width: 1.5px 3px;
   border-style: solid;
   border-color: #5c2379;
   transition: 0.3s;
@@ -148,20 +148,21 @@
 .writeImgDiv {
   top: 0%;
   position: absolute;
+  display: flex;
+  justify-content: center;
   margin: 50px;
   width: 85%;
-  height: 25%;
+  height: 35%;
 }
 
 .writeImg {
-  width: 100%;
+  width: 60%;
   height: 100%;
   border-radius: 10px;
   object-fit: cover;
 }
 
 .writeForm {
-  margin-top: 10%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -170,7 +171,9 @@
 }
 
 .writeFormGroup {
-  width: 80%;
+  width: 100%;
+  position: absolute;
+  top: 45%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -178,11 +181,20 @@
 }
 
 .writeFormSubGroup {
-  width: 100%;
+  width: 65%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+}
+
+.writeFormSubGroupBot {
+  width: 65%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 .writeTitle {
@@ -196,8 +208,8 @@
   top: 20%;
   left: 50%;
   transform: translate(-50%, 0%);
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   padding: 20px;
   border-radius: 50%;
   border: 2px solid white;
@@ -258,10 +270,11 @@
 
 .shareButtonList {
   width: 100%;
+  position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  bottom: 5%;
   color: white;
 }
 
@@ -317,4 +330,52 @@
 
 .shareCancel:active {
   border-style: outset;
+}
+
+.planPopUpItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 30%;
+  gap: 30px;
+  margin: 10px;
+}
+
+.planPopUpItemBot {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 40%;
+  gap: 10px;
+  margin: 10px;
+}
+
+.planPopUpTitle {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.planPopUpInput {
+  height: 100%;
+  width: 40%;
+  background-color: rgb(29, 26, 58);
+  border-style: outset;
+  font-family: "Inter", sans-serif;
+  font-size: medium;
+  color: white;
+  border-color: white;
+  text-align: center;
+  padding: 3px 0;
+}
+
+.planPopUpInput::placeholder {
+  color: white;
+  text-align: center;
+}
+
+.planPopUpInput:focus {
+  outline: 1px solid white;
 }
