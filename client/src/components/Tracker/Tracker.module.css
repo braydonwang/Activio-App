@@ -1,3 +1,10 @@
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .heading {
   text-align: center;
   text-shadow: -5px 5px 10px rgb(120, 33, 192);
@@ -40,6 +47,27 @@
   transition: all ease-in-out 0.3s;
 }
 
+.noFoodContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(30vh + 150px);
+}
+
+.noFood {
+  font-style: italic;
+  margin-bottom: 30px;
+  font-size: 2vw;
+  opacity: 0.9;
+}
+
+.addFood {
+  margin: 0 0 50px 0;
+  font-size: 1.5vw;
+  opacity: 0.8;
+}
+
 .totalContainer {
   position: relative;
   display: flex;
@@ -59,7 +87,7 @@
   font-size: xxx-large;
   text-transform: capitalize;
   margin-left: 50px;
-  margin-right: 250px;
+  margin-right: 270px;
   width: 30%;
 }
 
@@ -98,6 +126,7 @@
   text-transform: capitalize;
   margin-left: 50px;
   width: 30%;
+  margin-right: 20px;
 }
 
 .statContainer {

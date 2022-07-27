@@ -415,12 +415,7 @@ export default function Planner() {
                 </span>{" "}
                 tab!
               </h2>
-              <FontAwesomeIcon
-                icon={faDumbbell}
-                color="white"
-                opacity={0.8}
-                size="10x"
-              />
+              <FontAwesomeIcon icon={faDumbbell} color="white" size="10x" />
             </div>
           )}
 

@@ -43,6 +43,23 @@ export const addFood = createAsyncThunk(
   }
 );
 
+export const editFood = createAsyncThunk(
+  "food/editFood",
+  async (foodData, thunkAPI) => {
+    try {
+      return await foodService.editFood(foodData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const removeFood = createAsyncThunk(
   "food/removeFood",
   async (id, thunkAPI) => {
@@ -90,6 +107,21 @@ export const foodSlice = createSlice({
         state.food = [...state.food, action.payload];
       })
       .addCase(addFood.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(editFood.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editFood.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.food = state.food.map((foodItem) =>
+          foodItem._id === action.payload.id ? action.payload.data : foodItem
+        );
+      })
+      .addCase(editFood.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

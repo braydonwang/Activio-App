@@ -56,9 +56,9 @@ export default function ExerciseDetails() {
   const { bodyPart, gifUrl, name, target, equipment } = exercise;
 
   const extraDetail = [
-    { icon: bodyPartImg, name: bodyPart },
-    { icon: targetImg, name: target },
-    { icon: equipmentImg, name: equipment },
+    { icon: bodyPartImg, name: bodyPart, path: "bodyPart" },
+    { icon: targetImg, name: target, path: "target" },
+    { icon: equipmentImg, name: equipment, path: "equipment" },
   ];
 
   const handleAddExercise = () => {
@@ -143,6 +143,11 @@ export default function ExerciseDetails() {
                       height: "100px",
                       margin: "10px 0",
                     }}
+                    onClick={() =>
+                      navigate(
+                        `/exercises/search?page=1&${item.path}=${item.name}`
+                      )
+                    }
                   >
                     <img
                       src={item.icon}

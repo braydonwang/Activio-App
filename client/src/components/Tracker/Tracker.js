@@ -1,19 +1,25 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Navbar from "../Navbar/Navbar";
-import { Button, Fade } from "@mui/material";
+import { Button, Fade, CircularProgress } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import LocalDiningIcon from "@mui/icons-material/LocalDining";
 import musclesIcon from "../../images/muscles.png";
 import fatIcon from "../../images/fatIcon.png";
 import saltIcon from "../../images/saltIcon.png";
 import carbsIcon from "../../images/carbsIcon.png";
 import FileBase from "react-file-base64";
-import defaultImage from "../../images/defaultImage.png";
-import { addFood, getFood, removeFood } from "../../features/food/foodSlice";
+import defaultFood from "../../images/defaultFood.jpg";
+import {
+  addFood,
+  editFood,
+  getFood,
+  removeFood,
+} from "../../features/food/foodSlice";
 
 import classes from "./Tracker.module.css";
 import classnames from "classnames";
@@ -23,6 +29,7 @@ export default function Tracker() {
   const { food, isLoading } = useSelector((state) => state.food);
   const user = JSON.parse(localStorage.getItem("user"));
   const [addPop, setAddPop] = useState(false);
+  const [isEditing, setIsEditing] = useState(-1);
   const [totalNutrition, setTotalNutrition] = useState({
     calories: 0,
     protein: 0,
@@ -61,17 +68,43 @@ export default function Tracker() {
   }, [food]);
 
   const handleAddFood = () => {
-    dispatch(
-      addFood({
-        ...foodForm,
-        calories: foodForm.calories === "" ? "0" : foodForm.calories,
-        protein: foodForm.protein === "" ? "0" : foodForm.protein,
-        fat: foodForm.fat === "" ? "0" : foodForm.fat,
-        sodium: foodForm.sodium === "" ? "0" : foodForm.sodium,
-        carbs: foodForm.carbs === "" ? "0" : foodForm.carbs,
-        username: user.user.username,
-      })
-    );
+    if (isEditing !== -1) {
+      dispatch(
+        editFood({
+          id: isEditing,
+          data: {
+            ...foodForm,
+            calories: foodForm.calories === "" ? "0" : foodForm.calories,
+            protein: foodForm.protein === "" ? "0" : foodForm.protein,
+            fat: foodForm.fat === "" ? "0" : foodForm.fat,
+            sodium: foodForm.sodium === "" ? "0" : foodForm.sodium,
+            carbs: foodForm.carbs === "" ? "0" : foodForm.carbs,
+            username: user.user.username,
+          },
+        })
+      );
+    } else {
+      dispatch(
+        addFood({
+          ...foodForm,
+          calories: foodForm.calories === "" ? "0" : foodForm.calories,
+          protein: foodForm.protein === "" ? "0" : foodForm.protein,
+          fat: foodForm.fat === "" ? "0" : foodForm.fat,
+          sodium: foodForm.sodium === "" ? "0" : foodForm.sodium,
+          carbs: foodForm.carbs === "" ? "0" : foodForm.carbs,
+          username: user.user.username,
+        })
+      );
+    }
+    setFoodForm({
+      image: "",
+      name: "",
+      calories: "",
+      protein: "",
+      fat: "",
+      sodium: "",
+      carbs: "",
+    });
     setAddPop(false);
   };
 
@@ -82,10 +115,12 @@ export default function Tracker() {
   const handleEdit = (foodData) => {
     setFoodForm(foodData);
     setAddPop(true);
+    setIsEditing(foodData._id);
   };
 
   const handleCancel = () => {
     setAddPop(false);
+    setIsEditing(-1);
     setFoodForm({
       image: "",
       name: "",
@@ -96,6 +131,14 @@ export default function Tracker() {
       carbs: "",
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className={classes.loadingContainer}>
+        <CircularProgress size="7em" style={{ color: "#bf5af2" }} />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -180,13 +223,36 @@ export default function Tracker() {
               </div>
             </div>
           </div>
+
+          {food.length === 0 && (
+            <div className={classes.noFoodContainer}>
+              <h1 className={classes.noFood}>
+                There are no food items in your nutrition tracker
+              </h1>
+              <h2 className={classes.addFood}>
+                Click the{" "}
+                <span
+                  style={{
+                    fontSize: "1.6vw",
+                    fontWeight: "800",
+                    color: "purple",
+                  }}
+                >
+                  top right button
+                </span>{" "}
+                to add some!
+              </h2>
+              <LocalDiningIcon style={{ fontSize: "10em" }} />
+            </div>
+          )}
+
           {food.map((foodObj, ind) => {
             const { image, name } = foodObj;
             return (
               <div className={classes.foodContainer} key={ind}>
                 <img
                   className={classes.image}
-                  src={image === "" ? defaultImage : image}
+                  src={image === "" ? defaultFood : image}
                   alt={name}
                   loading="lazy"
                 />

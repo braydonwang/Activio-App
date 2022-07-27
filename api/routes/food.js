@@ -24,6 +24,19 @@ router.post("/", async (req, res) => {
   }
 });
 
+// EDIT FOOD
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedFood = await Food.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json({ id, data: updatedFood });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // DELETE FOOD ITEM
 router.delete("/:id", async (req, res) => {
   try {

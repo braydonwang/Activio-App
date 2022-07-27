@@ -14,6 +14,12 @@ const addFood = async (foodData) => {
   return data;
 };
 
+const editFood = async (foodData) => {
+  const { data } = await axios.put(API_URL + foodData.id, foodData.data);
+
+  return data;
+};
+
 const removeFood = async (id) => {
   const { data } = await axios.delete(API_URL + id);
 
@@ -23,6 +29,7 @@ const removeFood = async (id) => {
 const foodService = {
   getFood,
   addFood,
+  editFood,
   removeFood,
 };
 
