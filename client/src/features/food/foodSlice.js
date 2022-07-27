@@ -3,7 +3,6 @@ import foodService from "./foodService";
 
 const initialState = {
   food: [],
-  foodItem: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -32,6 +31,23 @@ export const addFood = createAsyncThunk(
   async (foodData, thunkAPI) => {
     try {
       return await foodService.addFood(foodData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const removeFood = createAsyncThunk(
+  "food/removeFood",
+  async (id, thunkAPI) => {
+    try {
+      return await foodService.removeFood(id);
     } catch (error) {
       const message =
         (error.response &&
@@ -74,6 +90,21 @@ export const foodSlice = createSlice({
         state.food = [...state.food, action.payload];
       })
       .addCase(addFood.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(removeFood.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(removeFood.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.food = state.food.filter(
+          (foodItem) => foodItem._id !== action.payload
+        );
+      })
+      .addCase(removeFood.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

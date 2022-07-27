@@ -14,9 +14,16 @@ const addFood = async (foodData) => {
   return data;
 };
 
+const removeFood = async (id) => {
+  const { data } = await axios.delete(API_URL + id);
+
+  return data;
+};
+
 const foodService = {
   getFood,
   addFood,
+  removeFood,
 };
 
 export default foodService;

@@ -19,16 +19,17 @@ router.post("/", async (req, res) => {
     const savedFood = await newFood.save();
     res.status(200).json(savedFood);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
-// GET FOOD ITEM
-router.get("/item/:id", async (req, res) => {
+// DELETE FOOD ITEM
+router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const food = await Food.findById(id);
-    res.status(200).json(food);
+    const deletedFood = await Food.findByIdAndDelete(id);
+    res.status(200).json(id);
   } catch (err) {
     res.status(500).json(err);
   }

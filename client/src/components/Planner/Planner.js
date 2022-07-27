@@ -430,8 +430,10 @@ export default function Planner() {
             rowHeight={250}
             layout={layout}
             onLayoutChange={(layouts) => {
+              const temp = JSON.parse(JSON.stringify(savedLayout));
               if (
-                JSON.stringify(savedLayout) !== JSON.stringify(layouts) &&
+                JSON.stringify(temp.sort((a, b) => a.y - b.y)) !==
+                  JSON.stringify(layouts.sort((a, b) => a.y - b.y)) &&
                 planExercises.length !== 0 &&
                 layouts.length === layout.length
               ) {

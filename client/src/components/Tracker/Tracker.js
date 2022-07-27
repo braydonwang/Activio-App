@@ -13,14 +13,14 @@ import saltIcon from "../../images/saltIcon.png";
 import carbsIcon from "../../images/carbsIcon.png";
 import FileBase from "react-file-base64";
 import defaultImage from "../../images/defaultImage.png";
-import { addFood, getFood } from "../../features/food/foodSlice";
+import { addFood, getFood, removeFood } from "../../features/food/foodSlice";
 
 import classes from "./Tracker.module.css";
 import classnames from "classnames";
 
 export default function Tracker() {
   const dispatch = useDispatch();
-  const { food, foodItem, isLoading } = useSelector((state) => state.food);
+  const { food, isLoading } = useSelector((state) => state.food);
   const user = JSON.parse(localStorage.getItem("user"));
   const [addPop, setAddPop] = useState(false);
   const [totalNutrition, setTotalNutrition] = useState({
@@ -73,6 +73,15 @@ export default function Tracker() {
       })
     );
     setAddPop(false);
+  };
+
+  const handleRemove = (id) => {
+    dispatch(removeFood(id));
+  };
+
+  const handleEdit = (foodData) => {
+    setFoodForm(foodData);
+    setAddPop(true);
   };
 
   const handleCancel = () => {
@@ -208,7 +217,7 @@ export default function Tracker() {
                   style={{ position: "absolute", right: "60px", top: "10px" }}
                   color="inherit"
                   aria-label="remove"
-                  onClick={() => {}}
+                  onClick={() => handleRemove(foodObj._id)}
                 >
                   <RemoveCircleIcon fontSize="large" />
                 </IconButton>
@@ -216,7 +225,7 @@ export default function Tracker() {
                   style={{ position: "absolute", right: "15px", top: "10px" }}
                   color="inherit"
                   aria-label="edit"
-                  onClick={() => {}}
+                  onClick={() => handleEdit(foodObj)}
                 >
                   <MoreHorizIcon fontSize="large" />
                 </IconButton>
