@@ -20,6 +20,7 @@ import {
   getFood,
   removeFood,
 } from "../../features/food/foodSlice";
+import axios from "axios";
 
 import classes from "./Tracker.module.css";
 import classnames from "classnames";
@@ -130,6 +131,14 @@ export default function Tracker() {
       sodium: "",
       carbs: "",
     });
+  };
+
+  const handlePredict = async (base64) => {
+    setFoodForm({ ...foodForm, image: base64 });
+    const resp = await axios.post("/predict", {
+      image: base64,
+    });
+    console.log(resp.data);
   };
 
   if (isLoading) {
@@ -318,9 +327,7 @@ export default function Tracker() {
                     type="file"
                     value={foodForm.image}
                     multiple={false}
-                    onDone={({ base64 }) =>
-                      setFoodForm({ ...foodForm, image: base64 })
-                    }
+                    onDone={({ base64 }) => handlePredict(base64)}
                   />
                 </div>
               </label>
@@ -336,9 +343,7 @@ export default function Tracker() {
                     type="file"
                     value={foodForm.image}
                     multiple={false}
-                    onDone={({ base64 }) =>
-                      setFoodForm({ ...foodForm, image: base64 })
-                    }
+                    onDone={({ base64 }) => handlePredict(base64)}
                   />
                 </div>
               </label>

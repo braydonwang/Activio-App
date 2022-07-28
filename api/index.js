@@ -9,6 +9,7 @@ const planDraftRoute = require("./routes/planDraft");
 const planRoute = require("./routes/plans");
 const exerciseRoute = require("./routes/exercises");
 const foodRoute = require("./routes/food");
+const { spawn } = require("child_process");
 
 const multer = require("multer");
 const path = require("path");
@@ -43,6 +44,26 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   res.status(200).json("File has been uploaded");
+});
+
+// ML PREDICT
+app.post("/api/predict", async (req, res) => {
+  try {
+    let predictionVal;
+    const python = spawn("python", ["./predict.py", req.body]);
+
+    python.stdout.on("data", (data) => {
+      console.log("python data: ", data.toString());
+      predictionVal += data.toString();
+    });
+
+    python.on("close", (code, signal) => {
+      res.status(200).json(predictionVal);
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
 });
 
 app.use("/api/auth", authRoute);
