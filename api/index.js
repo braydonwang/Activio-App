@@ -83,3 +83,7 @@ app.use("/api/food", foodRoute);
 app.listen(process.env.PORT || "5000", () => {
   console.log("Backend is running.");
 });
+
+app.get("/", (req, res) => {
+  res.send("Hello from Express!");
+});
