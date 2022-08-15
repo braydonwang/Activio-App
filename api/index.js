@@ -80,9 +80,7 @@ app.use("/api/plans", planRoute);
 app.use("/api/exercises", exerciseRoute);
 app.use("/api/food", foodRoute);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+app.use(express.static("./client/build"));
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("Backend is running.");
