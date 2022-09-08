@@ -10,6 +10,7 @@ const planRoute = require("./routes/plans");
 const exerciseRoute = require("./routes/exercises");
 const foodRoute = require("./routes/food");
 const { spawn } = require("child_process");
+const { PythonShell } = require("python-shell");
 
 const multer = require("multer");
 const path = require("path");
@@ -50,15 +51,21 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 app.post("/api/predict", async (req, res) => {
   try {
     let predictionVal;
-    const python = spawn("python", ["./predict.py", req.body]);
+    let pyshell = new PythonShell("predict.py", { mode: "text" });
 
-    python.stdout.on("data", (data) => {
-      console.log("python data: ", data.toString());
-      predictionVal += data.toString();
+    pyshell.send(req.body.image);
+
+    pyshell.on("message", function (message) {
+      predictionVal = message;
     });
 
-    python.on("close", (code, signal) => {
-      res.status(200).json(predictionVal);
+    pyshell.end(function (err, code, signal) {
+      if (err) {
+        console.log(err);
+      }
+      console.log("The exit code was: " + code);
+      console.log("The exit signal was: " + signal);
+      console.log("finished");
     });
   } catch (err) {
     console.log(err);

@@ -4,9 +4,13 @@
   "description": "All-in-one Fitness App",
   "main": "index.js",
   "scripts": {
+    "start": "cd api && node index.js",
     "server": "npm run start --prefix api",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build"
   },
   "repository": {
     "type": "git",
