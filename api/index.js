@@ -73,6 +73,6 @@ app.use("/api/plans", planRoute);
 app.use("/api/exercises", exerciseRoute);
 app.use("/api/food", foodRoute);
 
-app.listen("5000", () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log("Backend is running.");
 });
