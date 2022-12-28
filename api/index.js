@@ -80,6 +80,8 @@ app.use("/api/plans", planRoute);
 app.use("/api/exercises", exerciseRoute);
 app.use("/api/food", foodRoute);
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log("Backend is running.");
+const port = process.env.PORT || 6000;
+
+app.listen(port, () => {
+  console.log(`Backend is running on port ${port}.`);
 });

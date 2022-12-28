@@ -135,10 +135,6 @@ export default function Tracker() {
 
   const handlePredict = async (base64) => {
     setFoodForm({ ...foodForm, image: base64 });
-    const resp = await axios.post("/predict", {
-      image: base64,
-    });
-    console.log(resp.data);
   };
 
   if (isLoading) {
