@@ -36,7 +36,10 @@ export default function App() {
           path="/tracker"
           element={!authData ? <Navigate to="/login" replace /> : <Tracker />}
         />
-        <Route path="/explore" element={<Explore />} />
+        <Route
+          path="/explore"
+          element={!authData ? <Navigate to="/login" replace /> : <Explore />}
+        />
         <Route path="/plan/:planId" element={<PlanDetails />} />
       </Routes>
     </Router>

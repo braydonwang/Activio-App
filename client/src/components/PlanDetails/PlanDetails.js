@@ -180,8 +180,6 @@ export default function PlanDetails() {
     );
   }
 
-  console.log(file);
-
   return (
     <>
       <Navbar />
