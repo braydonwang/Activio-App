@@ -40,7 +40,3 @@ npm run dev
 - Integrate all features of web app to mobile app
 - Implement machine learning (image classification) to calorie tracker
 - Look into pricing plans
-
-## Contributors
-- Braydon Wang
-- Dylan Wang
