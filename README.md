@@ -23,7 +23,7 @@ We used React and Material UI for the frontend, Node.js and MongoDB for the back
 ```
 npm install
 ```
-2. Navigate to the backend folder (/api)
+2. Navigate to the backend folder `/api`
 3. Create a `.env` file in this folder with the following variables:
 ```
 MONGO_URL = [YOUR_MONGODB_URL]
