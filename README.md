@@ -3,13 +3,20 @@
 ## What is Activio?
 
 A free web and mobile app that is perfect for fitness enthusiasts. Users can create workout plans, search through 1000+ exercises, track calories and explore workout plans from other users. 
-- Try it out: https://activio.netlify.app/
+- Try it out here: https://activio.netlify.app/
 
 <img width="1000" alt="HomeScreen" src="https://user-images.githubusercontent.com/16049357/189257633-b24b3eb7-36d7-44dc-bd9d-7fb541dd4302.png">
 
-## Tools/Technologies
+## Built with
 
-We used React and Material UI for the front-end, and Node and MongoDB for the back-end. JWT was used for authentication and Redux for global state management. We deployed it with Adaptable for the backend and Netlify for the frontend.
+We used React and Material UI for the frontend, Node.js and MongoDB for the backend. JWT was used for authentication and Redux for global state management. We deployed it using Adaptable and Netlify.
+
+* ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+* ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+* ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+* ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+* ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+* ![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7)
 
 ## How to run locally
 1. Install required dependencies in root folder and both frontend and backend folders
