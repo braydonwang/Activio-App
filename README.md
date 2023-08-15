@@ -43,7 +43,11 @@ npm run dev
 ## Mobile App Repo (Work in Progress)
 - https://github.com/braydonwang/Activio-Mobile-App
 
-## Future Plans
-- Integrate all features of web app to mobile app
-- Implement machine learning (image classification) to calorie tracker
-- Look into pricing plans
+## Next steps
+## Next Steps
+
+- [x] Create explore blog page
+- [x] Polish and deploy
+- [ ] Integrate all features for mobile app
+- [ ] Implement ML image classification for calorie tracker
+- [ ] Explore pricing plans 💸
