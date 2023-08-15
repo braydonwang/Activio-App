@@ -40,14 +40,10 @@ npm run dev
 <img width="1000" alt="WorkoutPlannerScreen" src="https://user-images.githubusercontent.com/16049357/189259606-14a81b73-e9d6-408a-9993-7e2fccadf18f.png"> <img width="1000" alt="NutritionTrackerScreen" src="https://user-images.githubusercontent.com/16049357/189259568-5778879a-512f-4875-b719-ee35a3f88880.png">
 <img width="1000" alt="ExploreScreen" src="https://user-images.githubusercontent.com/16049357/189259558-afe5d7ae-33e7-4918-ae47-3129303cbf0b.png"> <img width="1000" alt="RegisterScreen" src="https://user-images.githubusercontent.com/16049357/189260628-c8b26106-9f61-4554-b525-c22bf05d330d.png">
 
-## Mobile App Repo (Work in Progress)
-- https://github.com/braydonwang/Activio-Mobile-App
-
-## Next steps
 ## Next Steps
 
 - [x] Create explore blog page
 - [x] Polish and deploy
-- [ ] Integrate all features for mobile app
+- [ ] Integrate all features to mobile app (WIP: https://github.com/braydonwang/Activio-Mobile-App)
 - [ ] Implement ML image classification for calorie tracker
 - [ ] Explore pricing plans 💸
