@@ -1,4 +1,4 @@
-# Activio: The Ultimate Fitness App
+# 💪 Activio: The Ultimate Fitness App
 
 ## What is Activio?
 
